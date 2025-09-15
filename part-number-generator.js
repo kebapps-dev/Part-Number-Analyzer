@@ -59,6 +59,12 @@ function setInputsFromPartNumber(partNumber, productLine) {
         pos += field.len;
         const el = document.getElementById(field.id);
         if (el) {
+            // Skip 'not valid' logic for productLine select
+            if (field.id === 'productLine') {
+                el.value = value;
+                el.style.background = '';
+                continue;
+            }
             let found = false;
             for (let i = 0; i < el.options.length; i++) {
                 if (el.options[i].value === value) {
@@ -105,8 +111,21 @@ function updatePartNumberInputScalable() {
 }
 
 function updateInputsFromPartNumberInput() {
-    const productLine = document.getElementById('productLine').value;
     const partNumber = document.getElementById('decodeInput').value.trim().toUpperCase();
+    // Get product line from 3rd and 4th digit
+    let detectedProductLine = '';
+    if (partNumber.length >= 4) {
+        detectedProductLine = partNumber.substr(2,2);
+        // Only update if valid
+        if (["S6","F6","G6","F5"].includes(detectedProductLine)) {
+            const productLineSelect = document.getElementById('productLine');
+            if (productLineSelect.value !== detectedProductLine) {
+                productLineSelect.value = detectedProductLine;
+                showFieldsForProductLine(detectedProductLine);
+            }
+        }
+    }
+    const productLine = document.getElementById('productLine').value;
     setInputsFromPartNumber(partNumber, productLine);
 }
 
