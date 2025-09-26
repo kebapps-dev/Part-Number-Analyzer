@@ -22,10 +22,11 @@
                 <div style="flex: 1;">
                     <label for="productLine">Product Line</label>
                     <select id="productLine" required style="min-width:120px;">
-                        <option value="S6" >S6</option>
-                        <option value="F6"selected>F6</option>
+                        <option value="S6">S6</option>
+                        <option value="F6" selected>F6</option>
                         <option value="G6">G6</option>
                         <option value="F5">F5</option>
+                        <option value="F4">F4</option>
                     </select>
                 </div>
                 <div style="flex: 2;">
@@ -502,5 +503,97 @@
             </select>
     </div>
     <script src="part-number-generator.js"></script>
+
+    <!-- F4 Fields -->
+    <div id="f4-fields" class="product-fields" style="display:none;">
+        <label for="f4-size">Housing Size</label>
+        <select id="f4-size">
+            <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
+            <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7A @ 230V)</option>
+            <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL @ 480V, 10A @ 230V)</option>
+            <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A @ 230V)</option>
+            <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A @ 230V)</option>
+            <option value="15">15 (15.0 HP / 11.0 KW / 21A UL @ 480V, 48A @ 230V)</option>
+            <option value="16">16 (20.0 HP / 15.0 KW / 27A UL @ 480V, 66A @ 230V)</option>
+            <option value="17">17 (25.0 HP / 18.5 KW / 34A UL)</option>
+            <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
+            <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
+            <option value="20">20 (50.0 HP / 37.0 KW / 65A UL)</option>
+            <option value="21">21 (60.0 HP / 45.0 KW / 77A UL)</option>
+            <option value="22">22 (75.0 HP / 55.0 KW / 96A UL)</option>
+            <option value="23">23 (100 HP / 75.0 KW / 124A UL)</option>
+            <option value="24">24 (125 HP / 90.0 KW / 156A UL)</option>
+            <option value="25">25 (150 HP / 110 KW / 180A UL)</option>
+            <option value="26">26 (175 HP / 132 KW / 210A UL)</option>
+            <option value="27">27 (200 HP / 160 KW / 260A UL)</option>
+            <option value="28">28 (250 HP / 200 KW / 325A UL)</option>
+            <option value="29">29 (300 HP / 250 KW / 400A UL)</option>
+        </select>
+       
+        <label for="f4-control">Used Control</label>
+        <select id="f4-control">
+            <option value="C">C: Compact</option>
+            <option value="S">S: Standard</option>
+            <option value="F">F: Field-oriented control</option>
+        </select>
+
+        <label for="f4-accessory">Accessories</label>
+        <select id="f4-accessory">
+            <option value="0">0: None</option>
+            <option value="1">1: Braking transistor</option>
+            <option value="2">2: Filter</option>
+            <option value="3">3: Filter and braking transistor</option>
+            <option value="4">4: Braking transistor and resistor</option>
+            <option value="5">5: Filter, braking transistor and resistor</option>
+            <option value="6">6: Braking resistor jumpered out</option>
+        </select>
+
+        <label for="f4-housing">Housing Design</label>
+        <select id="f4-housing">
+            <option value="D">D</option>
+            <option value="E">E</option>
+            <option value="G">G</option>
+            <option value="H">H</option>
+            <option value="K">K</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            <option value="N">N</option>
+            <option value="P">P</option>
+            <option value="R">R</option>
+            <option value="U">U</option>
+        </select>
+
+        <label for="f4-input">Input Code</label>
+        <select id="f4-input">
+            <option value="1">1: 1-phase</option>
+            <option value="2">2: DC</option>
+            <option value="3">3: 3-phase</option>
+            <option value="4">4: Special / customer version</option>
+            <option value="5">5: Special / customer version</option>
+        </select>
+
+        <label for="f4-supply">Supply Voltage</label>
+        <select id="f4-supply">
+            <option value="2">2: 230 V-Class</option>
+            <option value="4">4: 400/460 V-Class</option>
+        </select>
+
+        <label for="f4-clock">Clock Frequency</label>
+        <select id="f4-clock">
+            <option value="1">1: 2 kHz</option>
+            <option value="2">2: 4 kHz</option>
+            <option value="4">4: 8 kHz</option>
+            <option value="6">6: 12 kHz</option>
+            <option value="8">8: 16 kHz</option>
+        </select>
+    
+
+        <label for="f4-options">Options</label>
+        <select id="f4-options">
+            <option value="0">0: Standard</option>
+            <option value="1">1: Interbus S Card</option>
+        </select>
+    </div>
+
 </body>
 </html>

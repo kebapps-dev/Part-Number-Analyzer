@@ -21,7 +21,6 @@ const scalableConfig = {
         { id: 'f5-overload', len: 1 },
         { id: 'f5-encoder', len: 1 },
         { id: 'f5-cooling', len: 1 },
-
     ],
     S6: [
         { id: 's6-power', len: 2 },
@@ -45,6 +44,17 @@ const scalableConfig = {
         { id: 'f6-heatsink', len: 1 },
         { id: 'f6-board', len: 1 },
         { id: 'f6-extra', len: 1 }
+    ],
+    F4: [
+        { id: 'f4-size', len: 2 },
+        { id: 'productLine', len: 2 },
+        { id: 'f4-control', len: 1 }, 
+        { id: 'f4-accessory', len: 1 },
+        { id: 'f4-housing', len: 1 },
+        { id: 'f4-input', len: 1 },
+        { id: 'f4-supply', len: 1 },
+        { id: 'f4-clock', len: 1 },
+        { id: 'f4-options', len: 1 }
     ]
 };
 
@@ -117,7 +127,7 @@ function updateInputsFromPartNumberInput() {
     if (partNumber.length >= 4) {
         detectedProductLine = partNumber.substr(2,2);
         // Only update if valid
-        if (["S6","F6","G6","F5"].includes(detectedProductLine)) {
+        if (["S6","F6","G6","F5","F4"].includes(detectedProductLine)) {
             const productLineSelect = document.getElementById('productLine');
             if (productLineSelect.value !== detectedProductLine) {
                 productLineSelect.value = detectedProductLine;
@@ -131,7 +141,7 @@ function updateInputsFromPartNumberInput() {
 
 function showFieldsForProductLine(productLine) {
     // Hide all product fields
-    ['g6-fields','f5-fields','s6-fields','f6-fields'].forEach(id => {
+    ['g6-fields','f5-fields','s6-fields','f6-fields','f4-fields'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
     });
