@@ -104,27 +104,25 @@
     display: flex;
     align-items: center;
 }
-.keb-header-left, .keb-header-right {
+
+.keb-header-left {
+    flex: 6 1 0;
+    border-right: 2px solid #222;
     height: 100%;
     background: #d3d3d3;
     border-top: 2px solid #222;
     border-bottom: 2px solid #222;
     border-radius: 0;
 }
-.keb-header-left {
-    flex: 6 1 0;
-    border-right: 2px solid #222;
-}
-.keb-header-right {
-    flex: 0.4 1 0;
-    border-left: 2px solid #222;
-}
 
 .keb-header-right {
-    flex: 1 1 0;
+    flex: 0.4 1 0;
     height: 100%;
     background: #d3d3d3;
     border-radius: 0;
+    border-left: 2px solid #222;
+    border-top: 2px solid #222;
+    border-bottom: 2px solid #222;
 }
 .keb-header-logo {
     flex: 0 0 160px;
@@ -133,35 +131,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* KEB Manual Style Header Bar */
-
-.keb-header-content {
-    max-width: 900px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 48px;
-    padding: 0 40px;
-}
-.keb-logo {
-    display: flex;
-    align-items: center;
-    height: 30px;
-    background: none;
-    padding: 0;
-    box-shadow: none;
-}
-
-.keb-logo img {
-    height: 50px;
-    width: auto;
-    display: block;
-    margin: 0;
-    padding: 0;
 }
 
 /* KEB Manual Style Footer */
@@ -249,57 +218,3 @@ select:focus, input[type="text"]:focus {
     background: #fff;
 }
 
-select.invalid, input.invalid {
-    border-color: #ff0000;
-    background: #fff0f0;
-}
-
-.button {
-    background: #fff;
-    color: #222;
-    border: 2px solid #222;
-    border-radius: 12px;
-    padding: 10px 24px;
-    font-size: 1rem;
-    cursor: pointer;
-    margin-top: 8px;
-    font-family: 'Arial Narrow', Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    box-shadow: 2px 2px 0 #222;
-}
-
-.button:hover {
-    background: #f4f4f4;
-    color: #222;
-    border: 2px solid #222;
-}
-
-.error-message {
-    color: #ff0000;
-    font-size: 1rem;
-    margin-bottom: 12px;
-    display: block;
-    font-family: 'Arial Narrow', Arial, Helvetica, sans-serif;
-    background: #fff;
-    border: 2px solid #ff0000;
-    padding: 4px 8px;
-    border-radius: 12px;
-}
-
-.product-section {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 4px solid #222;
-    background: #f9f9f9;
-    border-radius: 18px;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #222;
-}
-
-@media (max-width: 600px) {
-    .container {
-        padding: 16px 8px;
-    }
-    h1 {
-        font-size: 1.5rem;
-    }
-}
