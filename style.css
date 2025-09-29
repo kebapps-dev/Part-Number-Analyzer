@@ -1,3 +1,23 @@
+/* Square image container for centering and background */
+.square-image-container {
+    width: 200px; /* or any desired square size */
+    height: 300px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    margin: 0 auto;
+}
+
+/* Icon next to product line select */
+.productline-icon {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    flex: 1;
+}
 #decodeInput {
     width: auto;
     min-width: 120px;
@@ -31,7 +51,15 @@
     flex: 1;
     min-width: 150px;
 }
-
+.product-fields-col-1 {
+    flex: 1;
+    min-width: 300px;
+    max-width: 300px;
+}
+.product-fields-col-2 {
+    flex: 2;
+    min-width: 300px;
+}
 #container-left {
     flex: 1 1 0;
     height: auto;

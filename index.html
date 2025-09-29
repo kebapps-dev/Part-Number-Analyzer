@@ -1,3 +1,5 @@
+<!-- Example usage: Place this where you want the square image -->
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -54,7 +56,12 @@
                 <!-- S6 Fields -->
                 <div id="s6-fields" class="product-fields" style="display:none;">
                         <div class="product-fields-row">
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-1" style = "width: 300px;">
+                                <div class="square-image-container">
+                                     <img src="icon_s6drive.png" alt="S6 Drive Icon" class="productline-icon"/>
+                                </div>
+                            </div>
+                            <div class="product-fields-col-2">
                                     <label for="s6-power">Device Size</label>
                                     <select id="s6-power">
                                         <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4.0A UL @ 230V-1PH)</option>
@@ -85,7 +92,7 @@
                                         <option value="4">4</option>
                                     </select>
                                 </div>
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-2">
                                     <label for="s6-version">Version Power Unit</label>
                                     <select id="s6-version">
                                         <option value="1">1: AC 480V 3-phase with HF filter</option>
@@ -119,7 +126,10 @@
                 <!-- F6 Fields -->
                     <div id="f6-fields" class="product-fields" style="display:none;">
                         <div class="product-fields-row">
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-1" style = "width: 300px;">
+                                <img src="icon_f6drive.png" alt="F6 Drive Icon" class="productline-icon">
+                            </div>
+                            <div class="product-fields-col-2">
                                     <label for="f6-inverter">Inverter Size</label>
                                     <select id="f6-inverter">
                                         <option value="10">10 (3.0 HP / 2.2 KW / 11A UL @ 230V-3PH)</option>
@@ -174,7 +184,7 @@
                                         <option value="9">Housing 9</option>
                                     </select>
                             </div>
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-2">
                                     <label for="f6-voltage">Voltage / Connection Type</label>
                                     <select id="f6-voltage">
                                         <option value="1">1: 3ph 230 AC/DC with braking transistor</option>
@@ -243,7 +253,12 @@
                 <!-- G6 Fields -->
                     <div id="g6-fields" class="product-fields" style="display:none;">
                         <div class="product-fields-row">
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-1" style = "width: 300px;">
+                                <div class="square-image-container">
+                                     <img src="icon_g6drive.png" alt="G6 Drive Icon" class="productline-icon"/>
+                                </div>
+                            </div>
+                            <div class="product-fields-col-2">
                                 <label for="g6-power">Inverter Size</label>
                                 <select id="g6-power" required>
                                     <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL)</option>
@@ -293,7 +308,7 @@
                                     <option value="E">E Housing</option>
                                 </select>
                             </div>
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-2">
                                 <label for="g6-voltage">Voltage / Connection</label>
                                 <select id="g6-voltage" required>
                                     <option value="0">0: 230V AC/DC 1ph</option>
@@ -370,7 +385,10 @@
                 <!-- F5 Fields -->
                     <div id="f5-fields" class="product-fields" style="display:none;">
                         <div class="product-fields-row">
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-1" style = "width: 300px;">
+                                <img src="icon_f5drive.png" alt="F5 Drive Icon" class="productline-icon">
+                            </div>
+                            <div class="product-fields-col-2">
                                 <label for="f5-power">Inverter Size</label>
                                 <select id="f5-power">
                                     <option value="05">05 (0.5 HP / 0.37 KW / 1.1A UL @ 480V, 2.3A @ 230V)</option>
@@ -446,7 +464,7 @@
                                     <option value="P">P Housing</option>
                                 </select>
                             </div>
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-2">
                                 <label for="f5-voltage">Input Identification</label>
                                 <select id="f5-voltage">
                                     <option value="0">0: 1ph 230VAC/DC</option>
@@ -541,7 +559,10 @@
                 <!-- F4 Fields -->
                     <div id="f4-fields" class="product-fields" style="display:none;">
                         <div class="product-fields-row">
-                            <div class="product-fields-col">
+                            <div class="product-fields-col-1" style = "width: 300px;">
+                                <img src="icon_f4drive.png" alt="F4 Drive Icon" class="productline-icon">
+                            </div>
+                            <div class="product-fields-col f5-fields-col-1">
                                 <label for="f4-size">Housing Size</label>
                                 <select id="f4-size">
                                     <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
@@ -599,7 +620,7 @@
                                     <option value="U">U</option>
                                 </select>
                             </div>
-                            <div class="product-fields-col">
+                        <div class="product-fields-col f5-fields-col-2">
                                 <label for="f4-input">Input Code</label>
                                 <select id="f4-input">
                                     <option value="1">1: 1-phase</option>
