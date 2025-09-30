@@ -1,3 +1,35 @@
+// Dynamically update footer product line name
+const productLineNames = {
+    S6: 'S6-K / A / P',
+    F6: 'F6-K / A / P',
+    G6: 'G6-G / K / L / P',
+    F5: 'F5-A / B / C / D / E / G / H / K / L / M / P / R / S',
+    F4: 'F4-C / F / S / Si',
+};
+const productLineYears = {
+    S6: '2018',
+    F6: '2015',
+    G6: '2016',
+    F5: '2002',
+    F4: '1996',
+};
+function updateFooterProductLine() {
+    const productLineSelect = document.getElementById('productLine');
+    const footerProductLine = document.getElementById('footer-productline');
+    const footerProductYear = document.getElementById('footer-productyear');
+    const footerProductDate = document.getElementById('footer-productdate');
+
+    if (productLineSelect && footerProductLine) {
+        const selected = productLineSelect.value;
+        footerProductLine.textContent = productLineNames[selected] || selected;
+        footerProductYear.textContent = productLineYears[selected] || '';
+        footerProductDate.textContent = productLineYears[selected] || '2025';
+
+    }
+}
+
+
+
 // Config: scalable field mapping for each product line
 const scalableConfig = {
     G6: [
@@ -158,15 +190,20 @@ window.addEventListener('DOMContentLoaded', function() {
             el.addEventListener('change', updatePartNumberInputScalable);
         }
     });
-    document.getElementById('productLine').addEventListener('change', function() {
-        const productLine = this.value;
-        showFieldsForProductLine(productLine);
-        updatePartNumberInputScalable();
-        updateInputsFromPartNumberInput();
-    });
+    const productLineSelect = document.getElementById('productLine');
+    if (productLineSelect) {
+        productLineSelect.addEventListener('change', function() {
+            const productLine = this.value;
+            showFieldsForProductLine(productLine);
+            updatePartNumberInputScalable();
+            updateInputsFromPartNumberInput();
+            updateFooterProductLine();
+        });
+    }
     // Initial display
-    showFieldsForProductLine(document.getElementById('productLine').value);
+    showFieldsForProductLine(productLineSelect.value);
     document.getElementById('decodeInput').addEventListener('input', updateInputsFromPartNumberInput);
     updatePartNumberInputScalable();
     updateInputsFromPartNumberInput();
+    updateFooterProductLine();
 });

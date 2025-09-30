@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Drive PN Analyzer</title>
         <link rel="stylesheet" href="style.css">
@@ -14,132 +14,421 @@
         <div class="keb-header-bar">
             <div class="keb-header-left"></div>
             <div class="keb-header-logo">
-                <img src="kebblacklogoimage.png" alt="KEB Logo" style="height:52px; width:auto; display:block;">
+                <img src="/images/kebblacklogoimage.png" alt="KEB Logo" style="height:52px; width:auto; display:block;">
             </div>
             <div class="keb-header-right"></div>
         </div>
             
         <div class="container-row" style="display: flex; justify-content: center;">
-            <div class="container" id="container-left">
-                <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
-                    <div class="h1-left-section">
-                        <h1>Drive PN Analyzer</h1>
-                    </div>   
-                    <div class="h1-right-section">
-                        <h3>A tool to analyze part numbers, <br> not necessarily to be used to create configurations for customers.</h3>
+            <div style="display: flex; flex-direction: column; gap: 24px;" id="container-left-column">
+                <div class="container selectable-container" id="container-left" style="margin-top: 40px;">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Drive PN Analyzer</h1>
+                        </div>   
+                        <div class="h1-right-section">
+                            <h3>A tool to analyze part numbers, <br> not necessarily to be used to create configurations for customers.</h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="container" id="container-right">
-                <div style="display: flex; gap: 20px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <label for="productLine" style="min-width:81px; margin-bottom:0; ">Product Line</label>
-                        <select id="productLine" required style="margin-bottom:0; font-weight: bold;">
-                            <option value="S6">S6</option>
-                            <option value="F6" selected>F6</option>
-                            <option value="G6">G6</option>
-                            <option value="F5">F5</option>
-                            <option value="F4">F4</option>
-                        </select>
+                <div class="container selectable-container" id="container-left-bottom">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Application Calculator</h1>
+                        </div>
+                        <div class="h1-right-section">
+                            <h3>A tool to size components and optimize configurations.</h3>
+                        </div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <div class="align-right-column" style="display: flex; align-items: center; gap: 8px; width: 100%;">
-                            <label for="decodeInput" style="min-width:80px; margin-bottom:0;">Part Number</label>
-                            <input type="text" id="decodeInput" placeholder="e.g. 15F5K1E350A" style="min-width:120px; margin-bottom:0; font-weight: bold;">
+                </div>
+                <div class="container selectable-container" id="container-left-brusatori-to-dl4">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Brusatori to DL4</h1>
+                        </div>
+                        <div class="h1-right-section">
+                            <h3>A tool to translate Brusatori identifier to KEB part numbers, and vice versa.</h3>
                         </div>
                     </div>
                 </div>
 
-                <div class="divider-thin"></div>
+            </div>
 
-                <!-- S6 Fields -->
-                <div id="s6-fields" class="product-fields" style="display:none;">
-                        <div class="product-fields-row">
-                            <div class="product-fields-col-1" style = "width: 300px;">
-                                <div class="square-image-container">
-                                     <img src="icon_s6drive.png" alt="S6 Drive Icon" class="productline-icon"/>
+            <div class="container-right" id="drive-pn-analyzer" style="display: none;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="align-right-column" style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                                <label for="productLine" style="width: 150px;">Product Line</label>
+                                <select id="productLine" style="font-weight: bold; margin-bottom: 0px;">
+                                    <option value="S6">S6</option>
+                                    <option value="F6" selected>F6</option>
+                                    <option value="G6">G6</option>
+                                    <option value="F5">F5</option>
+                                    <option value="F4">F4</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+        
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="align-right-column" style="display: flex; align-items: center; gap: 8px; width: 100%;">
+                                <label for="decodeInput">Part Number</label>
+                                <input type="text" id="decodeInput" style="font-weight: bold;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider-thin"></div>
+
+                    <!-- S6 Fields -->
+                    <div id="s6-fields" class="product-fields" style="display:none;">
+                            <div class="product-fields-row">
+                                <div class="product-fields-col-1" style = "width: 300px;">
+                                    <div class="square-image-container">
+                                        <img src="/images/icon_s6drive.png" alt="S6 Drive Icon" class="productline-icon"/>
+                                    </div>
+                                </div>
+                                <div class="product-fields-col-2">
+                                        <label for="s6-power">Device Size</label>
+                                        <select id="s6-power">
+                                            <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4.0A UL @ 230V-1PH)</option>
+                                            <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7.0A UL @ 230V-1PH)</option>
+                                            <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL)</option>
+                                            <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL)</option>
+                                            <option value="13">13 (7.5 HP / 5.5 KW / 11A UL)</option>
+                                            <option value="14">14 (10.0 HP / 7.5 KW / 14A UL)</option>
+                                        </select>
+
+                                        <label for="s6-controltype">Control Type</label>
+                                        <select id="s6-controltype">
+                                            <option value="A">A: APPLICATION</option>
+                                            <option value="K">K: COMPACT</option>
+                                            <option value="P">P: PRO</option>
+                                        </select>
+
+                                        <label for="s6-safetymodule">Safety Module</label>
+                                        <select id="s6-safetymodule">
+                                            <option value="1">1: Type 1 for Strg A (STO/SBC) or STO for Strg K</option>
+                                            <option value="3">3: Type 3 for Strg A (STO/SBC/SLS etc.)</option>
+                                            <option value="5">5: Type 5 STO / SLS / etc. FSOE</option>
+                                        </select>
+
+                                        <label for="s6-housing">Housing</label>
+                                        <select id="s6-housing">
+                                            <option value="2">2</option>
+                                            <option value="4">4</option>
+                                        </select>
+                                    </div>
+                                <div class="product-fields-col-2">
+                                        <label for="s6-version">Version Power Unit</label>
+                                        <select id="s6-version">
+                                            <option value="1">1: AC 480V 3-phase with HF filter</option>
+                                            <option value="2">2: AC 480V 3-phase without HF filter</option>
+                                            <option value="3">3: AC 230V 1-phase with HF filter</option>
+                                            <option value="4">4: AC 230V 1-phase without HF filter</option>
+                                        </select>
+
+                                        <label for="s6-typecontrol">Type of Control</label>
+                                        <select id="s6-typecontrol">
+                                            <option value="1">1: Multi Encoder Interface, EtherCAT (COMPACT/APPLICATION)</option>
+                                            <option value="2">2: Multi Encoder Interface, VARAN (COMPACT)</option>
+                                            <option value="3">3: Multi encoder interface, RS485 potential-free, Ethernet (no node switch) (PRO)</option>
+                                            <option value="4">4: no encoder, Ethernet fieldbus interface, safe relay (PRO)</option>
+                                            <option value="5">5: Multi encoder interface, Ethernet fieldbus interface, safe relay (PRO)</option>
+                                        </select>
+
+                                        <label for="s6-reserved1">Reserved</label>
+                                        <select id="s6-reserved1">
+                                            <option value="0">0: Reserved</option>
+                                        </select>
+
+                                        <label for="s6-reserved2">Reserved</label>
+                                        <select id="s6-reserved2">
+                                            <option value="0">0: Reserved</option>
+                                        </select>
+                                    </div>
+                                </div>
+                        </div>
+
+                    <!-- F6 Fields -->
+                        <div id="f6-fields" class="product-fields" style="display:none;">
+                            <div class="product-fields-row">
+                                <div class="product-fields-col-1" style = "width: 300px;">
+                                    <img src="images/icon_f6drive.png" alt="F6 Drive Icon" class="productline-icon">
+                                </div>
+                                <div class="product-fields-col-2">
+                                        <label for="f6-inverter">Inverter Size</label>
+                                        <select id="f6-inverter">
+                                            <option value="10">10 (3.0 HP / 2.2 KW / 11A UL @ 230V-3PH)</option>
+                                            <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL @ 480V, 17.5A UL @ 230V-3PH)</option>
+                                            <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A UL @ 230V-3PH)</option>
+                                            <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A UL @ 230V-3PH)</option>
+                                            <option value="15">15 (15.0 HP / 11.0 KW / 21A UL)</option>
+                                            <option value="16">16 (20.0 HP / 15.0 KW / 27A UL)</option>
+                                            <option value="17">17 (25.0 HP / 18.5 KW / 34A UL)</option>
+                                            <option value="18">18 (30.0 HP / 22.0 KW / 40A UL @ 480V, 85A UL @ 230V-3PH)</option>
+                                            <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
+                                            <option value="20">20 (50.0 HP / 37.0 KW / 65A UL)</option>
+                                            <option value="21">21 (60.0 HP / 45.0 KW / 77A UL)</option>
+                                            <option value="22">22 (75.0 HP / 55.0 KW / 96A UL)</option>
+                                            <option value="23">23 (100 HP / 75.0 KW / 124A UL)</option>
+                                            <option value="24">24 (125 HP / 90.0 KW / 156A UL)</option>
+                                            <option value="25">25 (150 HP / 110 KW / 180A UL)</option>
+                                            <option value="26">26 (175 HP / 132 KW / 210A UL)</option>
+                                            <option value="27">27 (200 HP / 160 KW / 260A UL)</option>
+                                            <option value="28">28 (250 HP / 200 KW / 325A UL)</option>
+                                            <option value="29">29 (300 HP / 250 KW / 400A UL)</option>
+                                            <option value="30">30 (350 HP / 315 KW / 495A UL)</option>
+                                            <option value="31">31 (450 HP / 355 KW / 515A UL)</option>
+                                            <option value="32">32 (500 HP / 400 KW / 590A UL)</option>
+                                            <option value="33">33 (600 HP / 450 KW / 719A UL)</option>
+                                        </select>
+
+                                        <label for="f6-control">Control Type</label>
+                                        <select id="f6-control">
+                                            <option value="A">A: APPLICATION</option>
+                                            <option value="K">K: COMPACT</option>
+                                            <option value="P">P: PRO</option>
+                                        </select>
+
+                                        <label for="f6-equipment">Equipment</label>
+                                        <select id="f6-equipment">
+                                            <option value="1">1: Safety module type 1/STO at control type K</option>
+                                            <option value="3">3: Safety module type 3</option>
+                                            <option value="4">4: Safety module type 4</option>
+                                            <option value="5">5: Safety module type 5</option>
+                                        </select>
+
+                                        <label for="f6-housing">Housing</label>
+                                        <select id="f6-housing">
+                                            <option value="2">Housing 2</option>
+                                            <option value="3">Housing 3</option>
+                                            <option value="4">Housing 4</option>
+                                            <option value="5">Housing 5</option>
+                                            <option value="6">Housing 6</option>
+                                            <option value="7">Housing 7</option>
+                                            <option value="8">Housing 8</option>
+                                            <option value="9">Housing 9</option>
+                                        </select>
+                                </div>
+                                <div class="product-fields-col-2">
+                                        <label for="f6-voltage">Voltage / Connection Type</label>
+                                        <select id="f6-voltage">
+                                            <option value="1">1: 3ph 230 AC/DC with braking transistor</option>
+                                            <option value="2">2: 3ph 230 AC/DC without braking transistor</option>
+                                            <option value="3">3: 3ph 480 AC/DC with braking transistor</option>
+                                            <option value="4">4: 3ph 480 AC/DC without braking transistor</option>
+                                            <option value="A">A: 3ph 480 AC/DC incl. GTR7/max. rectifier/max. pre-charging</option>
+                                            <option value="B">B: 3ph 480 AC/DC without GTR7/max. rectifier/max. pre-charging</option>
+                                            <option value="C">C: 3ph 480 AC/DC GTR7-variant 2</option>
+                                            <option value="D">D: 3ph 480 AC/DC GTR7-variant 2/max. rectifier/max. pre-charging</option>
+                                        </select>
+
+                                        <label for="f6-switching">Switching Frequency / Current / Turn-off</label>
+                                        <select id="f6-switching">
+                                            <option value="0">0: 2kHz; 125%; 150%</option>
+                                            <option value="1">1: 4kHz; 125%; 150%</option>
+                                            <option value="2">2: 8kHz; 125%; 150%</option>
+                                            <option value="3">3: 16kHz; 125%; 150%</option>
+                                            <option value="4">4: 2kHz; 150%; 180%</option>
+                                            <option value="5">5: 4kHz; 150%; 180%</option>
+                                            <option value="6">6: 8kHz; 150%; 180%</option>
+                                            <option value="7">7: 16kHz; 150%; 180%</option>
+                                            <option value="8">8: 2kHz; 180%; 216%</option>
+                                            <option value="9">9: 4kHz; 180%; 216%</option>
+                                            <option value="A">A: 8kHz; 180%; 216%</option>
+                                            <option value="B">B: 4kHz; 150%; 180%</option>
+                                            <option value="C">C: 6kHz; HSD</option>
+                                            <option value="D">D: Air-cooler, mounted version, Version 2</option>
+                                            <option value="E">E: Special Device</option>
+                                        </select>
+
+                                        <label for="f6-heatsink">Heat Sink Version</label>
+                                        <select id="f6-heatsink">
+                                            <option value="1">1: Air-cooler, mounted version</option>
+                                            <option value="2">2: Liquid cooler (water), mounted version</option>
+                                            <option value="3">3: Air-cooler, through-mount version IP54-ready</option>
+                                            <option value="4">4: Liquid cooler (water), through-mount version IP54-ready</option>
+                                            <option value="5">5: Air-cooler, through-mount version IP20</option>
+                                            <option value="6">6: Liquid cooler (water), through-mount version IP54-ready, sub-mounted braking resistors</option>
+                                            <option value="7">7: Liquid cooler (oil), through-mount version IP54-ready</option>
+                                            <option value="9">9: Liquid cooler (water), mounted version, sub-mounted braking resistors</option>
+                                            <option value="A">A: Liquid cooler (water), mounted version, High Performance, sub-mounted braking resistors</option>
+                                            <option value="B">B: High Performance, sub-mounted braking resistors</option>
+                                            <option value="C">C: Air-cooler, mounted version, Version 2</option>
+                                            <option value="D">D: Air-cooler, mounted version, High-Performance</option>
+                                            <option value="E">E: Liquid cooler (water), mounted version, High-Performance</option>
+                                            <option value="F">F: Air-cooler, through-mount version IP54-ready, High-Performance</option>
+                                            <option value="G">G: Liquid cooler (water), through-mount version IP54-ready, High-Performance</option>
+                                            <option value="H">H: Air-cooler, Convection, through-mount version IP54-ready</option>
+                                        </select>
+
+                                        <label for="f6-board">Control Board Variant</label>
+                                        <select id="f6-board">
+                                            <option value="1">1: Multi Encoder Interface, CAN, Real-Time Ethernet busmodule</option>
+                                            <option value="2">2: Multi Encoder Interface, CAN, Real-Time Ethernet busmodule, Alternative</option>
+                                            <option value="B">B: Multi Encoder Interface, CAN, Real-Time Ethernet busmodule, Alternative connector</option>
+                                            <option value="0">0: No Encoder, CAN, Real-Time Ethernet interface</option>
+                                            <option value="3">3: Multi Encoder Interface, CAN, Real-Time Ethernet interface, RS485-potential free</option>
+                                            <option value="4">4: No Encoder, CAN, Real-Time Ethernet interface, safe relay</option>
+                                            <option value="5">5: Multi Encoder Interface, CAN, Real-Time Ethernet interface, safety relay</option>
+                                        </select>
                                 </div>
                             </div>
-                            <div class="product-fields-col-2">
-                                    <label for="s6-power">Device Size</label>
-                                    <select id="s6-power">
-                                        <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4.0A UL @ 230V-1PH)</option>
-                                        <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7.0A UL @ 230V-1PH)</option>
+                        </div>
+                
+                    <!-- G6 Fields -->
+                        <div id="g6-fields" class="product-fields" style="display:none;">
+                            <div class="product-fields-row">
+                                <div class="product-fields-col-1" style = "width: 300px;">
+                                    <div class="square-image-container">
+                                        <img src="/images/icon_g6drive.png" alt="G6 Drive Icon" class="productline-icon"/>
+                                    </div>
+                                </div>
+                                <div class="product-fields-col-2">
+                                    <label for="g6-power">Inverter Size</label>
+                                    <select id="g6-power" required>
+                                        <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL)</option>
+                                        <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL)</option>
                                         <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL)</option>
                                         <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL)</option>
                                         <option value="13">13 (7.5 HP / 5.5 KW / 11A UL)</option>
                                         <option value="14">14 (10.0 HP / 7.5 KW / 14A UL)</option>
-                                    </select>
-
-                                    <label for="s6-controltype">Control Type</label>
-                                    <select id="s6-controltype">
-                                        <option value="A">A: APPLICATION</option>
-                                        <option value="K">K: COMPACT</option>
-                                        <option value="P">P: PRO</option>
-                                    </select>
-
-                                    <label for="s6-safetymodule">Safety Module</label>
-                                    <select id="s6-safetymodule">
-                                        <option value="1">1: Type 1 for Strg A (STO/SBC) or STO for Strg K</option>
-                                        <option value="3">3: Type 3 for Strg A (STO/SBC/SLS etc.)</option>
-                                        <option value="5">5: Type 5 STO / SLS / etc. FSOE</option>
-                                    </select>
-
-                                    <label for="s6-housing">Housing</label>
-                                    <select id="s6-housing">
-                                        <option value="2">2</option>
-                                        <option value="4">4</option>
-                                    </select>
-                                </div>
-                            <div class="product-fields-col-2">
-                                    <label for="s6-version">Version Power Unit</label>
-                                    <select id="s6-version">
-                                        <option value="1">1: AC 480V 3-phase with HF filter</option>
-                                        <option value="2">2: AC 480V 3-phase without HF filter</option>
-                                        <option value="3">3: AC 230V 1-phase with HF filter</option>
-                                        <option value="4">4: AC 230V 1-phase without HF filter</option>
-                                    </select>
-
-                                    <label for="s6-typecontrol">Type of Control</label>
-                                    <select id="s6-typecontrol">
-                                        <option value="1">1: Multi Encoder Interface, EtherCAT (COMPACT/APPLICATION)</option>
-                                        <option value="2">2: Multi Encoder Interface, VARAN (COMPACT)</option>
-                                        <option value="3">3: Multi encoder interface, RS485 potential-free, Ethernet (no node switch) (PRO)</option>
-                                        <option value="4">4: no encoder, Ethernet fieldbus interface, safe relay (PRO)</option>
-                                        <option value="5">5: Multi encoder interface, Ethernet fieldbus interface, safe relay (PRO)</option>
-                                    </select>
-
-                                    <label for="s6-reserved1">Reserved</label>
-                                    <select id="s6-reserved1">
-                                        <option value="0">0: Reserved</option>
-                                    </select>
-
-                                    <label for="s6-reserved2">Reserved</label>
-                                    <select id="s6-reserved2">
-                                        <option value="0">0: Reserved</option>
-                                    </select>
-                                </div>
-                            </div>
-                    </div>
-
-                <!-- F6 Fields -->
-                    <div id="f6-fields" class="product-fields" style="display:none;">
-                        <div class="product-fields-row">
-                            <div class="product-fields-col-1" style = "width: 300px;">
-                                <img src="icon_f6drive.png" alt="F6 Drive Icon" class="productline-icon">
-                            </div>
-                            <div class="product-fields-col-2">
-                                    <label for="f6-inverter">Inverter Size</label>
-                                    <select id="f6-inverter">
-                                        <option value="10">10 (3.0 HP / 2.2 KW / 11A UL @ 230V-3PH)</option>
-                                        <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL @ 480V, 17.5A UL @ 230V-3PH)</option>
-                                        <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A UL @ 230V-3PH)</option>
-                                        <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A UL @ 230V-3PH)</option>
                                         <option value="15">15 (15.0 HP / 11.0 KW / 21A UL)</option>
                                         <option value="16">16 (20.0 HP / 15.0 KW / 27A UL)</option>
                                         <option value="17">17 (25.0 HP / 18.5 KW / 34A UL)</option>
-                                        <option value="18">18 (30.0 HP / 22.0 KW / 40A UL @ 480V, 85A UL @ 230V-3PH)</option>
+                                        <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
+                                        <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
+                                    </select>
+
+                                    <label for="g6-control">Control Type</label>
+                                    <select id="g6-control" required>
+                                        <option value="C">C: Analog/Digital</option>
+                                        <option value="D">D: CAN</option>
+                                        <option value="E">E: IO-Link</option>
+                                        <option value="F">F: EtherCAT</option>
+                                        <option value="G">G: PROFINET</option>
+                                        <option value="H">H: POWERLINK</option>
+                                        <option value="I">I: VARAN</option>
+                                    </select>
+
+                                    <label for="g6-emi">Equipment</label>
+                                    <select id="g6-emi" required>
+                                        <option value="0">0: No filter, no braking resistor, no STO</option>
+                                        <option value="1">1: No filter, with braking resistor, no STO</option>
+                                        <option value="2">2: Internal filter, no braking resistor, no STO</option>
+                                        <option value="3">3: Internal filter, with braking resistor, no STO</option>
+                                        <option value="A">A: No filter, no braking resistor, with STO</option>
+                                        <option value="B">B: No filter, with braking resistor, with STO</option>
+                                        <option value="C">C: Internal filter, no braking resistor, with STO</option>
+                                        <option value="D">D: Internal filter, with braking resistor, with STO</option>
+                                        <option value="H">H: No filter, no braking resistor, with STO, f=0Hz</option>
+                                        <option value="I">I: No filter, with braking resistor, with STO, f=0Hz</option>
+                                        <option value="L">L: Internal filter, with braking resistor, with STO, f=0Hz</option>
+                                    </select>
+
+                                    <label for="g6-housing">Housing</label>
+                                    <select id="g6-housing" required>
+                                        <option value="A">A Housing</option>
+                                        <option value="B">B Housing</option>
+                                        <option value="C">C Housing</option>
+                                        <option value="E">E Housing</option>
+                                    </select>
+                                </div>
+                                <div class="product-fields-col-2">
+                                    <label for="g6-voltage">Voltage / Connection</label>
+                                    <select id="g6-voltage" required>
+                                        <option value="0">0: 230V AC/DC 1ph</option>
+                                        <option value="1">1: 230V AC/DC 3ph</option>
+                                        <option value="2">2: 230V AC/DC 1/3ph</option>
+                                        <option value="3">3: 400V AC/DC 3ph</option>
+                                        <option value="5">5: 400V DC</option>
+                                        <option value="6">6: 230V AC 1ph</option>
+                                        <option value="A">A: Special/Custom</option>
+                                        <option value="B">B: Special/Custom</option>
+                                        <option value="C">C: Special/Custom</option>
+                                        <option value="D">D: Special/Custom</option>
+                                        <option value="E">E: Special/Custom</option>
+                                        <option value="F">F: Special/Custom</option>
+                                        <option value="G">G: Special/Custom</option>
+                                        <option value="H">H: Special/Custom</option>
+                                        <option value="I">I: Special/Custom</option>
+                                        <option value="J">J: Special/Custom</option>
+                                        <option value="K">K: Special/Custom</option>
+                                        <option value="L">L: Special/Custom</option>
+                                        <option value="M">M: Special/Custom</option>
+                                        <option value="N">N: Special/Custom</option>
+                                        <option value="O">O: Special/Custom</option>
+                                        <option value="P">P: Special/Custom</option>
+                                        <option value="Q">Q: Special/Custom</option>
+                                        <option value="R">R: Special/Custom</option>
+                                        <option value="S">S: Special/Custom</option>
+                                        <option value="T">T: Special/Custom</option>
+                                        <option value="U">U: Special/Custom</option>
+                                        <option value="V">V: Special/Custom</option>
+                                        <option value="W">W: Special/Custom</option>
+                                        <option value="X">X: Special/Custom</option>
+                                        <option value="Y">Y: Special/Custom</option>
+                                        <option value="Z">Z: Special/Custom</option>
+                                    </select>
+
+                                    <label for="g6-overload">Switching Freq. / Current Limit / Cut-off</label>
+                                    <select id="g6-overload" required>
+                                        <option value="0">0: 2kHz; 125%; 150%;</option>
+                                        <option value="1">1: 4kHz; 125%; 150%;</option>
+                                        <option value="2">2: 8kHz; 125%; 150%;</option>
+                                        <option value="3">3: 16kHz; 125%; 150%;</option>
+                                        <option value="4">4: 2kHz; 150%; 180%;</option>
+                                        <option value="5">5: 4kHz; 150%; 180%;</option>
+                                        <option value="6">6: 8kHz; 150%; 180%;</option>
+                                        <option value="7">7: 16kHz; 150%; 180%;</option>
+                                        <option value="8">8: 2kHz; 180%; 216%;</option>
+                                        <option value="9">9: 4kHz; 180%; 216%;</option>
+                                        <option value="A">A: 8kHz; 180%; 216%;</option>
+                                        <option value="B">B: 16kHz; 180%; 216%;</option>
+                                    </select>
+
+                                    <label for="g6-controlkbd">Control, Keyboard, Display</label>
+                                    <select id="g6-controlkbd">
+                                        <option value="A">A: G6L-G ASCL (Hz) controlled without keyboard/display</option>
+                                        <option value="B">B: G6L-G ASCL (Hz) controlled with keyboard/display</option>
+                                        <option value="0">0: G6-G (only V/Hz) controlled without keyboard/display</option>
+                                        <option value="1">1: G6-G (only V/Hz) controlled with keyboard/display</option>
+                                        <option value="2">2: G6P-S SCL regulated without keyboard/display</option>
+                                        <option value="3">3: G6P-S SCL regulated with keyboard/display</option>
+                                        <option value="4">4: G6L-M ASCL (rpm) regulated without keyboard/display</option>
+                                        <option value="5">5: G6L-M ASCL (rpm) regulated with keyboard/display</option>
+                                    </select>
+
+                                    <label for="g6-heatsink">Heat Sink Version</label>
+                                    <select id="g6-heatsink" required>
+                                        <option value="0">0: Air-cooled</option>
+                                        <option value="1">1: Flat rear</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    <!-- F5 Fields -->
+                        <div id="f5-fields" class="product-fields" style="display:none;">
+                            <div class="product-fields-row">
+                                <div class="product-fields-col-1" style = "width: 300px;">
+                                    <img src="/images/icon_f5drive.png" alt="F5 Drive Icon" class="productline-icon">
+                                </div>
+                                <div class="product-fields-col-2">
+                                    <label for="f5-power">Inverter Size</label>
+                                    <select id="f5-power">
+                                        <option value="05">05 (0.5 HP / 0.37 KW / 1.1A UL @ 480V, 2.3A @ 230V)</option>
+                                        <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
+                                        <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7A @ 230V)</option>
+                                        <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL @ 480V, 10A @ 230V)</option>
+                                        <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL @ 480V, 16.5A @ 230V)</option>
+                                        <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A @ 230V)</option>
+                                        <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A @ 230V)</option>
+                                        <option value="15">15 (15.0 HP / 11.0 KW / 21A UL @ 480V, 48A @ 230V)</option>
+                                        <option value="16">16 (20.0 HP / 15.0 KW / 27A UL @ 480V, 66A @ 230V)</option>
+                                        <option value="17">17 (25.0 HP / 18.5 KW / 34A UL @ 480V, 84A @ 230V)</option>
+                                        <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
                                         <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
                                         <option value="20">20 (50.0 HP / 37.0 KW / 65A UL)</option>
                                         <option value="21">21 (60.0 HP / 45.0 KW / 77A UL)</option>
@@ -157,48 +446,80 @@
                                         <option value="33">33 (600 HP / 450 KW / 719A UL)</option>
                                     </select>
 
-                                    <label for="f6-control">Control Type</label>
-                                    <select id="f6-control">
+                                    <label for="f5-control">Control Type</label>
+                                    <select id="f5-control">
                                         <option value="A">A: APPLICATION</option>
-                                        <option value="K">K: COMPACT</option>
-                                        <option value="P">P: PRO</option>
+                                        <option value="B">B: BASIC</option>
+                                        <option value="C">C: COMPACT</option>
+                                        <option value="E">E: SCL</option>
+                                        <option value="G">G: GENERAL</option>
+                                        <option value="H">H: ASCL</option>
+                                        <option value="M">M: MULTI</option>
+                                        <option value="S">S: SERVO</option>
+                                        <option value="K">K: APPLICATION with safety</option>
+                                        <option value="L">L: ASCL with safety</option>
+                                        <option value="P">P: SCL with safety</option>
                                     </select>
 
-                                    <label for="f6-equipment">Equipment</label>
-                                    <select id="f6-equipment">
-                                        <option value="1">1: Safety module type 1/STO at control type K</option>
-                                        <option value="3">3: Safety module type 3</option>
-                                        <option value="4">4: Safety module type 4</option>
-                                        <option value="5">5: Safety module type 5</option>
+                                    <label for="f5-accessory">Accessories</label>
+                                    <select id="f5-accessory">
+                                        <option value="0">0: none</option>
+                                        <option value="1">1: Braking transistor</option>
+                                        <option value="2">2: Integrated filter</option>
+                                        <option value="3">3: Braking transistor and integrated filter</option>
+                                        <option value="4">4: Integrated Power Factor Control</option>
+                                        <option value="5">5: Braking transistor and integrated Power Factor Control</option>
+                                        <option value="6">6: Integrated filter and integrated Power Factor Control</option>
+                                        <option value="7">7: Braking transistor, integrated filter and integrated Power Factor Control</option>
+                                        <option value="A">A: none (with safety relay)</option>
+                                        <option value="B">B: Braking transistor (with safety relay)</option>
+                                        <option value="C">C: Integrated filter (with safety relay)</option>
+                                        <option value="D">D: Braking transistor and integrated filter (with safety relay)</option>
                                     </select>
 
-                                    <label for="f6-housing">Housing</label>
-                                    <select id="f6-housing">
-                                        <option value="2">Housing 2</option>
-                                        <option value="3">Housing 3</option>
-                                        <option value="4">Housing 4</option>
-                                        <option value="5">Housing 5</option>
-                                        <option value="6">Housing 6</option>
-                                        <option value="7">Housing 7</option>
-                                        <option value="8">Housing 8</option>
-                                        <option value="9">Housing 9</option>
+                                    <label for="f5-housing">Housing Type</label>
+                                    <select id="f5-housing">
+                                        <option value="A">A Housing</option>
+                                        <option value="B">B Housing</option>
+                                        <option value="D">D Housing</option>
+                                        <option value="E">E Housing</option>
+                                        <option value="G">G Housing</option>
+                                        <option value="H">H Housing</option>
+                                        <option value="R">R Housing</option>
+                                        <option value="U">U Housing</option>
+                                        <option value="W">W Housing</option>
+                                        <option value="P">P Housing</option>
                                     </select>
-                            </div>
-                            <div class="product-fields-col-2">
-                                    <label for="f6-voltage">Voltage / Connection Type</label>
-                                    <select id="f6-voltage">
-                                        <option value="1">1: 3ph 230 AC/DC with braking transistor</option>
-                                        <option value="2">2: 3ph 230 AC/DC without braking transistor</option>
-                                        <option value="3">3: 3ph 480 AC/DC with braking transistor</option>
-                                        <option value="4">4: 3ph 480 AC/DC without braking transistor</option>
-                                        <option value="A">A: 3ph 480 AC/DC incl. GTR7/max. rectifier/max. pre-charging</option>
-                                        <option value="B">B: 3ph 480 AC/DC without GTR7/max. rectifier/max. pre-charging</option>
-                                        <option value="C">C: 3ph 480 AC/DC GTR7-variant 2</option>
-                                        <option value="D">D: 3ph 480 AC/DC GTR7-variant 2/max. rectifier/max. pre-charging</option>
+                                </div>
+                                <div class="product-fields-col-2">
+                                    <label for="f5-voltage">Input Identification</label>
+                                    <select id="f5-voltage">
+                                        <option value="0">0: 1ph 230VAC/DC</option>
+                                        <option value="1">1: 3ph 230VAC/DC</option>
+                                        <option value="2">2: 1/3ph 230VAC/DC</option>
+                                        <option value="3">3: 3ph 400VAC/DC</option>
+                                        <option value="4">4: 230V class DC</option>
+                                        <option value="5">5: 400V class DC</option>
+                                        <option value="6">6: 1ph 230VAC</option>
+                                        <option value="7">7: 3ph 230VAC</option>
+                                        <option value="8">8: 1/3ph 230VAC</option>
+                                        <option value="9">9: 3ph 400VAC</option>
+                                        <option value="A">A: 6ph 400VAC</option>
+                                        <option value="B">B: 3ph 600VAC</option>
+                                        <option value="C">C: 6ph 600VAC</option>
+                                        <option value="D">D: 600VDC</option>
+                                        <option value="K">K: 230V AC or AC/DC</option>
+                                        <option value="L">L: 460V AC or AC/DC</option>
+                                        <option value="M">M: 325V DC</option>
+                                        <option value="N">N: 650V DC</option>
+                                        <option value="P">P: 230V AC or AC/DC special or customer version</option>
+                                        <option value="Q">Q: 460V AC or AC/DC special or customer version</option>
+                                        <option value="R">R: 325V DC special or customer version</option>
+                                        <option value="S">S: 650V DC special or customer version</option>
                                     </select>
 
-                                    <label for="f6-switching">Switching Frequency / Current / Turn-off</label>
-                                    <select id="f6-switching">
+                                    <label for="f5-overload">Switching Frequency / Current Limit / Overcurrent Limit</label>
+                                    <select id="f5-overload">
                                         <option value="0">0: 2kHz; 125%; 150%</option>
                                         <option value="1">1: 4kHz; 125%; 150%</option>
                                         <option value="2">2: 8kHz; 125%; 150%</option>
@@ -210,452 +531,225 @@
                                         <option value="8">8: 2kHz; 180%; 216%</option>
                                         <option value="9">9: 4kHz; 180%; 216%</option>
                                         <option value="A">A: 8kHz; 180%; 216%</option>
-                                        <option value="B">B: 4kHz; 150%; 180%</option>
-                                        <option value="C">C: 6kHz; HSD</option>
-                                        <option value="D">D: Air-cooler, mounted version, Version 2</option>
-                                        <option value="E">E: Special Device</option>
+                                        <option value="B">B: 16kHz; 180%; 216%</option>
+                                        <option value="F">F: 16kHz; 200%; 240%</option>
+                                        <option value="G">G: 2kHz; 400%; 480%</option>
+                                        <option value="H">H: 4kHz; 400%; 480%</option>
+                                        <option value="K">K: 8kHz; 400%; 480%</option>
                                     </select>
 
-                                    <label for="f6-heatsink">Heat Sink Version</label>
-                                    <select id="f6-heatsink">
-                                        <option value="1">1: Air-cooler, mounted version</option>
-                                        <option value="2">2: Liquid cooler (water), mounted version</option>
-                                        <option value="3">3: Air-cooler, through-mount version IP54-ready</option>
-                                        <option value="4">4: Liquid cooler (water), through-mount version IP54-ready</option>
-                                        <option value="5">5: Air-cooler, through-mount version IP20</option>
-                                        <option value="6">6: Liquid cooler (water), through-mount version IP54-ready, sub-mounted braking resistors</option>
-                                        <option value="7">7: Liquid cooler (oil), through-mount version IP54-ready</option>
-                                        <option value="9">9: Liquid cooler (water), mounted version, sub-mounted braking resistors</option>
-                                        <option value="A">A: Liquid cooler (water), mounted version, High Performance, sub-mounted braking resistors</option>
-                                        <option value="B">B: High Performance, sub-mounted braking resistors</option>
-                                        <option value="C">C: Air-cooler, mounted version, Version 2</option>
-                                        <option value="D">D: Air-cooler, mounted version, High-Performance</option>
-                                        <option value="E">E: Liquid cooler (water), mounted version, High-Performance</option>
-                                        <option value="F">F: Air-cooler, through-mount version IP54-ready, High-Performance</option>
-                                        <option value="G">G: Liquid cooler (water), through-mount version IP54-ready, High-Performance</option>
-                                        <option value="H">H: Air-cooler, Convection, through-mount version IP54-ready</option>
+                                    <label for ="f5-encoder">Encoder Interface</label>
+                                    <select id="f5-encoder">
+                                        <option value="0">0: no Interface</option>
+                                        <option value="1">1: Inc.-Input a. Inc.-I/O</option>
+                                        <option value="2">2: Resolver a. Inc.-I/O</option>
+                                        <option value="3">3: Hiperface a. Inc.-I/O</option>
+                                        <option value="4">4: Inc.-Input a. SSI</option>
+                                        <option value="5">5: Resolver a. SSI</option>
+                                        <option value="6">6: Hiperface a. SSI</option>
+                                        <option value="7">7: Inc.-Input a. Tacho</option>
+                                        <option value="8">8: Resolver a. Tacho</option>
+                                        <option value="9">9: Hiperface a. Tacho</option>
+                                        <option value="A">A: Inc.-Input a. Initiator</option>
+                                        <option value="B">B: Resolver a. Initiator</option>
+                                        <option value="C">C: Hiperface a. Initiator</option>
+                                        <option value="D">D: Inc.-Input a. Inc.-Outp.</option>
+                                        <option value="E">E: Resolver a. Inc.-Outp.</option>
+                                        <option value="F">F: Hiperface a. Inc.-Outp.</option>
+                                        <option value="G">G: Inc.-Input a. Inc.-Inp.</option>
+                                        <option value="H">H: Resolver a. Inc.-Inp.</option>
+                                        <option value="I">I: Hiperface a. Inc.-Inp.</option>
                                     </select>
 
-                                    <label for="f6-board">Control Board Variant</label>
-                                    <select id="f6-board">
-                                        <option value="1">1: Multi Encoder Interface, CAN, Real-Time Ethernet busmodule</option>
-                                        <option value="2">2: Multi Encoder Interface, CAN, Real-Time Ethernet busmodule, Alternative</option>
-                                        <option value="B">B: Multi Encoder Interface, CAN, Real-Time Ethernet busmodule, Alternative connector</option>
-                                        <option value="0">0: No Encoder, CAN, Real-Time Ethernet interface</option>
-                                        <option value="3">3: Multi Encoder Interface, CAN, Real-Time Ethernet interface, RS485-potential free</option>
-                                        <option value="4">4: No Encoder, CAN, Real-Time Ethernet interface, safe relay</option>
-                                        <option value="5">5: Multi Encoder Interface, CAN, Real-Time Ethernet interface, safety relay</option>
+                                    <label for="f5-cooling">Cooling</label>
+                                    <select id="f5-cooling">
+                                        <option value="0">0: Heat sink (standard)</option>
+                                        <option value="1">1: Flat rear</option>
+                                        <option value="2">2: Water cooling</option>
+                                        <option value="3">3: Convection</option>
+                                        <option value="5">5: Heat sink (standard)</option>
+                                        <option value="A">A: Conformal Coated and Heat sink (standard)</option>
+                                        <option value="B">B: Conformal Coated and Flat rear</option>
+                                        <option value="C">C: Conformal Coated and Water cooling</option>
+                                        <option value="D">D: Conformal Coated and Convection (through mounted)</option>
+                                        <option value="G">G: Flat rear</option>
+                                        <option value="H">H: Water cooling</option>
+                                        <option value="I">I: Convection</option>
+                                        <option value="V">V: Liquid cooling system with built in version</option>
+                                        <option value="W">W: Liquid cooling system with push through version</option>
+                                        <option value="Z">Z: Liquid cooling system with stainless steel tubes built in version</option>
                                     </select>
-                            </div>
-                        </div>
-                    </div>
-            
-                <!-- G6 Fields -->
-                    <div id="g6-fields" class="product-fields" style="display:none;">
-                        <div class="product-fields-row">
-                            <div class="product-fields-col-1" style = "width: 300px;">
-                                <div class="square-image-container">
-                                     <img src="icon_g6drive.png" alt="G6 Drive Icon" class="productline-icon"/>
                                 </div>
                             </div>
-                            <div class="product-fields-col-2">
-                                <label for="g6-power">Inverter Size</label>
-                                <select id="g6-power" required>
-                                    <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL)</option>
-                                    <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL)</option>
-                                    <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL)</option>
-                                    <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL)</option>
-                                    <option value="13">13 (7.5 HP / 5.5 KW / 11A UL)</option>
-                                    <option value="14">14 (10.0 HP / 7.5 KW / 14A UL)</option>
-                                    <option value="15">15 (15.0 HP / 11.0 KW / 21A UL)</option>
-                                    <option value="16">16 (20.0 HP / 15.0 KW / 27A UL)</option>
-                                    <option value="17">17 (25.0 HP / 18.5 KW / 34A UL)</option>
-                                    <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
-                                    <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
-                                </select>
+                        </div>
+                    
+                    <!-- F4 Fields -->
+                        <div id="f4-fields" class="product-fields" style="display:none;">
+                            <div class="product-fields-row">
+                                <div class="product-fields-col-1" style = "width: 300px;">
+                                    <img src="/images/icon_f4drive.png" alt="F4 Drive Icon" class="productline-icon">
+                                </div>
+                                <div class="product-fields-col f5-fields-col-1">
+                                    <label for="f4-size">Housing Size</label>
+                                    <select id="f4-size">
+                                        <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
+                                        <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7A @ 230V)</option>
+                                        <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL @ 480V, 10A @ 230V)</option>
+                                        <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A @ 230V)</option>
+                                        <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A @ 230V)</option>
+                                        <option value="15">15 (15.0 HP / 11.0 KW / 21A UL @ 480V, 48A @ 230V)</option>
+                                        <option value="16">16 (20.0 HP / 15.0 KW / 27A UL @ 480V, 66A @ 230V)</option>
+                                        <option value="17">17 (25.0 HP / 18.5 KW / 34A UL)</option>
+                                        <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
+                                        <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
+                                        <option value="20">20 (50.0 HP / 37.0 KW / 65A UL)</option>
+                                        <option value="21">21 (60.0 HP / 45.0 KW / 77A UL)</option>
+                                        <option value="22">22 (75.0 HP / 55.0 KW / 96A UL)</option>
+                                        <option value="23">23 (100 HP / 75.0 KW / 124A UL)</option>
+                                        <option value="24">24 (125 HP / 90.0 KW / 156A UL)</option>
+                                        <option value="25">25 (150 HP / 110 KW / 180A UL)</option>
+                                        <option value="26">26 (175 HP / 132 KW / 210A UL)</option>
+                                        <option value="27">27 (200 HP / 160 KW / 260A UL)</option>
+                                        <option value="28">28 (250 HP / 200 KW / 325A UL)</option>
+                                        <option value="29">29 (300 HP / 250 KW / 400A UL)</option>
+                                    </select>
 
-                                <label for="g6-control">Control Type</label>
-                                <select id="g6-control" required>
-                                    <option value="C">C: Analog/Digital</option>
-                                    <option value="D">D: CAN</option>
-                                    <option value="E">E: IO-Link</option>
-                                    <option value="F">F: EtherCAT</option>
-                                    <option value="G">G: PROFINET</option>
-                                    <option value="H">H: POWERLINK</option>
-                                    <option value="I">I: VARAN</option>
-                                </select>
+                                    <label for="f4-control">Used Control</label>
+                                    <select id="f4-control">
+                                        <option value="C">C: Compact</option>
+                                        <option value="S">S: Standard</option>
+                                        <option value="F">F: Field-oriented control</option>
+                                    </select>
 
-                                <label for="g6-emi">Equipment</label>
-                                <select id="g6-emi" required>
-                                    <option value="0">0: No filter, no braking resistor, no STO</option>
-                                    <option value="1">1: No filter, with braking resistor, no STO</option>
-                                    <option value="2">2: Internal filter, no braking resistor, no STO</option>
-                                    <option value="3">3: Internal filter, with braking resistor, no STO</option>
-                                    <option value="A">A: No filter, no braking resistor, with STO</option>
-                                    <option value="B">B: No filter, with braking resistor, with STO</option>
-                                    <option value="C">C: Internal filter, no braking resistor, with STO</option>
-                                    <option value="D">D: Internal filter, with braking resistor, with STO</option>
-                                    <option value="H">H: No filter, no braking resistor, with STO, f=0Hz</option>
-                                    <option value="I">I: No filter, with braking resistor, with STO, f=0Hz</option>
-                                    <option value="L">L: Internal filter, with braking resistor, with STO, f=0Hz</option>
-                                </select>
+                                    <label for="f4-accessory">Accessories</label>
+                                    <select id="f4-accessory">
+                                        <option value="0">0: None</option>
+                                        <option value="1">1: Braking transistor</option>
+                                        <option value="2">2: Filter</option>
+                                        <option value="3">3: Filter and braking transistor</option>
+                                        <option value="4">4: Braking transistor and resistor</option>
+                                        <option value="5">5: Filter, braking transistor and resistor</option>
+                                        <option value="6">6: Braking resistor jumpered out</option>
+                                    </select>
 
-                                <label for="g6-housing">Housing</label>
-                                <select id="g6-housing" required>
-                                    <option value="A">A Housing</option>
-                                    <option value="B">B Housing</option>
-                                    <option value="C">C Housing</option>
-                                    <option value="E">E Housing</option>
-                                </select>
-                            </div>
-                            <div class="product-fields-col-2">
-                                <label for="g6-voltage">Voltage / Connection</label>
-                                <select id="g6-voltage" required>
-                                    <option value="0">0: 230V AC/DC 1ph</option>
-                                    <option value="1">1: 230V AC/DC 3ph</option>
-                                    <option value="2">2: 230V AC/DC 1/3ph</option>
-                                    <option value="3">3: 400V AC/DC 3ph</option>
-                                    <option value="5">5: 400V DC</option>
-                                    <option value="6">6: 230V AC 1ph</option>
-                                    <option value="A">A: Special/Custom</option>
-                                    <option value="B">B: Special/Custom</option>
-                                    <option value="C">C: Special/Custom</option>
-                                    <option value="D">D: Special/Custom</option>
-                                    <option value="E">E: Special/Custom</option>
-                                    <option value="F">F: Special/Custom</option>
-                                    <option value="G">G: Special/Custom</option>
-                                    <option value="H">H: Special/Custom</option>
-                                    <option value="I">I: Special/Custom</option>
-                                    <option value="J">J: Special/Custom</option>
-                                    <option value="K">K: Special/Custom</option>
-                                    <option value="L">L: Special/Custom</option>
-                                    <option value="M">M: Special/Custom</option>
-                                    <option value="N">N: Special/Custom</option>
-                                    <option value="O">O: Special/Custom</option>
-                                    <option value="P">P: Special/Custom</option>
-                                    <option value="Q">Q: Special/Custom</option>
-                                    <option value="R">R: Special/Custom</option>
-                                    <option value="S">S: Special/Custom</option>
-                                    <option value="T">T: Special/Custom</option>
-                                    <option value="U">U: Special/Custom</option>
-                                    <option value="V">V: Special/Custom</option>
-                                    <option value="W">W: Special/Custom</option>
-                                    <option value="X">X: Special/Custom</option>
-                                    <option value="Y">Y: Special/Custom</option>
-                                    <option value="Z">Z: Special/Custom</option>
-                                </select>
+                                    <label for="f4-housing">Housing Design</label>
+                                    <select id="f4-housing">
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="G">G</option>
+                                        <option value="H">H</option>
+                                        <option value="K">K</option>
+                                        <option value="L">L</option>
+                                        <option value="M">M</option>
+                                        <option value="N">N</option>
+                                        <option value="P">P</option>
+                                        <option value="R">R</option>
+                                        <option value="U">U</option>
+                                    </select>
+                                </div>
+                            <div class="product-fields-col f5-fields-col-2">
+                                    <label for="f4-input">Input Code</label>
+                                    <select id="f4-input">
+                                        <option value="1">1: 1-phase</option>
+                                        <option value="2">2: DC</option>
+                                        <option value="3">3: 3-phase</option>
+                                        <option value="4">4: Special / customer version</option>
+                                        <option value="5">5: Special / customer version</option>
+                                    </select>
 
-                                <label for="g6-overload">Switching Freq. / Current Limit / Cut-off</label>
-                                <select id="g6-overload" required>
-                                    <option value="0">0: 2kHz; 125%; 150%;</option>
-                                    <option value="1">1: 4kHz; 125%; 150%;</option>
-                                    <option value="2">2: 8kHz; 125%; 150%;</option>
-                                    <option value="3">3: 16kHz; 125%; 150%;</option>
-                                    <option value="4">4: 2kHz; 150%; 180%;</option>
-                                    <option value="5">5: 4kHz; 150%; 180%;</option>
-                                    <option value="6">6: 8kHz; 150%; 180%;</option>
-                                    <option value="7">7: 16kHz; 150%; 180%;</option>
-                                    <option value="8">8: 2kHz; 180%; 216%;</option>
-                                    <option value="9">9: 4kHz; 180%; 216%;</option>
-                                    <option value="A">A: 8kHz; 180%; 216%;</option>
-                                    <option value="B">B: 16kHz; 180%; 216%;</option>
-                                </select>
+                                    <label for="f4-supply">Supply Voltage</label>
+                                    <select id="f4-supply">
+                                        <option value="2">2: 230 V-Class</option>
+                                        <option value="4">4: 400/460 V-Class</option>
+                                    </select>
 
-                                <label for="g6-controlkbd">Control, Keyboard, Display</label>
-                                <select id="g6-controlkbd">
-                                    <option value="A">A: G6L-G ASCL (Hz) controlled without keyboard/display</option>
-                                    <option value="B">B: G6L-G ASCL (Hz) controlled with keyboard/display</option>
-                                    <option value="0">0: G6-G (only V/Hz) controlled without keyboard/display</option>
-                                    <option value="1">1: G6-G (only V/Hz) controlled with keyboard/display</option>
-                                    <option value="2">2: G6P-S SCL regulated without keyboard/display</option>
-                                    <option value="3">3: G6P-S SCL regulated with keyboard/display</option>
-                                    <option value="4">4: G6L-M ASCL (rpm) regulated without keyboard/display</option>
-                                    <option value="5">5: G6L-M ASCL (rpm) regulated with keyboard/display</option>
-                                </select>
+                                    <label for="f4-clock">Clock Frequency</label>
+                                    <select id="f4-clock">
+                                        <option value="1">1: 2 kHz</option>
+                                        <option value="2">2: 4 kHz</option>
+                                        <option value="4">4: 8 kHz</option>
+                                        <option value="6">6: 12 kHz</option>
+                                        <option value="8">8: 16 kHz</option>
+                                    </select>
 
-                                <label for="g6-heatsink">Heat Sink Version</label>
-                                <select id="g6-heatsink" required>
-                                    <option value="0">0: Air-cooled</option>
-                                    <option value="1">1: Flat rear</option>
-                                </select>
+                                    <label for="f4-options">Options</label>
+                                    <select id="f4-options">
+                                        <option value="0">0: Standard</option>
+                                        <option value="1">1: Interbus S Card</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                <!-- F5 Fields -->
-                    <div id="f5-fields" class="product-fields" style="display:none;">
-                        <div class="product-fields-row">
-                            <div class="product-fields-col-1" style = "width: 300px;">
-                                <img src="icon_f5drive.png" alt="F5 Drive Icon" class="productline-icon">
-                            </div>
-                            <div class="product-fields-col-2">
-                                <label for="f5-power">Inverter Size</label>
-                                <select id="f5-power">
-                                    <option value="05">05 (0.5 HP / 0.37 KW / 1.1A UL @ 480V, 2.3A @ 230V)</option>
-                                    <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
-                                    <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7A @ 230V)</option>
-                                    <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL @ 480V, 10A @ 230V)</option>
-                                    <option value="12">12 (5.0 HP / 4.0 KW / 7.6A UL @ 480V, 16.5A @ 230V)</option>
-                                    <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A @ 230V)</option>
-                                    <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A @ 230V)</option>
-                                    <option value="15">15 (15.0 HP / 11.0 KW / 21A UL @ 480V, 48A @ 230V)</option>
-                                    <option value="16">16 (20.0 HP / 15.0 KW / 27A UL @ 480V, 66A @ 230V)</option>
-                                    <option value="17">17 (25.0 HP / 18.5 KW / 34A UL @ 480V, 84A @ 230V)</option>
-                                    <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
-                                    <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
-                                    <option value="20">20 (50.0 HP / 37.0 KW / 65A UL)</option>
-                                    <option value="21">21 (60.0 HP / 45.0 KW / 77A UL)</option>
-                                    <option value="22">22 (75.0 HP / 55.0 KW / 96A UL)</option>
-                                    <option value="23">23 (100 HP / 75.0 KW / 124A UL)</option>
-                                    <option value="24">24 (125 HP / 90.0 KW / 156A UL)</option>
-                                    <option value="25">25 (150 HP / 110 KW / 180A UL)</option>
-                                    <option value="26">26 (175 HP / 132 KW / 210A UL)</option>
-                                    <option value="27">27 (200 HP / 160 KW / 260A UL)</option>
-                                    <option value="28">28 (250 HP / 200 KW / 325A UL)</option>
-                                    <option value="29">29 (300 HP / 250 KW / 400A UL)</option>
-                                    <option value="30">30 (350 HP / 315 KW / 495A UL)</option>
-                                    <option value="31">31 (450 HP / 355 KW / 515A UL)</option>
-                                    <option value="32">32 (500 HP / 400 KW / 590A UL)</option>
-                                    <option value="33">33 (600 HP / 450 KW / 719A UL)</option>
-                                </select>
-
-                                <label for="f5-control">Control Type</label>
-                                <select id="f5-control">
-                                    <option value="A">A: APPLICATION</option>
-                                    <option value="B">B: BASIC</option>
-                                    <option value="C">C: COMPACT</option>
-                                    <option value="E">E: SCL</option>
-                                    <option value="G">G: GENERAL</option>
-                                    <option value="H">H: ASCL</option>
-                                    <option value="M">M: MULTI</option>
-                                    <option value="S">S: SERVO</option>
-                                    <option value="K">K: APPLICATION with safety</option>
-                                    <option value="L">L: ASCL with safety</option>
-                                    <option value="P">P: SCL with safety</option>
-                                </select>
-
-                                <label for="f5-accessory">Accessories</label>
-                                <select id="f5-accessory">
-                                    <option value="0">0: none</option>
-                                    <option value="1">1: Braking transistor</option>
-                                    <option value="2">2: Integrated filter</option>
-                                    <option value="3">3: Braking transistor and integrated filter</option>
-                                    <option value="4">4: Integrated Power Factor Control</option>
-                                    <option value="5">5: Braking transistor and integrated Power Factor Control</option>
-                                    <option value="6">6: Integrated filter and integrated Power Factor Control</option>
-                                    <option value="7">7: Braking transistor, integrated filter and integrated Power Factor Control</option>
-                                    <option value="A">A: none (with safety relay)</option>
-                                    <option value="B">B: Braking transistor (with safety relay)</option>
-                                    <option value="C">C: Integrated filter (with safety relay)</option>
-                                    <option value="D">D: Braking transistor and integrated filter (with safety relay)</option>
-                                </select>
-
-                                <label for="f5-housing">Housing Type</label>
-                                <select id="f5-housing">
-                                    <option value="A">A Housing</option>
-                                    <option value="B">B Housing</option>
-                                    <option value="D">D Housing</option>
-                                    <option value="E">E Housing</option>
-                                    <option value="G">G Housing</option>
-                                    <option value="H">H Housing</option>
-                                    <option value="R">R Housing</option>
-                                    <option value="U">U Housing</option>
-                                    <option value="W">W Housing</option>
-                                    <option value="P">P Housing</option>
-                                </select>
-                            </div>
-                            <div class="product-fields-col-2">
-                                <label for="f5-voltage">Input Identification</label>
-                                <select id="f5-voltage">
-                                    <option value="0">0: 1ph 230VAC/DC</option>
-                                    <option value="1">1: 3ph 230VAC/DC</option>
-                                    <option value="2">2: 1/3ph 230VAC/DC</option>
-                                    <option value="3">3: 3ph 400VAC/DC</option>
-                                    <option value="4">4: 230V class DC</option>
-                                    <option value="5">5: 400V class DC</option>
-                                    <option value="6">6: 1ph 230VAC</option>
-                                    <option value="7">7: 3ph 230VAC</option>
-                                    <option value="8">8: 1/3ph 230VAC</option>
-                                    <option value="9">9: 3ph 400VAC</option>
-                                    <option value="A">A: 6ph 400VAC</option>
-                                    <option value="B">B: 3ph 600VAC</option>
-                                    <option value="C">C: 6ph 600VAC</option>
-                                    <option value="D">D: 600VDC</option>
-                                    <option value="K">K: 230V AC or AC/DC</option>
-                                    <option value="L">L: 460V AC or AC/DC</option>
-                                    <option value="M">M: 325V DC</option>
-                                    <option value="N">N: 650V DC</option>
-                                    <option value="P">P: 230V AC or AC/DC special or customer version</option>
-                                    <option value="Q">Q: 460V AC or AC/DC special or customer version</option>
-                                    <option value="R">R: 325V DC special or customer version</option>
-                                    <option value="S">S: 650V DC special or customer version</option>
-                                </select>
-
-                                <label for="f5-overload">Switching Frequency / Current Limit / Overcurrent Limit</label>
-                                <select id="f5-overload">
-                                    <option value="0">0: 2kHz; 125%; 150%</option>
-                                    <option value="1">1: 4kHz; 125%; 150%</option>
-                                    <option value="2">2: 8kHz; 125%; 150%</option>
-                                    <option value="3">3: 16kHz; 125%; 150%</option>
-                                    <option value="4">4: 2kHz; 150%; 180%</option>
-                                    <option value="5">5: 4kHz; 150%; 180%</option>
-                                    <option value="6">6: 8kHz; 150%; 180%</option>
-                                    <option value="7">7: 16kHz; 150%; 180%</option>
-                                    <option value="8">8: 2kHz; 180%; 216%</option>
-                                    <option value="9">9: 4kHz; 180%; 216%</option>
-                                    <option value="A">A: 8kHz; 180%; 216%</option>
-                                    <option value="B">B: 16kHz; 180%; 216%</option>
-                                    <option value="F">F: 16kHz; 200%; 240%</option>
-                                    <option value="G">G: 2kHz; 400%; 480%</option>
-                                    <option value="H">H: 4kHz; 400%; 480%</option>
-                                    <option value="K">K: 8kHz; 400%; 480%</option>
-                                </select>
-
-                                <label for ="f5-encoder">Encoder Interface</label>
-                                <select id="f5-encoder">
-                                    <option value="0">0: no Interface</option>
-                                    <option value="1">1: Inc.-Input a. Inc.-I/O</option>
-                                    <option value="2">2: Resolver a. Inc.-I/O</option>
-                                    <option value="3">3: Hiperface a. Inc.-I/O</option>
-                                    <option value="4">4: Inc.-Input a. SSI</option>
-                                    <option value="5">5: Resolver a. SSI</option>
-                                    <option value="6">6: Hiperface a. SSI</option>
-                                    <option value="7">7: Inc.-Input a. Tacho</option>
-                                    <option value="8">8: Resolver a. Tacho</option>
-                                    <option value="9">9: Hiperface a. Tacho</option>
-                                    <option value="A">A: Inc.-Input a. Initiator</option>
-                                    <option value="B">B: Resolver a. Initiator</option>
-                                    <option value="C">C: Hiperface a. Initiator</option>
-                                    <option value="D">D: Inc.-Input a. Inc.-Outp.</option>
-                                    <option value="E">E: Resolver a. Inc.-Outp.</option>
-                                    <option value="F">F: Hiperface a. Inc.-Outp.</option>
-                                    <option value="G">G: Inc.-Input a. Inc.-Inp.</option>
-                                    <option value="H">H: Resolver a. Inc.-Inp.</option>
-                                    <option value="I">I: Hiperface a. Inc.-Inp.</option>
-                                </select>
-
-                                <label for="f5-cooling">Cooling</label>
-                                <select id="f5-cooling">
-                                    <option value="0">0: Heat sink (standard)</option>
-                                    <option value="1">1: Flat rear</option>
-                                    <option value="2">2: Water cooling</option>
-                                    <option value="3">3: Convection</option>
-                                    <option value="5">5: Heat sink (standard)</option>
-                                    <option value="A">A: Conformal Coated and Heat sink (standard)</option>
-                                    <option value="B">B: Conformal Coated and Flat rear</option>
-                                    <option value="C">C: Conformal Coated and Water cooling</option>
-                                    <option value="D">D: Conformal Coated and Convection (through mounted)</option>
-                                    <option value="G">G: Flat rear</option>
-                                    <option value="H">H: Water cooling</option>
-                                    <option value="I">I: Convection</option>
-                                    <option value="V">V: Liquid cooling system with built in version</option>
-                                    <option value="W">W: Liquid cooling system with push through version</option>
-                                    <option value="Z">Z: Liquid cooling system with stainless steel tubes built in version</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                 
-                <!-- F4 Fields -->
-                    <div id="f4-fields" class="product-fields" style="display:none;">
-                        <div class="product-fields-row">
-                            <div class="product-fields-col-1" style = "width: 300px;">
-                                <img src="icon_f4drive.png" alt="F4 Drive Icon" class="productline-icon">
-                            </div>
-                            <div class="product-fields-col f5-fields-col-1">
-                                <label for="f4-size">Housing Size</label>
-                                <select id="f4-size">
-                                    <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
-                                    <option value="09">09 (2.0 HP / 1.5 KW / 3.4A UL @ 480V, 7A @ 230V)</option>
-                                    <option value="10">10 (3.0 HP / 2.2 KW / 4.8A UL @ 480V, 10A @ 230V)</option>
-                                    <option value="13">13 (7.5 HP / 5.5 KW / 11A UL @ 480V, 24A @ 230V)</option>
-                                    <option value="14">14 (10.0 HP / 7.5 KW / 14A UL @ 480V, 33A @ 230V)</option>
-                                    <option value="15">15 (15.0 HP / 11.0 KW / 21A UL @ 480V, 48A @ 230V)</option>
-                                    <option value="16">16 (20.0 HP / 15.0 KW / 27A UL @ 480V, 66A @ 230V)</option>
-                                    <option value="17">17 (25.0 HP / 18.5 KW / 34A UL)</option>
-                                    <option value="18">18 (30.0 HP / 22.0 KW / 40A UL)</option>
-                                    <option value="19">19 (40.0 HP / 30.0 KW / 52A UL)</option>
-                                    <option value="20">20 (50.0 HP / 37.0 KW / 65A UL)</option>
-                                    <option value="21">21 (60.0 HP / 45.0 KW / 77A UL)</option>
-                                    <option value="22">22 (75.0 HP / 55.0 KW / 96A UL)</option>
-                                    <option value="23">23 (100 HP / 75.0 KW / 124A UL)</option>
-                                    <option value="24">24 (125 HP / 90.0 KW / 156A UL)</option>
-                                    <option value="25">25 (150 HP / 110 KW / 180A UL)</option>
-                                    <option value="26">26 (175 HP / 132 KW / 210A UL)</option>
-                                    <option value="27">27 (200 HP / 160 KW / 260A UL)</option>
-                                    <option value="28">28 (250 HP / 200 KW / 325A UL)</option>
-                                    <option value="29">29 (300 HP / 250 KW / 400A UL)</option>
-                                </select>
+            </div>
 
-                                <label for="f4-control">Used Control</label>
-                                <select id="f4-control">
-                                    <option value="C">C: Compact</option>
-                                    <option value="S">S: Standard</option>
-                                    <option value="F">F: Field-oriented control</option>
-                                </select>
+            <div class="container-right" id="application-calculator" style="display: none;">
+                <div class="input-group" style="display: flex; align-items: center; gap: 10px;">
+                    <label for="application">Select Application:</label>
+                    <select id="application">
+                    <option value="ChooseApplication">-- Choose Application --</option>
+                    <option value="Pump">Pump</option>
+                    <option value="Lift">Lift</option>
+                    <option value="Rotarytable">Rotary Table</option>
+                    <option value="Conveyor">Conveyor</option>
+                    <option value="Genericrotary">Generic Rotary</option>
+                    <option value="Blower">Blower</option>
+                    <!-- <option value="MaterialHandling">Generic Linear</option>
+                    <option value="Testsystems">Generic Linear</option>
+                    <option value="Specialmachinery">Generic Linear</option>
+                    <option value="Woodworking">Generic Linear</option>
+                    <option value="Machining">Generic Linear</option> -->
+                    </select>
+                </div>
+                
+                <div class="divider-thin"></div>
 
-                                <label for="f4-accessory">Accessories</label>
-                                <select id="f4-accessory">
-                                    <option value="0">0: None</option>
-                                    <option value="1">1: Braking transistor</option>
-                                    <option value="2">2: Filter</option>
-                                    <option value="3">3: Filter and braking transistor</option>
-                                    <option value="4">4: Braking transistor and resistor</option>
-                                    <option value="5">5: Filter, braking transistor and resistor</option>
-                                    <option value="6">6: Braking resistor jumpered out</option>
-                                </select>
-
-                                <label for="f4-housing">Housing Design</label>
-                                <select id="f4-housing">
-                                    <option value="D">D</option>
-                                    <option value="E">E</option>
-                                    <option value="G">G</option>
-                                    <option value="H">H</option>
-                                    <option value="K">K</option>
-                                    <option value="L">L</option>
-                                    <option value="M">M</option>
-                                    <option value="N">N</option>
-                                    <option value="P">P</option>
-                                    <option value="R">R</option>
-                                    <option value="U">U</option>
-                                </select>
-                            </div>
-                        <div class="product-fields-col f5-fields-col-2">
-                                <label for="f4-input">Input Code</label>
-                                <select id="f4-input">
-                                    <option value="1">1: 1-phase</option>
-                                    <option value="2">2: DC</option>
-                                    <option value="3">3: 3-phase</option>
-                                    <option value="4">4: Special / customer version</option>
-                                    <option value="5">5: Special / customer version</option>
-                                </select>
-
-                                <label for="f4-supply">Supply Voltage</label>
-                                <select id="f4-supply">
-                                    <option value="2">2: 230 V-Class</option>
-                                    <option value="4">4: 400/460 V-Class</option>
-                                </select>
-
-                                <label for="f4-clock">Clock Frequency</label>
-                                <select id="f4-clock">
-                                    <option value="1">1: 2 kHz</option>
-                                    <option value="2">2: 4 kHz</option>
-                                    <option value="4">4: 8 kHz</option>
-                                    <option value="6">6: 12 kHz</option>
-                                    <option value="8">8: 16 kHz</option>
-                                </select>
-
-                                <label for="f4-options">Options</label>
-                                <select id="f4-options">
-                                    <option value="0">0: Standard</option>
-                                    <option value="1">1: Interbus S Card</option>
-                                </select>
-                            </div>
-                        </div>
+                <div class="top-row">
+                    </div>
+                 <div class="product-fields-row">
+                    <div class="product-fields-col-2">
+                        <div id="dynamicInputs" style="display: block;"></div>
+                        <button onclick="loadGenericData(getElementById('application').value)" style="display:none">Load Generic Data</button><br/><br/>
+                        <button id="calculateButton" onclick="calculateForApplication()" style="display:none">Calculate</button>
+                        <span id="doneMessage" style="margin-left:10px; display:none;">Done</span><br>
                     </div>
 
+                    <div class="product-fields-col-2">
+                        <div id="formulasContainer">
+                            <!-- Formulas will be dynamically populated based on selected application -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom">
+                    <div id="results"></div>
+                    <div id="howToSize" style=" margin-top:10px;"></div>
+                    <div id="results2"></div>
+                </div>
+
+                <script>
+                </script>
+
+                
+
+                <!-- PapaParse CSV parser -->
+                <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+                <script src="main.js"></script>
+                <script src="formulas.js"></script>
+                <script src="suggestions.js"></script>
             </div>
+
+            <div class="container-right" id="brusator-to-dl4" style="display: none;">
+                coming soon!  
+            </div> 
+
+
+
+
             <script src="part-number-generator.js"></script>
+            <script src="container-selection.js"></script>
 
         </div>
 
@@ -663,13 +757,13 @@
             <table class="footer-table">
                 <tr>
                     <td class="footer-col-1">
-                        © KEB America, 2025<br>All Rights reserved
+                        © KEB America, <span id="footer-productyear"></span><br>All Rights Reserved
                     </td>
                     <td class="footer-col-2">
-                        Name: Basis<br><b>KEB COMBIVERT F6-K / A / P</b>
+                        Name: Basis<br><b>KEB COMBIVERT <span id="footer-productline"></span></b>
                     </td>
                     <td class="footer-col-3">
-                        Date<br>29.09.25
+                        Date<br>29.09.<span id="footer-productdate"></span>
                     </td>
                     <td class="footer-col-4">
                         Chapter<br>1
