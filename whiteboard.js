@@ -311,9 +311,16 @@
       updateSavedTime();
       localStorage.setItem(STORAGE_KEY + ':ts', String(lastSaved.getTime()));
       if (bc) bc.postMessage({ type: 'update', rows: rows, ts: Date.now() });
-      // push to remote if enabled (avoid pushing when the change originated from remote)
-      if (remoteEnabled && reason !== 'remote'){
-        pushToRemote();
+      // Only push to remote when user explicitly presses Save (reason === 'manual').
+      // This prevents autosave/interval saves from immediately syncing to the public DB.
+      if (remoteEnabled) {
+        if (reason === 'manual') {
+          // user-initiated save -> push
+          pushToRemote();
+        } else {
+          // mark remote status as unsynced so user knows local changes haven't been pushed
+          setRemoteStatus('unsynced');
+        }
       }
     } catch (e) {
       console.error('Failed to save whiteboard content', e);
@@ -397,7 +404,39 @@
 
   // ---- Remote REST sync (optional) ----
   function setRemoteStatus(text){
-    const s = el('wbRemoteStatus'); if (!s) return; s.textContent = text;
+    const s = el('wbRemoteStatus'); if (!s) return;
+    // set text and color for quick visual feedback
+    s.textContent = text;
+    s.style.color = '';
+    s.style.fontWeight = '';
+    switch(String(text).toLowerCase()){
+      case 'unsynced':
+        s.style.color = '#c80000'; // red
+        s.style.fontWeight = 'bold';
+        break;
+      case 'error':
+        s.style.color = '#c80000';
+        s.style.fontWeight = 'bold';
+        break;
+      case 'synced':
+        s.style.color = '#006800'; // green
+        s.style.fontWeight = 'bold';
+        break;
+      case 'updated':
+        s.style.color = '#0047ab'; // blue
+        s.style.fontWeight = 'bold';
+        break;
+      case 'connecting':
+        s.style.color = '#aa7700'; // amber
+        s.style.fontWeight = 'normal';
+        break;
+      case 'connected':
+      case 'off':
+      default:
+        s.style.color = '';
+        s.style.fontWeight = '';
+        break;
+    }
   }
 
   function initRemoteSync(){
