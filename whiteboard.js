@@ -86,11 +86,37 @@
     toggleBtn.textContent = 'Hide';
 
     actions.appendChild(addRowBtn);
-    //actions.appendChild(clearBtn);
-    //actions.appendChild(exportBtn);
-    //actions.appendChild(importBtn);
-    //actions.appendChild(importFile);
-    //actions.appendChild(toggleBtn);
+    actions.appendChild(clearBtn);
+    actions.appendChild(exportBtn);
+    actions.appendChild(importBtn);
+    actions.appendChild(importFile);
+    // Quick-save (force save to localStorage)
+    const saveBtn = document.createElement('button');
+    saveBtn.id = 'wbSave';
+    saveBtn.className = 'button';
+    saveBtn.textContent = 'Save';
+    saveBtn.addEventListener('click', ()=> saveContent('manual'));
+    actions.appendChild(saveBtn);
+
+    // Copy JSON to clipboard
+    const copyBtn = document.createElement('button');
+    copyBtn.id = 'wbCopy';
+    copyBtn.className = 'button';
+    copyBtn.textContent = 'Copy JSON';
+    copyBtn.addEventListener('click', ()=>{
+      try {
+        const txt = JSON.stringify(rows, null, 2);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(()=> alert('Whiteboard JSON copied to clipboard'))
+            .catch(()=> { prompt('Copy failed — here is the JSON:', txt); });
+        } else {
+          prompt('Copy the JSON below:', txt);
+        }
+      } catch (e) { alert('Failed to copy JSON'); }
+    });
+    actions.appendChild(copyBtn);
+
+    actions.appendChild(toggleBtn);
 
     //toolbar.appendChild(title);
     toolbar.appendChild(actions);
