@@ -13,7 +13,8 @@ class DataManager {
             // Load only the essential CSV files for dynamic inputs and defaults
             await Promise.all([
                 this.loadCSV('defaults', 'csv/defaults.csv', 'text'),
-                this.loadCSV('inputs', '/Application-Calculator/csv/inputs.csv', 'papa')
+                // Use a relative path so this works both locally and when hosted under a project subpath
+                this.loadCSV('inputs', 'csv/inputs.csv', 'papa')
             ]);
             
             this.isInitialized = true;
@@ -50,11 +51,38 @@ class DataManager {
                 Papa.parse(filepath, {
                     download: true,
                     header: true,
+                    // Skip blank lines which can trigger TooFewFields errors
+                    skipEmptyLines: true,
+                    // Allow '#' comments at start of line (if your CSV contains commented rows)
+                    comments: '#',
                     complete: (results) => {
                         if (results.errors && results.errors.length > 0) {
                             console.warn(`DataManager: CSV parsing warnings for ${key}:`, results.errors);
+
+                            // Helpful debug: fetch raw text and log the offending lines with context
+                            try {
+                                fetch(filepath)
+                                    .then(r => r.text())
+                                    .then(text => {
+                                        const lines = text.split(/\r\n|\n/);
+                                        results.errors.forEach(err => {
+                                            const rowIndex = Math.max(0, (err.row || 1) - 1); // Papa rows are 1-based
+                                            const start = Math.max(0, rowIndex - 3);
+                                            const end = Math.min(lines.length, rowIndex + 3);
+                                            console.groupCollapsed(`DataManager: CSV raw context for ${key} row ${err.row}`);
+                                            for (let i = start; i < end; i++) {
+                                                const prefix = (i === rowIndex) ? '>>' : '  ';
+                                                console.log(`${prefix} ${i + 1}: ${lines[i]}`);
+                                            }
+                                            console.groupEnd();
+                                        });
+                                    })
+                                    .catch(fetchErr => console.warn(`DataManager: Could not fetch raw CSV for debug: ${fetchErr}`));
+                            } catch (e) {
+                                console.warn('DataManager: Debug fetch failed', e);
+                            }
                         }
-                        
+
                         if (key === 'inputs') {
                             // Special processing for inputs.csv
                             this.data[key] = results.data.reduce((acc, row) => {
@@ -67,7 +95,7 @@ class DataManager {
                         } else {
                             this.data[key] = results.data;
                         }
-                        
+
                         console.log(`DataManager: Loaded ${key} (${Array.isArray(this.data[key]) ? this.data[key].length : Object.keys(this.data[key]).length} items)`);
                         resolve(this.data[key]);
                     },
@@ -100,10 +128,20 @@ class DataManager {
         }
         if (this.data.inputs) {
             window.inputDefinitions = this.data.inputs;
+            // If a module-scoped inputDefinitions exists, update it too so older code that
+            // references the variable directly (not via window) will see the data.
+            try {
+                if (typeof inputDefinitions !== 'undefined') {
+                    inputDefinitions = this.data.inputs;
+                }
+            } catch (e) {
+                // ignore if inputDefinitions isn't declared yet
+            }
         }
         
         // Render initial inputs if app is already selected
-        const app = document.getElementById("application").value;
+        const appEl = document.getElementById("application");
+        const app = appEl ? appEl.value : null;
         if (app) {
             renderInputsForApp(app);
         }
@@ -622,43 +660,26 @@ function showFormulasForApplication(application) {
     }
 }
 
-// Parse inputs.csv and store definitions
-Papa.parse('csv/inputs.csv', {
-    download: true,
-    header: true,
-    complete: function(results) {
-        console.log("Papa.parse complete, results:", results);
-        if (results.errors && results.errors.length > 0) {
-            console.error("CSV parsing errors:", results.errors);
-        }
-        
-        // Group by application
-        inputDefinitions = results.data.reduce((acc, row) => {
-            if (row.Application) { // Make sure Application is not empty
-                if (!acc[row.Application]) acc[row.Application] = [];
-                acc[row.Application].push(row);
-            }
-            return acc;
-        }, {});
-        
-        console.log("inputDefinitions after Papa.parse:", inputDefinitions);
-        
-        // Render initial inputs if app is already selected
-        const app = document.getElementById("application").value;
-        if (app) renderInputsForApp(app);
-    },
-    error: function(error) {
-        console.error("Error loading inputs.csv with Papa.parse:", error);
-    }
-});
+// inputs.csv is now loaded via DataManager during initialization. DataManager.onDataReady
+// will set window.inputDefinitions and trigger rendering when the data is ready.
 
 // Render dynamic inputs for selected application
 function renderInputsForApp(appName) {
     const container = document.getElementById("dynamicInputs");
     container.innerHTML = ""; // Clear previous
 
+    // If no application selected or placeholder is chosen, clear and hide dynamic inputs quietly
+    if (!appName || appName === "ChooseApplication") {
+        container.innerHTML = "";
+        // keep container hidden; calling code (handleAppChange) will show when appropriate
+        container.style.display = "none";
+        return;
+    }
+
     if (!inputDefinitions[appName]) {
+        // No definitions found for this application — warn once but don't spam the console
         console.warn("No input definitions found for", appName);
+        container.style.display = "none";
         return;
     }
 
@@ -908,7 +929,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-let inputDefinitions = {};
+// module-scoped copy of input definitions. If DataManager already loaded them it will
+// populate window.inputDefinitions and DataManager.onDataReady will sync this variable.
+let inputDefinitions = (window && window.inputDefinitions) ? window.inputDefinitions : {};
 
 function attachDynamicInputListeners(app) {
     const container = document.getElementById("dynamicInputs");

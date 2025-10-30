@@ -22,9 +22,7 @@ function updateFooterProductLine() {
     if (productLineSelect && footerProductLine) {
         const selected = productLineSelect.value;
         footerProductLine.textContent = productLineNames[selected] || selected;
-        footerProductYear.textContent = productLineYears[selected] || '';
         footerProductDate.textContent = productLineYears[selected] || '2025';
-
     }
 }
 
