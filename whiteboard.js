@@ -8,6 +8,11 @@
   let lastSaved = null;
   let bc = null;
   let rows = [];
+  // Remote sync (REST) configuration
+  let remoteEnabled = false;
+  let remoteUrl = '';
+  let remotePath = 'whiteboard/shared';
+  let remoteLastTs = 0;
 
   function el(id){ return document.getElementById(id); }
 
@@ -127,9 +132,9 @@
     content.className = 'whiteboard-content';
     content.setAttribute('aria-label','Shared whiteboard table');
 
-    const status = document.createElement('div');
-    status.className = 'whiteboard-status';
-    status.innerHTML = 'Last saved: <span id="wbSavedTime">never</span>';
+  const status = document.createElement('div');
+  status.className = 'whiteboard-status';
+  status.innerHTML = 'Last saved: <span id="wbSavedTime">never</span> <span style="margin-left:12px;">Remote: <span id="wbRemoteStatus">off</span></span>';
 
     panel.appendChild(content);
     panel.appendChild(toolbar);
@@ -295,6 +300,8 @@
       });
     } catch (e){ rows = []; }
     renderTable(); updateSavedTime();
+    // attempt to initialize remote sync after local load
+    try { initRemoteSync(); } catch (e) { /* ignore */ }
   }
 
   function saveContent(reason){
@@ -304,6 +311,10 @@
       updateSavedTime();
       localStorage.setItem(STORAGE_KEY + ':ts', String(lastSaved.getTime()));
       if (bc) bc.postMessage({ type: 'update', rows: rows, ts: Date.now() });
+      // push to remote if enabled (avoid pushing when the change originated from remote)
+      if (remoteEnabled && reason !== 'remote'){
+        pushToRemote();
+      }
     } catch (e) {
       console.error('Failed to save whiteboard content', e);
     }
@@ -382,6 +393,69 @@
         };
       } catch (e) { console.warn('BroadcastChannel failed:', e); }
     }
+  }
+
+  // ---- Remote REST sync (optional) ----
+  function setRemoteStatus(text){
+    const s = el('wbRemoteStatus'); if (!s) return; s.textContent = text;
+  }
+
+  function initRemoteSync(){
+    try {
+      const url = window && window.WHITEBOARD_REMOTE_DB;
+      const path = window && window.WHITEBOARD_REMOTE_PATH;
+      if (!url) { remoteEnabled = false; setRemoteStatus('off'); return; }
+      remoteUrl = String(url).replace(/\/$/, '');
+      if (path) remotePath = String(path).replace(/^\/+|\/+$/g, '');
+      remoteEnabled = true;
+      setRemoteStatus('connecting');
+      // fetch initial remote state
+      fetchRemoteOnce();
+      // poll periodically for remote updates
+      setInterval(()=>{ if (remoteEnabled) fetchRemoteOnce(); }, AUTO_SAVE_INTERVAL);
+    } catch (e){ console.warn('initRemoteSync failed', e); remoteEnabled = false; setRemoteStatus('error'); }
+  }
+
+  async function fetchRemoteOnce(){
+    if (!remoteEnabled || !remoteUrl) return;
+    const full = `${remoteUrl}/${remotePath}.json`;
+    try {
+      const resp = await fetch(full, { cache: 'no-store' });
+      if (!resp.ok){ setRemoteStatus('error'); return; }
+      const body = await resp.json();
+      if (!body) { setRemoteStatus('connected'); return; }
+      let incomingRows = null;
+      let ts = 0;
+      if (Array.isArray(body)) { incomingRows = body; ts = Date.now(); }
+      else if (body.rows && Array.isArray(body.rows)) { incomingRows = body.rows; ts = body.ts || Date.now(); }
+      else if (body.rows && typeof body.rows === 'string') { try { incomingRows = JSON.parse(body.rows); } catch(e){ incomingRows = []; } ts = body.ts || Date.now(); }
+      else { setRemoteStatus('connected'); return; }
+
+      // Only apply if remote timestamp is newer than our last known remote timestamp
+      if (ts && ts <= remoteLastTs) { setRemoteStatus('connected'); return; }
+      remoteLastTs = ts || Date.now();
+      if (Array.isArray(incomingRows)){
+        rows = incomingRows;
+        renderTable();
+        lastSaved = new Date(remoteLastTs);
+        updateSavedTime();
+        setRemoteStatus('updated');
+      }
+    } catch (e){ console.warn('fetchRemoteOnce failed', e); setRemoteStatus('error'); }
+  }
+
+  function pushToRemote(){
+    if (!remoteEnabled || !remoteUrl) return;
+    const full = `${remoteUrl}/${remotePath}.json`;
+    const payload = { rows: rows, ts: Date.now() };
+    try {
+      fetch(full, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+        .then(resp => {
+          if (!resp.ok) { console.warn('pushToRemote failed', resp.status); setRemoteStatus('error'); }
+          else { remoteLastTs = payload.ts; setRemoteStatus('synced'); }
+        })
+        .catch(err => { console.warn('pushToRemote error', err); setRemoteStatus('error'); });
+    } catch (e){ console.warn('pushToRemote exception', e); setRemoteStatus('error'); }
   }
 
   // init on load

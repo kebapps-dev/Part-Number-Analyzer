@@ -885,6 +885,13 @@
             <script src="part-number-generator.js"></script>
             <script src="container-selection.js"></script>
             <script src="brusatori-to-dl4.js"></script>
+            <!-- Optional: enable anonymous remote whiteboard sync by setting the DB URL here -->
+            <script>
+                // Opt-in remote database (Realtime Database URL). Set this to enable anonymous shared edits.
+                window.WHITEBOARD_REMOTE_DB = "https://keb-resources-default-rtdb.firebaseio.com";
+                // Optional path (without leading or trailing slash). Default is 'whiteboard/shared'
+                window.WHITEBOARD_REMOTE_PATH = window.WHITEBOARD_REMOTE_PATH || 'whiteboard/shared';
+            </script>
             <script src="whiteboard.js"></script>
             <script src="ui-init.js"></script>
         </div>
