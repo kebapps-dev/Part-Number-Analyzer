@@ -134,7 +134,9 @@
 
   const status = document.createElement('div');
   status.className = 'whiteboard-status';
-  status.innerHTML = 'Last saved: <span id="wbSavedTime">never</span> <span style="margin-left:12px;">Remote: <span id="wbRemoteStatus">off</span></span>';
+  status.innerHTML = 'Last saved: <span id="wbSavedTime">never</span>' +
+    ' <span style="margin-left:12px;">Remote: Connected: <span id="wbRemoteConnected">off</span></span>' +
+    ' <span style="margin-left:12px;">Sync: <span id="wbRemoteSync">n/a</span></span>';
 
     panel.appendChild(content);
     panel.appendChild(toolbar);
@@ -403,13 +405,38 @@
   }
 
   // ---- Remote REST sync (optional) ----
-  function setRemoteStatus(text){
-    const s = el('wbRemoteStatus'); if (!s) return;
-    // set text and color for quick visual feedback
-    s.textContent = text;
+  function setRemoteConnected(state){
+    const s = el('wbRemoteConnected'); if (!s) return;
+    s.textContent = state;
     s.style.color = '';
     s.style.fontWeight = '';
-    switch(String(text).toLowerCase()){
+    switch(String(state).toLowerCase()){
+      case 'connecting':
+        s.style.color = '#aa7700'; // amber
+        s.style.fontWeight = 'normal';
+        break;
+      case 'connected':
+        s.style.color = '#006800'; // green
+        s.style.fontWeight = 'bold';
+        break;
+      case 'off':
+        s.style.color = '';
+        s.style.fontWeight = '';
+        break;
+      case 'error':
+      default:
+        s.style.color = '#c80000'; // red
+        s.style.fontWeight = 'bold';
+        break;
+    }
+  }
+
+  function setRemoteSync(state){
+    const s = el('wbRemoteSync'); if (!s) return;
+    s.textContent = state;
+    s.style.color = '';
+    s.style.fontWeight = '';
+    switch(String(state).toLowerCase()){
       case 'unsynced':
         s.style.color = '#c80000'; // red
         s.style.fontWeight = 'bold';
@@ -426,12 +453,8 @@
         s.style.color = '#0047ab'; // blue
         s.style.fontWeight = 'bold';
         break;
-      case 'connecting':
-        s.style.color = '#aa7700'; // amber
-        s.style.fontWeight = 'normal';
-        break;
+      case 'n/a':
       case 'connected':
-      case 'off':
       default:
         s.style.color = '';
         s.style.fontWeight = '';
@@ -443,16 +466,16 @@
     try {
       const url = window && window.WHITEBOARD_REMOTE_DB;
       const path = window && window.WHITEBOARD_REMOTE_PATH;
-      if (!url) { remoteEnabled = false; setRemoteStatus('off'); return; }
+  if (!url) { remoteEnabled = false; setRemoteConnected('off'); setRemoteSync('n/a'); return; }
       remoteUrl = String(url).replace(/\/$/, '');
       if (path) remotePath = String(path).replace(/^\/+|\/+$/g, '');
       remoteEnabled = true;
-      setRemoteStatus('connecting');
+      setRemoteConnected('connecting');
       // fetch initial remote state
       fetchRemoteOnce();
       // poll periodically for remote updates
       setInterval(()=>{ if (remoteEnabled) fetchRemoteOnce(); }, AUTO_SAVE_INTERVAL);
-    } catch (e){ console.warn('initRemoteSync failed', e); remoteEnabled = false; setRemoteStatus('error'); }
+    } catch (e){ console.warn('initRemoteSync failed', e); remoteEnabled = false; setRemoteConnected('error'); setRemoteSync('error'); }
   }
 
   async function fetchRemoteOnce(){
@@ -460,27 +483,28 @@
     const full = `${remoteUrl}/${remotePath}.json`;
     try {
       const resp = await fetch(full, { cache: 'no-store' });
-      if (!resp.ok){ setRemoteStatus('error'); return; }
+  if (!resp.ok){ setRemoteConnected('error'); setRemoteSync('error'); return; }
       const body = await resp.json();
-      if (!body) { setRemoteStatus('connected'); return; }
+        if (!body) { setRemoteConnected('connected'); setRemoteSync('n/a'); return; }
       let incomingRows = null;
       let ts = 0;
       if (Array.isArray(body)) { incomingRows = body; ts = Date.now(); }
       else if (body.rows && Array.isArray(body.rows)) { incomingRows = body.rows; ts = body.ts || Date.now(); }
       else if (body.rows && typeof body.rows === 'string') { try { incomingRows = JSON.parse(body.rows); } catch(e){ incomingRows = []; } ts = body.ts || Date.now(); }
-      else { setRemoteStatus('connected'); return; }
+  else { setRemoteConnected('connected'); setRemoteSync('n/a'); return; }
 
       // Only apply if remote timestamp is newer than our last known remote timestamp
-      if (ts && ts <= remoteLastTs) { setRemoteStatus('connected'); return; }
+      if (ts && ts <= remoteLastTs) { setRemoteConnected('connected'); return; }
       remoteLastTs = ts || Date.now();
       if (Array.isArray(incomingRows)){
         rows = incomingRows;
         renderTable();
         lastSaved = new Date(remoteLastTs);
         updateSavedTime();
-        setRemoteStatus('updated');
+        setRemoteConnected('connected');
+        setRemoteSync('updated');
       }
-    } catch (e){ console.warn('fetchRemoteOnce failed', e); setRemoteStatus('error'); }
+    } catch (e){ console.warn('fetchRemoteOnce failed', e); setRemoteConnected('error'); setRemoteSync('error'); }
   }
 
   function pushToRemote(){
@@ -490,11 +514,11 @@
     try {
       fetch(full, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
         .then(resp => {
-          if (!resp.ok) { console.warn('pushToRemote failed', resp.status); setRemoteStatus('error'); }
-          else { remoteLastTs = payload.ts; setRemoteStatus('synced'); }
+            if (!resp.ok) { console.warn('pushToRemote failed', resp.status); setRemoteConnected('error'); setRemoteSync('error'); }
+            else { remoteLastTs = payload.ts; setRemoteConnected('connected'); setRemoteSync('synced'); }
         })
-        .catch(err => { console.warn('pushToRemote error', err); setRemoteStatus('error'); });
-    } catch (e){ console.warn('pushToRemote exception', e); setRemoteStatus('error'); }
+        .catch(err => { console.warn('pushToRemote error', err); setRemoteConnected('error'); setRemoteSync('error'); });
+    } catch (e){ console.warn('pushToRemote exception', e); setRemoteConnected('error'); setRemoteSync('error'); }
   }
 
   // init on load
