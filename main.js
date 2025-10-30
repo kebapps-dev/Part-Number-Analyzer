@@ -141,6 +141,7 @@ document.getElementById("application").addEventListener("change", function(e) {
     document.getElementById("howToSize").innerHTML = "";
     // Clear lock starting values button when application changes
     const lockButton = document.getElementById("lockStartingValuesBtn");
+
     if (lockButton) {
         lockButton.remove();
     }
@@ -183,8 +184,28 @@ function handleAppChange() {
     // Show/hide Load Generic Data button and Calculate button - hide if ChooseApplication is selected
     const loadGenericDataBtn = document.querySelector('button[onclick*="loadGenericData"]');
     const calculateBtn = document.getElementById("calculateButton");
-    const lockStartingValuesBtn = document.getElementById("genericLockStartingValues");
     
+    loadGenericDataBtn.style.width = "50%";
+    loadGenericDataBtn.style.padding = "12px 12px";
+    loadGenericDataBtn.style.border = "2px solid #222";
+    loadGenericDataBtn.style.borderRadius = "12px";
+    loadGenericDataBtn.style.color = "#222";
+    loadGenericDataBtn.style.fontFamily = "Arial, Helvetica, sans-serif";
+    loadGenericDataBtn.style.fontSize = "0.95rem";
+    loadGenericDataBtn.style.background = "#f0f0f0";
+
+    calculateBtn.style.width = "50%";
+    calculateBtn.style.padding = "12px 12px";
+    calculateBtn.style.border = "2px solid #222";
+    calculateBtn.style.borderRadius = "12px";
+    calculateBtn.style.color = "#222";
+    calculateBtn.style.fontFamily = "Arial, Helvetica, sans-serif";
+    calculateBtn.style.fontSize = "0.95rem";
+    calculateBtn.style.background = "#f0f0f0";
+
+   
+
+
     if (loadGenericDataBtn) {
         loadGenericDataBtn.style.display = (app && app !== "ChooseApplication") ? "inline-block" : "none";
     }
@@ -208,10 +229,6 @@ function handleAppChange() {
         }
     }
     
-    if (lockStartingValuesBtn) {
-        // Only show for Generic Rotary
-        lockStartingValuesBtn.style.display = (app === "Genericrotary") ? "inline-block" : "none";
-    }
 
     // Clear results
     document.getElementById("results").innerHTML = "";
@@ -463,6 +480,8 @@ function getUnitTypeFromCSV(inputId) {
 function showDoneMessage() {
     const msg = document.getElementById("doneMessage");
     msg.style.display = "inline";
+    msg.style.color = "green";
+    msg.style.alignItems = "center";
     setTimeout(() => {
         msg.style.display = "none";
     }, 1000); // Message disappears after 1 second
@@ -976,21 +995,26 @@ function displayStandardResults(currentOutputs) {
     const hasValidOutputs = currentOutputs && Object.keys(currentOutputs).length > 0;
     let lockButton = document.getElementById("lockStartingValuesBtn");
     const genericLockButton = document.getElementById("genericLockStartingValues");
+   
     
+
+
     if (hasValidOutputs && !lockButton && !genericLockButton) {
-        const buttonHtml = `<button id="lockStartingValuesBtn" onclick="lockStartingValues()" style="margin-bottom: 10px; display: block;">Lock Starting Values</button>`;
+        const buttonHtml = `<button id="lockStartingValuesBtn" onclick="lockStartingValues()" 
+        style=
+        "margin-bottom: 10px; 
+        padding: 12px 12px;
+        border: 2px solid #222;
+        border-radius: 12px;
+        color: #222;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.95rem;
+        background: #f0f0f0;
+        display: block;">Lock Starting Values</button>`;
+       
         resultsDiv.insertAdjacentHTML('beforebegin', buttonHtml);
-    } else if (hasValidOutputs && genericLockButton && selectedApp === 'Genericrotary') {
-        // Use the existing Generic Rotary button
-        genericLockButton.style.display = 'block';
-    } else if (hasValidOutputs && genericLockButton && selectedApp !== 'Genericrotary') {
-        // Hide the Generic Rotary button for other applications
-        genericLockButton.style.display = 'none';
-        if (!lockButton) {
-            const buttonHtml = `<button id="lockStartingValuesBtn" onclick="lockStartingValues()" style="margin-bottom: 10px; display: block;">Lock Starting Values</button>`;
-            resultsDiv.insertAdjacentHTML('beforebegin', buttonHtml);
-        }
-    } else if (!hasValidOutputs) {
+    }
+    else if (!hasValidOutputs) {
         // Remove button if no valid outputs
         if (lockButton) {
             lockButton.remove();
@@ -1119,7 +1143,7 @@ function displayStandardResults(currentOutputs) {
             'Lift': {
                 '(1) Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
                 'Motor Required Peak Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
-                'Motor Required Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
+                '(2) Motor Required Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
                 'Gearbox Required Torque': { type: 'torque', component: 'gearbox', defaultUnit: 'Nm' },
                 '(4) Gearbox Required Peak Torque': { type: 'torque', component: 'gearbox', defaultUnit: 'Nm' },
                 'Gearbox Required Power': { type: 'power', component: 'gearbox', defaultUnit: 'kW' }

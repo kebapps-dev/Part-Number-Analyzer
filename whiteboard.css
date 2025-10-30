@@ -1,0 +1,81 @@
+.whiteboard-panel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 38%;
+    max-width: 720px;
+    min-width: 300px;
+    min-height: 220px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 8px 8px 0 6px #222;
+    display: flex;
+    flex-direction: column;
+    z-index: 2000;
+}
+.whiteboard-panel.hidden { display: none; }
+.whiteboard-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+}
+.whiteboard-title { font-weight: 700; color: #222; }
+.whiteboard-actions { display:flex; gap:8px; align-items:center; }
+.whiteboard-content {
+    padding: 12px;
+    min-height: 160px;
+    overflow: auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.95rem;
+    color: #222;
+    background: #fff;
+}
+.whiteboard-status {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+/* Embedded variant when mounted inside another container (e.g. #drive-error-help) */
+.whiteboard-embedded {
+    position: static;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    box-shadow: none;
+    border-radius: 8px;
+    margin: 12px 0 0 0;
+}
+.whiteboard-embedded .whiteboard-content {
+    min-height: 200px;
+    background: #fff;
+}
+.whiteboard-embedded .whiteboard-toolbar {
+    padding: 6px 8px;
+}
+.whiteboard-embedded .whiteboard-status {
+    padding: 6px 8px;
+}
+
+/* Table layout for the whiteboard rows */
+.whiteboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* ensures column widths respect percentage rules */
+}
+/* Column A: 20%, Column B: 80%, Actions minimal */
+.whiteboard-table th:nth-child(1), .whiteboard-table td:nth-child(1) { width: 20%; max-width: 20%; }
+.whiteboard-table th:nth-child(2), .whiteboard-table td:nth-child(2) { width: 70%; }
+.whiteboard-table th:nth-child(3), .whiteboard-table td:nth-child(3) { width: auto; white-space: nowrap; }
+
+.whiteboard-table input[type="text"], .whiteboard-table textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+

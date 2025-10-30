@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var leftContainers = document.querySelectorAll('.selectable-container');
   var drivePnAnalyzer = document.getElementById('drive-pn-analyzer');
   var applicationCalculator = document.getElementById('application-calculator');
-  var brusatoriToDl4 = document.getElementById('brusator-to-dl4');
+  var brusatoriToDl4 = document.getElementById('brusatori-to-dl4');
+  var driveErrorHelp = document.getElementById('drive-error-help');
   // Add more right containers here if needed
 
   leftContainers.forEach(function(el) {
@@ -23,7 +24,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (brusatoriToDl4) {
           brusatoriToDl4.style.display = 'none'; 
-        }        
+        }
+        if (driveErrorHelp) {
+          driveErrorHelp.style.display = 'none';
+        }       
         var selects = drivePnAnalyzer.querySelectorAll('select');
         selects.forEach(function(select) {
           select.style.marginBottom = '18px';
@@ -39,7 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (brusatoriToDl4) {
           brusatoriToDl4.style.display = 'none'; 
         }
-
+        if (driveErrorHelp) {
+          driveErrorHelp.style.display = 'none';
+        }
       } else if (el.id === 'container-left-brusatori-to-dl4') {
         if (drivePnAnalyzer){
           drivePnAnalyzer.style.display = 'none';
@@ -49,6 +55,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (brusatoriToDl4) {
           brusatoriToDl4.style.display = '';
+        }
+        if (driveErrorHelp) {
+          driveErrorHelp.style.display = 'none';
+        }
+      } else if (el.id === 'container-left-drive-error-help') {
+        if (drivePnAnalyzer){
+          drivePnAnalyzer.style.display = 'none';
+        }
+        if (applicationCalculator) {
+          applicationCalculator.style.display = 'none'; 
+        }
+        if (brusatoriToDl4) {
+          brusatoriToDl4.style.display = 'none';
+        }
+        if (driveErrorHelp) {
+          driveErrorHelp.style.display = '';
         }
       } else {
         if (drivePnAnalyzer) drivePnAnalyzer.style.display = 'none';

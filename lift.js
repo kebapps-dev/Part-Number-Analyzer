@@ -43,7 +43,7 @@ function findClosestLiftMotor() {
     "Motor Speed": `${motorSpeed.toFixed(2)} RPM`,
     [`(1) Motor Required Torque (${torqueUnit})`]: parseFloat(convertResultValue(motorRequiredTorque, 'torque', torqueUnit).toFixed(3)),
     [`Motor Required Peak Torque (${torqueUnit})`]: parseFloat(convertResultValue(motorRequiredPeakTorque, 'torque', torqueUnit).toFixed(3)),
-    [`Motor Required Power (${powerUnit})`]: parseFloat(convertResultValue(requiredMotorPowerWatts, 'power', powerUnit).toFixed(3)),
+    [`(2) Motor Required Power (${powerUnit})`]: parseFloat(convertResultValue(requiredMotorPowerWatts, 'power', powerUnit).toFixed(3)),
     "Gearbox Output Speed": `${gearboxOutputSpeed.toFixed(2)} RPM`,
     [`Gearbox Required Torque (${torqueUnit})`]: parseFloat(convertResultValue(loadRequiredTorque, 'torque', torqueUnit).toFixed(3)),
     [`Gearbox Required Peak Torque (${torqueUnit})`]: parseFloat(convertResultValue(loadRequiredPeakTorque, 'torque', torqueUnit).toFixed(3)),

@@ -3,7 +3,7 @@ const productLineNames = {
     S6: 'S6-K / A / P',
     F6: 'F6-K / A / P',
     G6: 'G6-G / K / L / P',
-    F5: 'F5-A / B / C / D / E / G / H / K / L / M / P / R / S',
+    F5: 'F5-A / B / C / D / E...',
     F4: 'F4-C / F / S / Si',
 };
 const productLineYears = {

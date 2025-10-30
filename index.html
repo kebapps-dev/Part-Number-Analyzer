@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Drive PN Analyzer</title>
+        <title>KEB Resources</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
@@ -48,6 +48,16 @@
                         </div>
                         <div class="h1-right-section">
                             <h3>A tool to translate Brusatori identifier to KEB part numbers, and vice versa.</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="container selectable-container" id="container-left-drive-error-help">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Drive Error Help</h1>
+                        </div>
+                        <div class="h1-right-section">
+                            <h3>A tool to help assist with drive errors.</h3>
                         </div>
                     </div>
                 </div>
@@ -589,7 +599,7 @@
                                 <div class="product-fields-col-1" style = "width: 300px;">
                                     <img src="/images/icon_f4drive.png" alt="F4 Drive Icon" class="productline-icon">
                                 </div>
-                                <div class="product-fields-col f5-fields-col-1">
+                                <div class="product-fields-col-2">
                                     <label for="f4-size">Housing Size</label>
                                     <select id="f4-size">
                                         <option value="07">07 (1.0 HP / 0.75 KW / 2.1A UL @ 480V, 4A @ 230V)</option>
@@ -647,7 +657,7 @@
                                         <option value="U">U</option>
                                     </select>
                                 </div>
-                            <div class="product-fields-col f5-fields-col-2">
+                            <div class="product-fields-col-2">
                                     <label for="f4-input">Input Code</label>
                                     <select id="f4-input">
                                         <option value="1">1: 1-phase</option>
@@ -687,18 +697,18 @@
                 <div class="input-group" style="display: flex; align-items: center; gap: 10px;">
                     <label for="application">Select Application:</label>
                     <select id="application">
-                    <option value="ChooseApplication">-- Choose Application --</option>
-                    <option value="Pump">Pump</option>
-                    <option value="Lift">Lift</option>
-                    <option value="Rotarytable">Rotary Table</option>
-                    <option value="Conveyor">Conveyor</option>
-                    <option value="Genericrotary">Generic Rotary</option>
-                    <option value="Blower">Blower</option>
-                    <!-- <option value="MaterialHandling">Generic Linear</option>
-                    <option value="Testsystems">Generic Linear</option>
-                    <option value="Specialmachinery">Generic Linear</option>
-                    <option value="Woodworking">Generic Linear</option>
-                    <option value="Machining">Generic Linear</option> -->
+                        <option value="ChooseApplication">-- Choose Application --</option>
+                        <option value="Pump">Pump</option>
+                        <option value="Lift">Lift</option>
+                        <option value="Rotarytable">Rotary Table</option>
+                        <option value="Conveyor">Conveyor</option>
+                        <option value="Genericrotary">Generic Rotary</option>
+                        <option value="Blower">Blower</option>
+                        <!-- <option value="MaterialHandling">Generic Linear</option>
+                        <option value="Testsystems">Generic Linear</option>
+                        <option value="Specialmachinery">Generic Linear</option>
+                        <option value="Woodworking">Generic Linear</option>
+                        <option value="Machining">Generic Linear</option> -->
                     </select>
                 </div>
                 
@@ -711,7 +721,7 @@
                         <div id="dynamicInputs" style="display: block;"></div>
                         <button onclick="loadGenericData(getElementById('application').value)" style="display:none">Load Generic Data</button><br/><br/>
                         <button id="calculateButton" onclick="calculateForApplication()" style="display:none">Calculate</button>
-                        <span id="doneMessage" style="margin-left:10px; display:none;">Done</span><br>
+                        <span id="doneMessage" style="margin-left:10px; display:none;">Done</span>
                     </div>
 
                     <div class="product-fields-col-2">
@@ -741,23 +751,150 @@
                 <script src="suggestions.js"></script>
             </div>
 
-            <div class="container-right" id="brusator-to-dl4" style="display: none;">
-                coming soon!  
+            <div class="container-right" id="brusatori-to-dl4" style="display: none;">        
+                <div class="product-fields-row">
+                    <div class="product-fields-col-2">
+                        <button onclick="window.open('brusatoricatalog.pdf', '_blank');"style="display: inline-block;">Open Brusatori Catalog</button>
+                        <h2 class="brusatori-title" style="color:#698fff; text-align: center;">Brusatori Input</h2>
+                        <label for="brusatori-identifier" style="display: inline-block">Brusatori Identifier:</label>
+                        <input type="text" id="brusatori-identifier" name="brusatori-identifier" placeholder="ex. 071154" value="071104">
+                        <br><br>
+                        <div id="brusatori-checkboxes-container">
+                            <label>Configurable Options:</label>
+                            <div class="checkbox-group option-group">
+                                <label><input type="checkbox" id="brusatori-withfeatherkey" value="shaft with feather key"> Shaft with feather key</label>
+                                <label><input type="checkbox" id="brusatori-withbrake" value="with brake"> With brake</label>
+                                <label style="display: inline-block"> Encoder:</label>
+                                <select id="brusatori-encoder">
+                                    <option value="No encoder">No Encoder</option>
+                                    <option value="resolver">Resolver</option>
+                                    <option value="SRS50">SRS50</option>
+                                    <option value="SRM50">SRM50</option>
+                                </select>
+                                <br><br>
+                                <label style="display: inline-block"> Additional Options:</label>
+                                <select id="brusatori-additionaloptions">
+                                    <option value="Without">Without</option>
+                                    <option value="IP65">IP65</option>
+                                    <option value="IM B35">IM B35</option>
+                                    <option value="IP65/IM B35">IP65/IM B35</option>
+                                    <option value="Special Shaft">Special Shaft</option>
+                                    <option value="IP65/Special Shaft">IP65/Special Shaft</option>
+                                    <option value="IM B35/Special Shaft">IM B35/Special Shaft</option>
+                                    <option value="IP65/IM B35/Special Shaft">IP65/IM B35/Special Shaft</option>
+                                </select>
+                            </div>
+                        </div>
+                    
+                        <div class="divider-thin"></div>
+
+                        <label class="result-label">Identifier:</label>
+                        <span class="result-value" id="brusatori-code-result"></span><br>
+                        <label class="result-label">Rated Material Number:</label>
+                        <span class="result-value" id="brusatori-rated-matno-result"></span><br>
+                        <label class="result-label">CMAT Type Code:</label>
+                        <span class="result-value" id="brusatori-cmat-type-code-result"></span><br>
+                        <label class="result-label">Configurable Options:</label>
+                        <span class="result-value" id="brusatori-configurable-options-result"></span>
+                    </div>
+                    <div class="product-fields-col-2">
+                            <button onclick="window.open('dl4_catalog.pdf', '_blank');" style="display: inline-block;">Open KEB DL4 catalog</button>
+                            <button onclick="window.open('dl4_manual.pdf', '_blank');" style="display: inline-block;">Open KEB DL4 manual</button>
+
+                            <h2 style="color:#dd0067; text-align: center;">KEB Input</h2>
+                            <label for="keb-identifier" class="inline-label">KEB Identifier:</label>
+                            <div class="inline-select-group">
+                                <select id="keb-input-model">
+                                    <option value="V4">V4</option>
+                                </select>
+                                <select id="keb-input-size">
+                                    <option value="SE">SE</option>
+                                    <option value="SF">SF</option>
+                                    <option value="SG">SG</option>
+                                </select>
+                                <select id="keb-input-length">
+                                    <option value="L1">L1</option>
+                                    <option value="L2">L2</option>
+                                    <option value="L3">L3</option>
+                                    <option value="L4">L4</option>
+                                    <option value="L5">L5</option>
+                                    <option value="L6">L6</option>
+                                    <option value="L7">L7</option>
+                                    <option value="L8">L8</option>
+                                </select>
+                                <select id="keb-input-cooling">
+                                    <option value="CS">CS</option>
+                                    <option value="CF">CF</option>
+                                    <option value="LC">LC</option>
+                                </select>
+                                <select id="keb-input-speed">
+                                    <option value="SP10">SP10</option>
+                                    <option value="SP15">SP15</option>
+                                    <option value="SP20">SP20</option>
+                                    <option value="SP28">SP28</option>
+                                    <option value="SP30">SP30</option>
+                                </select>
+                            </div>
+                            <br><br>
+                            <div id="keb-checkboxes-container">
+                                <label>Configurable Options:</label>
+                                <div class="checkbox-group option-group">
+                                    <label><input type="checkbox" id="keb-withfeatherkey" value="shaft with feather key"> Shaft with feather key</label>
+                                    <label><input type="checkbox" id="keb-withbrake" value="with brake"> With brake</label>
+                                    <label style="display: inline-block">Encoder:</label>
+                                    <select id="keb-encoder">
+                                        <option value="No encoder">No Encoder</option>
+                                        <option value="resolver">Resolver</option>
+                                        <option value="SRS50">SRS50</option>
+                                        <option value="SRM50">SRM50</option>
+                                    </select>
+                                    <br><br>
+                                    <label style="display: inline-block">Additional Options:</label>
+                                    <select id="keb-additionaloptions">
+                                        <option value="Without">Without</option>
+                                        <option value="IP65">IP65</option>
+                                        <option value="IM B35">IM B35</option>
+                                        <option value="IP65/IM B35">IP65/IM B35</option>
+                                        <option value="Special Shaft">Special Shaft</option>
+                                        <option value="IP65/Special Shaft">IP65/Special Shaft</option>
+                                        <option value="IM B35/Special Shaft">IM B35/Special Shaft</option>
+                                        <option value="IP65/IM B35/Special Shaft">IP65/IM B35/Special Shaft</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="divider-thin"></div>
+
+                            <label class="result-label">Identifier:</label>
+                            <span class="result-value" id="keb-code-result"></span><br>
+                            <label class="result-label">Rated Material Number:</label>
+                            <span class="result-value" id="keb-rated-matno-result"></span><br>
+                            <label class="result-label">CMAT Type Code:</label>
+                            <span class="result-value" id="keb-cmat-type-code-result"></span><br>
+                            <label class="result-label">Configurable Options:</label>
+                            <span class="result-value" id="keb-configurable-options-result"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-right" id="drive-error-help" style="display: none;">
+                <!-- handled by whiteboard.js -->
             </div> 
-
-
 
 
             <script src="part-number-generator.js"></script>
             <script src="container-selection.js"></script>
-
+            <script src="brusatori-to-dl4.js"></script>
+            <script src="whiteboard.js"></script>
+            <script src="ui-init.js"></script>
         </div>
 
         <div class="keb-footer">
             <table class="footer-table">
                 <tr>
                     <td class="footer-col-1">
-                        © KEB America, <span id="footer-productyear"></span><br>All Rights Reserved
+                        <!-- © KEB America, <span id="footer-productyear"></span><br>All Rights Reserved -->
+                         © KEB America, 2025 <br>All Rights Reserved
                     </td>
                     <td class="footer-col-2">
                         Name: Basis<br><b>KEB COMBIVERT <span id="footer-productline"></span></b>

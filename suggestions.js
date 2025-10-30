@@ -398,12 +398,16 @@ function resetSuggestionForm() {
 
 // Update current application field
 function updateCurrentApplication() {
-    const appSelect = document.getElementById('application');
     const currentAppField = document.getElementById('currentApp');
-    
-    if (appSelect && currentAppField) {
-        const selectedApp = appSelect.value || 'None selected';
-        currentAppField.value = selectedApp;
+    // Find the currently selected container (with .selectable-container.selected)
+    const selectedContainer = document.querySelector('.selectable-container.selected');
+    let selectedText = 'None selected';
+    if (selectedContainer) {
+        // Use the container's label, aria-label, or innerText
+        selectedText = selectedContainer.getAttribute('aria-label') || selectedContainer.innerText.trim() || selectedContainer.id || 'Selected';
+    }
+    if (currentAppField) {
+        currentAppField.value = selectedText;
     }
 }
 
