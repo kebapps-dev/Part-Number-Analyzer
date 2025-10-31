@@ -376,3 +376,37 @@ input[type="number"] {
             vertical-align: middle;
             margin-right: 8px;
         }
+
+        /* Diode / Troubleshooting table styling moved from inline styles */
+        .diode-test-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            /* thin outer border for the overall table */
+            border: 1px solid #ccc;
+        }
+        /* Thick, prominent border for header cells */
+        .diode-test-table thead th {
+            border: 3px solid #222; /* thick header border */
+            text-align: left;
+            padding: 8px 6px;
+            font-weight: 700;
+            background: #fafafa;
+        }
+        /* Thin borders for body cells */
+        .diode-test-table tbody td {
+            padding: 8px 6px;
+            vertical-align: top;
+            border: 2px solid #ddd; /* slightly thicker thin cell borders */
+        }
+        .table-wrapper {
+            overflow: auto;
+            max-width: 100%;
+        }
+        .muted {
+            color: #666;
+            font-size: 0.95rem;
+            margin-top: 4px;
+            margin-bottom: 6px;
+        }
+

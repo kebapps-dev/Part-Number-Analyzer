@@ -183,6 +183,11 @@
     const wrapper = el('whiteboardContent');
     if (!wrapper) return;
     wrapper.innerHTML = '';
+    // Brief contributor note: show an italic instruction above the table header
+    const note = document.createElement('div');
+    note.className = 'whiteboard-note';
+    note.innerHTML = '<em>please add troubleshooting tips as you find new ones!<br><br></em>';
+    wrapper.appendChild(note);
 
     const table = document.createElement('table');
     table.className = 'whiteboard-table';

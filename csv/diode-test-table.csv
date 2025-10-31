@@ -1,0 +1,35 @@
+Model;Housing;1: Negative Lead;1: Positive Lead;1: Value;2: Positive Lead;2: Negative Lead;2: Value
+F5;ABCDEGH Housing; '+' Terminal;L1;.4 to .5; '-' Terminal;L1;.4 to .5
+;; '+' Terminal;L2;.4 to .5; '-' Terminal;L2;.4 to .5
+;; '+' Terminal;L3;.4 to .5; '-' Terminal;L3;.4 to .5
+;; '+' Terminal;U;.3; '-' Terminal;U;.3
+;; '+' Terminal;V;.3; '-' Terminal;V;.3
+;; '+' Terminal;W;.3; '-' Terminal;W;.3
+;;E Housing;PB;.4;E Housing;PB;Open/OL
+;;G Housing;PB;.4;G Housing;PB;1.5
+;;H Housing;PB;.3;H Housing;PB;.3
+;RUP Housing; '+' Terminal;L1;.4 to .5; '-' Terminal;L1;.4
+;; '+' Terminal;L2;Open/OL; '-' Terminal;L2;.4
+;; '+' Terminal;L3;Open/OL; '-' Terminal;L3;.4
+;; '+' Terminal;U;.2 to .3; '-' Terminal;U;.2 to .3
+;; '+' Terminal;V;.2 to .4; '-' Terminal;V;.2 to .3
+;; '+' Terminal;W;.2 to .5; '-' Terminal;W;.2 to .3
+;;R Housing;PB;.3;R Housing;PB;.3
+;;U Housing;PB;.3;U Housing;PB;.3
+;;P Housing;PB;N/A;P Housing;PB;N/A
+S6;Housing 2; '+' Terminal;L1;0.56; '-' Terminal;L1;0.556
+;; '+' Terminal;L2;0.56; '-' Terminal;L2;0.556
+;; '+' Terminal;L3;0.56; '-' Terminal;L3;0.556
+;; '+' Terminal;U;0.440; '-' Terminal;U;0.581
+;; '+' Terminal;V;0.440; '-' Terminal;V;0.581
+;; '+' Terminal;W;0.440; '-' Terminal;W;0.581
+;; '+' Terminal;R;OL; '-' Terminal;R;OL
+;; '-' Terminal;R;OL; '+' Terminal;R;0.610
+;Housing 4; '+' Terminal;L1;.4 to .5; '-' Terminal;L1;.4
+;; '+' Terminal;L2;Open/OL; '-' Terminal;L2;.4
+;; '+' Terminal;L3;Open/OL; '-' Terminal;L3;.4
+;; '+' Terminal;U;.2 to .3; '-' Terminal;U;.2 to .3
+;; '+' Terminal;V;.2 to .4; '-' Terminal;V;.2 to .3
+;; '+' Terminal;W;.2 to .5; '-' Terminal;W;.2 to .3
+;; '+' Terminal;R;OL; '-' Terminal;R;OL
+;; '-' Terminal;R;OL; '+' Terminal;R;0.610

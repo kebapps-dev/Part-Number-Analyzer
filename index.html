@@ -61,7 +61,16 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="container selectable-container" id="container-left-drive-troubleshooting-faq">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Drive Troubleshooting FAQ</h1>
+                        </div>
+                        <div class="h1-right-section">
+                            <h3>A resource for common troubleshooting questions and issues.</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="container-right" id="drive-pn-analyzer" style="display: none;">
@@ -879,9 +888,23 @@
 
             <div class="container-right" id="drive-error-help" style="display: none;">
                 <!-- handled by whiteboard.js -->
-            </div> 
+            </div>
 
+            <div class="container-right" id="drive-troubleshooting-faq" style="display: none;">
+                <h2>F5/S6 Diode Test Results</h2>
+                <div class="table-wrapper">
+                        <table id="faqTable" class="diode-test-table">
+                                <thead id="faqHead"></thead>
+                                <tbody id="faqBody"></tbody>
+                        </table>
+                </div>
+                <script src="csv-table-parser.js"></script>
 
+                <h2>Serial Adapter Pinouts/Requirements</h2>
+                coming soon!
+            </div>
+            
+            
             <script src="part-number-generator.js"></script>
             <script src="container-selection.js"></script>
             <script src="brusatori-to-dl4.js"></script>
@@ -891,6 +914,9 @@
                 window.WHITEBOARD_REMOTE_DB = "https://keb-resources-default-rtdb.firebaseio.com";
                 // Optional path (without leading or trailing slash). Default is 'whiteboard/shared'
                 window.WHITEBOARD_REMOTE_PATH = window.WHITEBOARD_REMOTE_PATH || 'whiteboard/shared';
+                // CSV table parser: default CSV to load for the Troubleshooting FAQ
+                // You can override this value in index.html to point at another CSV
+                window.CSV_TABLE_URL = window.CSV_TABLE_URL || 'csv/diode-test-table.csv';
             </script>
             <script src="whiteboard.js"></script>
             <script src="ui-init.js"></script>
