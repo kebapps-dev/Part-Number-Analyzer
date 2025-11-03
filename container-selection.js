@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Optionally, select the first container by default, 0 based index
-  if (leftContainers[1]) {
-    leftContainers[1].click();
+  if (leftContainers[0]) {
+    leftContainers[0].click();
   }
 });});

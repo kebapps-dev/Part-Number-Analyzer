@@ -6,7 +6,9 @@ const SUGGESTION_EMAIL = 'conner.glaser@kebamerica.com';
 
 // Configuration
 const SUGGESTION_CONFIG = {
-    emailEndpoint: `https://formsubmit.co/${SUGGESTION_EMAIL}`,
+    // Use formsubmit endpoint token instead of exposing a naked email address in the action URL
+    // Token provided by user: 9a4f0112cdaad326904803beb42aa724
+    emailEndpoint: `https://formsubmit.co/9a4f0112cdaad326904803beb42aa724`,
     maxSuggestionLength: 1000,
     showThankYouDuration: 3000, // 3 seconds
     buttonText: {
@@ -89,7 +91,7 @@ function createSuggestionBox() {
             }
             
             .suggestion-toggle {
-                background: linear-gradient(135deg, #4CAF50, #45a049);
+                background: linear-gradient(135deg, #000000ff, #000000ff);
                 color: white;
                 border: none;
                 padding: 12px 20px;
@@ -105,9 +107,8 @@ function createSuggestionBox() {
             }
             
             .suggestion-toggle:hover {
-                background: linear-gradient(135deg, #45a049, #3d8b40);
+                background: linear-gradient(135deg,#dd0067, #dd0067);
                 transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
             }
             
             .suggestion-panel {
@@ -203,7 +204,7 @@ function createSuggestionBox() {
             .form-group input:focus,
             .form-group textarea:focus {
                 outline: none;
-                border-color: #4CAF50;
+                border-color: #dd0067;
                 box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
             }
             
@@ -248,12 +249,12 @@ function createSuggestionBox() {
             }
             
             .btn-submit {
-                background: #4CAF50;
+                background: #dd0067;
                 color: white;
             }
             
             .btn-submit:hover {
-                background: #45a049;
+                background: #dd0067;
             }
             
             .btn-submit:disabled {
