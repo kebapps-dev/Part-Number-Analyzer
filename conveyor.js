@@ -38,12 +38,13 @@ function findClosestConveyorMotor() {
 
   // Use standardized results display with converted values and units
   const outputs = {
-    [`Required Motor Power (${powerUnit})`]: parseFloat(motorPowerKwDisplay.toFixed(3)),
-    "Operating Speed": `${rotationalSpeed.toFixed(2)} RPM`,
-    [`Required Torque (${torqueUnit})`]: parseFloat(torqueDisplay.toFixed(3)),
+    
+    [`(1) Frictional Force (${forceUnit})`]: parseFloat(frictionalForceDisplay.toFixed(2)),
+    [`(2) Incline Force (${forceUnit})`]: parseFloat(inclineForceDisplay.toFixed(2)),
     [`Total Force (${forceUnit})`]: parseFloat(totalForceDisplay.toFixed(2)),
-    [`Frictional Force (${forceUnit})`]: parseFloat(frictionalForceDisplay.toFixed(2)),
-    [`Incline Force (${forceUnit})`]: parseFloat(inclineForceDisplay.toFixed(2))
+    "(3) Operating Speed": `${rotationalSpeed.toFixed(2)} RPM`,
+    [`(4) Required Torque (${torqueUnit})`]: parseFloat(torqueDisplay.toFixed(3)),
+    [`(5) Required Motor Power (${powerUnit})`]: parseFloat(motorPowerKwDisplay.toFixed(3))
   };
   displayStandardResults(outputs);
 }

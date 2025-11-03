@@ -40,13 +40,13 @@ function findClosestLiftMotor() {
 
   // Create outputs with unit-convertible results (include units in key names for inline dropdowns)
   const outputs = {
-    "Motor Speed": `${motorSpeed.toFixed(2)} RPM`,
-    [`(1) Motor Required Torque (${torqueUnit})`]: parseFloat(convertResultValue(motorRequiredTorque, 'torque', torqueUnit).toFixed(3)),
-    [`Motor Required Peak Torque (${torqueUnit})`]: parseFloat(convertResultValue(motorRequiredPeakTorque, 'torque', torqueUnit).toFixed(3)),
-    [`(2) Motor Required Power (${powerUnit})`]: parseFloat(convertResultValue(requiredMotorPowerWatts, 'power', powerUnit).toFixed(3)),
+    "(1) Motor Speed": `${motorSpeed.toFixed(2)} RPM`,
+    [`(2) Motor Required Torque`]: parseFloat(convertResultValue(motorRequiredTorque, 'torque', torqueUnit).toFixed(3)),
+    [`(3) Motor Required Peak Torque`]: parseFloat(convertResultValue(motorRequiredPeakTorque, 'torque', torqueUnit).toFixed(3)),
+    [`(4) Motor Required Power`]: parseFloat(convertResultValue(requiredMotorPowerWatts, 'power', powerUnit).toFixed(3)),
     "Gearbox Output Speed": `${gearboxOutputSpeed.toFixed(2)} RPM`,
-    [`Gearbox Required Torque (${torqueUnit})`]: parseFloat(convertResultValue(loadRequiredTorque, 'torque', torqueUnit).toFixed(3)),
-    [`Gearbox Required Peak Torque (${torqueUnit})`]: parseFloat(convertResultValue(loadRequiredPeakTorque, 'torque', torqueUnit).toFixed(3)),
+    [`Gearbox Required Torque`]: parseFloat(convertResultValue(loadRequiredTorque, 'torque', torqueUnit).toFixed(3)),
+    [`Gearbox Required Peak Torque`]: parseFloat(convertResultValue(loadRequiredPeakTorque, 'torque', torqueUnit).toFixed(3)),
   };
   
   displayStandardResults(outputs);

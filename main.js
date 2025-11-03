@@ -601,50 +601,56 @@ function showFormulasForApplication(application) {
                 <span class="formula"><b>(2)</b> \\( D_{pump} = \\frac{Q}{RPM} \\)</span>
                 <span class="formula"><b>(3)</b> \\( F_{clamp} = P_{clamp} \\cdot A_{clamp} \\)</span>
                 <span class="formula"><b>(4)</b> \\( T_{motor} = \\frac{D_{pump} \\cdot P_{clamp}}{2\pi \\cdot \eta_{vol}} \\)</span>
-            `;
+                <span class="formula"><b>(5)</b> \\( P_{motor} = T_{motor} \\cdot \\omega_{motor} \\)</span>
+                `;
             break;
         case "Lift":
             html = `
-                <span class="formula"><b></b> \\( RPM_{motor} = \\frac{60 \\cdot v}{\\pi \\cdot D_{drum}} \\cdot GR \\)</span>
-                <span class="formula"><b>Force:</b> \\( F_{grav} = m \\cdot g \\)</span>
-                <span class="formula"><b>(1)</b> \\( T_{hold} = \\frac{F_{grav} \\cdot D_{drum}}{2 \\cdot GR \\cdot \\eta} \\)</span>
+                <span class="formula"><b>(1)</b> \\( RPM_{motor} = \\frac{60 \\cdot v \\cdot i}{\\pi \\cdot D_{drum}} \\)</span>
+                <span class="formula"><b></b> \\( F_{grav} = m \\cdot g \\)</span>
+                <span class="formula"><b>(2)</b> \\( T_{hold} = \\frac{F_{grav} \\cdot D_{drum}}{2 \\cdot GR \\cdot \\eta} \\)</span>
+ 
                 
-                <span class="formula"><b>Power:</b> \\( P = T \\cdot \\omega \\)</span>
-                <span class="formula"><b>Acceleration Torque:</b> \\( T_{accel} = J \\cdot \\alpha \\)</span>
+                <span class="formula"><b>(3)</b> \\( T_{accel} = J \\cdot \\alpha \\)</span>                
+                <span class="formula"><b>(4):</b> \\( P = T \\cdot \\omega \\)</span>
+
             `;
             break;
         case "Rotarytable":
             html = `
-                <span class="formula"><b>Inertia:</b> \\( J = \\frac{1}{2} \\cdot m \\cdot r^2 + J_{load} \\)</span>
-                <span class="formula"><b>Angular Velocity:</b> \\( \\omega = \\frac{\\theta}{t_{move}} \\)</span>
-                <span class="formula"><b>Angular Acceleration:</b> \\( \\alpha = \\frac{\\omega}{t_{accel}} \\)</span>
-                <span class="formula"><b>Acceleration Torque:</b> \\( T_{accel} = J \\cdot \\alpha + T_{friction} \\)</span>
-                <span class="formula"><b>Required Motor Torque:</b> \\( T_{motor} = \\frac{T_{accel}}{GR} \\)</span>
+                <span class="formula"><b>(1)</b> \\( \\omega = \\frac{\\theta}{t_{move}} \\)</span>
+                <span class="formula"><b>(2)</b> \\( \\theta = \\omega \\cdot t_{move} \\)</span>
+                <span class="formula"><b></b> \\( \\alpha = \\frac{\\omega}{t_{accel}} \\)</span>
+                <span class="formula"><b>(3)</b> \\( J_{table} = \\frac{1}{2} \\cdot m \\cdot r^2 \\)</span>
+                <span class="formula"><b>(4)</b> \\( J_{reflected} = \\frac{J_{table} + J_{load}}{i^2} \\)</span>
+                <span class="formula"><b>(5)</b> \\( T_{const} = \\frac{T_{friction}}{i} \\)</span>
+                <span class="formula"><b>(6)</b> \\( T_{accel} = (J_{motor} + J_{gearbox} + J_{brake} + J_{reflected}) \\cdot \\alpha + T_{const} \\)</span>
+                <span class="formula"><b>(7)</b> \\( T_{rms motor} = \\sqrt{\\frac{ (T_{accel})^2 \\cdot t_{accel} + (T_{decel})^2 \\cdot t_{decel}  + (\\frac{T_{const}}{i})^2 \\cdot t_{const} } {t_{move} + t_{dwell} } } \\)</span>
             `;
             break;
         case "Conveyor":
             html = `
-                <span class="formula"><b>Belt Force:</b> \\( F_{belt} = m \\cdot g \\cdot (\\sin(\\theta) + \\mu \\cdot \\cos(\\theta)) \\)</span>
-                <span class="formula"><b>Motor Torque:</b> \\( T_{motor} = \\frac{F_{belt} \\cdot D_{roller}}{2} \\)</span>
-                <span class="formula"><b>Motor Speed:</b> \\( RPM = \\frac{v_{belt} \\cdot 60}{\\pi \\cdot D_{roller}} \\)</span>
-                <span class="formula"><b>Power Required:</b> \\( P = F_{belt} \\cdot v_{belt} \\)</span>
+                <span class="formula"><b>(1)</b> \\( F_{friction} = m_{load} \\cdot g \\cdot\\mu_{friction} \\)</span>
+                <span class="formula"><b>(2)</b> \\( F_{incline} = m_{load} \\cdot g \\cdot \\sin(\\theta) \\)</span>
+                <span class="formula"><b>(3)</b> \\( RPM = \\frac{v_{belt} \\cdot 60}{\\pi \\cdot D_{roller}} \\)</span>
+                <span class="formula"><b>(4)</b> \\( T_{motor} = \\frac{F_{total} \\cdot D_{roller}}{2} \\)</span>
+                <span class="formula"><b>(5)</b> \\( P = F_{belt} \\cdot v_{belt} \\)</span>
             `;
             break;
         case "Genericrotary":
             html = `
                 <span class="formula">\\( \\omega = 2\\pi \\cdot \\frac{\\text{RPM}}{60} \\)</span>
-                <span class="formula"><b>(2)</b> \\( T_{accel} = J \\cdot \\alpha = J \\cdot \\frac{\\omega}{t_{accel}} \\)</span>
-                <span class="formula"><b>(3)</b> \\( T_{rms} = \\sqrt{\\frac{T_{accel}^2 t_{accel} + T_{run}^2 t_{run} + T_{decel}^2 t_{decel} + T_{rest}^2 t_{rest}}{t_{cycle}}} \\)</span>
-                <span class="formula">\\( P = T_{rms} \\cdot \\omega \\)</span>
-                <span class="formula"><b>(1)</b> \\( P_{margin} = P \\cdot (1 + \\frac{\\text{margin}}{100}) \\)</span>
+                <span class="formula">\\( \\alpha = J \\cdot \\frac{\\omega}{t} \\)</span>
+                <span class="formula"><b>(1)</b> \\( T_{accel} = (J \\cdot \\alpha) + T_{friction} \\)</span>
+                <span class="formula"><b>(2)</b> \\( T_{rms} = \\sqrt{\\frac{T_{accel}^2 t_{accel} + T_{friction}^2 t_{run} + T_{decel}^2 t_{decel} + T_{rest}^2 t_{rest}}{t_{cycle}}} \\)</span>
+                <span class="formula"><b>(3)</b> \\( P = T_{rms} \\cdot \\omega \\)</span>
             `;
             break;
         case "Blower":
             html = `
-                <span class="formula"><b>Fan Power:</b> \\( P_{fan} = \\frac{Q \\times \\Delta P}{\\eta_{fan}/100} \\)</span>
-                <span class="formula"><b>Motor Power:</b> \\( P_{motor} = \\frac{P_{fan}}{\\eta_{motor}/100} \\)</span>
-                <span class="formula"><b>Motor Torque:</b> \\( T = \\frac{P_{motor}}{\\omega} = \\frac{P_{motor}}{\\frac{2\\pi \\times RPM}{60}} \\)</span>
-                <span class="formula"><b>Where:</b> Q = Flow Rate (CFM), ΔP = Pressure (inH₂O), ω = Angular velocity (rad/s)</span>
+                <span class="formula"><b>(1)</b> \\( P_{fan} = \\frac{Q \\cdot \\Delta P}{\\eta_{fan}/100} \\)</span>
+                <span class="formula"><b>(2)</b> \\( P_{motor} = \\frac{P_{fan}}{\\eta_{motor}/100} \\)</span>
+                <span class="formula"><b>(3)</b> \\( T_{motor} = \\frac{P_{motor}}{\\omega} = \\frac{P_{motor}}{\\frac{2\\pi \\cdot RPM}{60}} \\)</span>
             `;
             break;
         default:
@@ -735,84 +741,8 @@ function renderInputsForApp(appName) {
 
         container.appendChild(wrapper);
     });
-
-    // Add result unit selection for Blower application
-    // Note: Now using inline unit dropdowns in result table instead
-    // if (appName.toLowerCase() === 'blower') {
-    //     addResultUnitControls(container);
-    // }
 }
 
-//needs to be scalable to other applications
-
-// Function to add result unit selection controls that behave like input controls
-function addResultUnitControls(container) {
-    // Create a separator
-    const separator = document.createElement("hr");
-    separator.style.margin = "15px 0 10px 0";
-    container.appendChild(separator);
-
-    // Add title for result units
-    const title = document.createElement("h4");
-    title.textContent = "Result Units";
-    title.style.margin = "0 0 10px 0";
-    title.style.color = "#333";
-    container.appendChild(title);
-
-    // Power unit selection
-    const powerWrapper = document.createElement("div");
-    powerWrapper.style.marginBottom = "8px";
-
-    const powerLabel = document.createElement("label");
-    powerLabel.textContent = "Power Unit:";
-    powerLabel.style.display = "inline-block";
-    powerLabel.style.width = "250px";
-    powerWrapper.appendChild(powerLabel);
-
-    const powerSelect = document.createElement("select");
-    powerSelect.id = "blowerPowerUnit";
-    powerSelect.title = "Select unit for power results";
-    powerSelect.style.width = "80px";
-    powerSelect.style.marginLeft = "4px";
-    
-    const powerUnits = getAvailableUnits('power');
-    powerUnits.forEach(unit => {
-        const opt = document.createElement("option");
-        opt.value = unit;
-        opt.textContent = unit;
-        if (unit === 'W') opt.selected = true; // Default to Watts
-        powerSelect.appendChild(opt);
-    });
-    powerWrapper.appendChild(powerSelect);
-    container.appendChild(powerWrapper);
-
-    // Torque unit selection
-    const torqueWrapper = document.createElement("div");
-    torqueWrapper.style.marginBottom = "8px";
-
-    const torqueLabel = document.createElement("label");
-    torqueLabel.textContent = "Torque Unit:";
-    torqueLabel.style.display = "inline-block";
-    torqueLabel.style.width = "250px";
-    torqueWrapper.appendChild(torqueLabel);
-
-    const torqueSelect = document.createElement("select");
-    torqueSelect.id = "blowerTorqueUnit";
-    torqueSelect.title = "Select unit for torque results";
-    torqueSelect.style.width = "80px";
-    torqueSelect.style.marginLeft = "4px";
-    
-    const torqueUnits = getAvailableUnits('torque');
-    torqueUnits.forEach(unit => {
-        const opt = document.createElement("option");
-        opt.value = unit;
-        opt.textContent = unit;
-        if (unit === 'Nm') opt.selected = true; // Default to Newton-meters
-        torqueSelect.appendChild(opt);
-    });
-    torqueWrapper.appendChild(torqueSelect);
-    container.appendChild(torqueWrapper);
-}
 
 // Function to add result unit selection controls
 function addResultUnitControls(container) {
@@ -1156,28 +1086,27 @@ function displayStandardResults(currentOutputs) {
             'Pump': {
                 '(1) Flow Rate Required': { type: 'flow', component: 'pump', defaultUnit: 'L/min' },
                 '(3) Clamping Force': { type: 'force', component: 'pump', defaultUnit: 'N' },
-                'Required Motor Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
-                '(4) Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' }
+                '(4) Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+                '(5) Required Motor Power': { type: 'power', component: 'motor', defaultUnit: 'kW' }
             },
             'Spindle': {
                 'Motor Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
                 'Torque Required': { type: 'torque', component: 'motor', defaultUnit: 'Nm' }
             },
             'Lift': {
-                '(1) Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
-                'Motor Required Peak Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
-                '(2) Motor Required Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
+                '(2) Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+                '(3) Motor Required Peak Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+                '(4) Motor Required Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
                 'Gearbox Required Torque': { type: 'torque', component: 'gearbox', defaultUnit: 'Nm' },
-                '(4) Gearbox Required Peak Torque': { type: 'torque', component: 'gearbox', defaultUnit: 'Nm' },
-                'Gearbox Required Power': { type: 'power', component: 'gearbox', defaultUnit: 'kW' }
+                'Gearbox Required Peak Torque': { type: 'torque', component: 'gearbox', defaultUnit: 'Nm' }
             },
             'Rotarytable': {
-                'Total System Inertia': { type: 'inertia', component: 'motor', defaultUnit: 'kg·m²' },
-                'Calculated RMS Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
-                'Acceleration Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+                '(3) Rotary Table Inertia': { type: 'inertia', component: 'motor', defaultUnit: 'kg·m²' },
+                '(4) Calculated RMS Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+                '(3) Acceleration Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
                 'Deceleration Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
                 'Constant Speed Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
-                'Rotary Table Inertia': { type: 'inertia', component: 'motor', defaultUnit: 'kg·m²' }
+                '(4) Inertia Reflected to Motor': { type: 'inertia', component: 'motor', defaultUnit: 'kg·m²' }
             },
             'Genericrotary': {
                 '(1) Required Motor Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
@@ -1186,15 +1115,36 @@ function displayStandardResults(currentOutputs) {
             }
         };
         
-        // Check if this result key has a unit mapping
-        const appMappings = resultUnitMappings[currentApp];
-        const baseKey = key.replace(/\s*\([^)]+\)$/, ''); // Remove unit suffix
-        const unitMapping = appMappings?.[baseKey];
+    // Check if this result key has a unit mapping
+    const appMappings = resultUnitMappings[currentApp];
+    // Normalize the result key for lookup:
+    // - remove leading numbered labels like "(2) "
+    // - remove trailing unit suffixes like " (Nm)"
+    const normalizedKey = key.replace(/^\(\d+\)\s*/, '').replace(/\s*\([^)]+\)$/, '').trim();
+        // Try direct match first, then normalized match. Also allow mapping entries that still
+        // include leading numbering (e.g., "(2) Motor Required Torque") by normalizing
+        // mapping keys during lookup.
+        let unitMapping = appMappings?.[key] || appMappings?.[normalizedKey];
+        if (!unitMapping && appMappings) {
+            for (const mapKey in appMappings) {
+                const normMapKey = mapKey.replace(/^\(\d+\)\s*/, '').replace(/\s*\([^)]+\)$/, '').trim();
+                if (normMapKey === normalizedKey) {
+                    unitMapping = appMappings[mapKey];
+                    break;
+                }
+            }
+        }
         
         if (unitMapping && !isNaN(numericValue)) {
-            // Extract current unit from the key or use default
+            // Debug: log mapping resolution to help diagnose cases like Lift where the
+            // label/unit doesn't refresh as expected.
+            console.debug('Result mapping:', { key, normalizedKey, unitType: unitMapping.type, unitMapping });
+            // Determine which unit option should be selected in the dropdown:
+            // prefer the user's stored preference (window.selectedResultUnits) if present,
+            // otherwise fall back to any unit present in the result key or the mapping default.
             const unitMatch = key.match(/\(([^)]+)\)$/);
-            const currentUnit = unitMatch ? unitMatch[1] : unitMapping.defaultUnit;
+            const prefUnit = window.selectedResultUnits?.[unitMapping.type];
+            const currentUnit = prefUnit || (unitMatch ? unitMatch[1] : unitMapping.defaultUnit);
             
             // Get available units for this type
             const availableUnits = getAvailableUnits(unitMapping.type);
@@ -1205,7 +1155,7 @@ function displayStandardResults(currentOutputs) {
             valueDisplayHtml = `
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span style="min-width: 60px;">${numericValue.toFixed(3)}</span>
-                    <select onchange="updateInlineResultUnit('${baseKey}', '${unitMapping.component}', '${unitMapping.type}', this.value)" 
+                    <select onchange="updateInlineResultUnit('${normalizedKey}', '${unitMapping.component}', '${unitMapping.type}', this.value)" 
                             style="font-size: 12px; padding: 2px; border: 1px solid #ccc; border-radius: 3px;">
                         ${dropdownOptions}
                     </select>
@@ -1213,8 +1163,21 @@ function displayStandardResults(currentOutputs) {
             `;
         }
 
+        // Show the selected/display unit in the label if this result has a unit mapping
+        let displayKey = key;
+        if (unitMapping) {
+            // Remove any existing trailing unit suffix from the key
+            const labelWithoutUnit = key.replace(/\s*\([^)]+\)$/, '').trim();
+            // Prefer a user-selected unit (persisted in window.selectedResultUnits),
+            // otherwise fall back to the unit present in the key or the mapping default
+            const selectedUnit = (window.selectedResultUnits && window.selectedResultUnits[unitMapping.type])
+                || (key.match(/\(([^)]+)\)$/) ? key.match(/\(([^)]+)\)$/)[1] : null)
+                || unitMapping.defaultUnit;
+            displayKey = `${labelWithoutUnit} (${selectedUnit})`;
+        }
+
         html += `<tr>
-            <td style="padding:4px;">${key}</td>
+            <td style="padding:4px;">${displayKey}</td>
             <td style="padding:4px;">${valueDisplayHtml}</td>
             <td style="padding:4px;">${adjustmentHtml}</td>
             <td style="padding:4px;">${statusHtml}</td>
@@ -1240,11 +1203,14 @@ function updateInlineResultUnit(resultKey, componentType, unitType, newUnit) {
         window.selectedResultUnits = {};
     }
     window.selectedResultUnits[unitType] = newUnit;
+
+    // Debug: log the selection so we can confirm the stored preference
+    console.debug('updateInlineResultUnit:', { resultKey, componentType, unitType, newUnit, selectedResultUnits: window.selectedResultUnits });
     
     // Update the corresponding unit control if it exists (for backward compatibility)
     const currentApp = document.getElementById("application")?.value;
     
-    if (currentApp === 'blower') {
+    if (currentApp && currentApp.toLowerCase() === 'blower') {
         if (unitType === 'power') {
             const powerSelect = document.getElementById("blowerPowerUnit");
             if (powerSelect) powerSelect.value = newUnit;

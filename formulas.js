@@ -48,15 +48,15 @@ const rotarytableformulas = {
 
   rotaryTableInertia: (massIndexTable, radiusIndexTable) => 
     0.5 * massIndexTable * (radiusIndexTable ** 2), // massIndexTable: kg, radiusIndexTable: m → kg·m²
-  totalSystemInertia: (rotaryTableInertia, loadInertia, gearboxRatio, motorInertia, gearboxInertia, brakeInertia) =>
-    ((rotaryTableInertia + loadInertia) / (gearboxRatio ** 2)) + motorInertia + gearboxInertia + brakeInertia, // rotaryTableInertia: kg·m², loadInertia: kg·m², gearboxRatio: dimensionless → kg·m²
+  reflectedInertia: (rotaryTableInertia, loadInertia, gearboxRatio) =>
+    ((rotaryTableInertia + loadInertia) / (gearboxRatio ** 2)), // rotaryTableInertia: kg·m², loadInertia: kg·m², gearboxRatio: dimensionless → kg·m²
 
   torqueConstantFriction: (frictionTorque, gearboxRatio) => frictionTorque / gearboxRatio, // frictionTorque: Nm, gearboxRatio: dimensionless → Nm
-  torqueRequiredAcceleration: (totalSystemInertia, motorAcceleration, torqueConstantFriction) =>
-    (totalSystemInertia * motorAcceleration) + torqueConstantFriction, // totalSystemInertia: kg·m², motorAcceleration: rad/s², torqueConstantFriction: Nm → Nm
-  torqueRequiredDeceleration: (totalSystemInertia, motorDeceleration, torqueConstantFriction) =>
-    (totalSystemInertia * motorDeceleration) + torqueConstantFriction, // totalSystemInertia: kg·m², motorDeceleration: rad/s², torqueConstantFriction: Nm → Nm
-  torqueRequiredConstantSpeed: (torqueConstantFriction) => 
+  torqueRequiredAcceleration: (reflectedInertia, motorInertia, gearboxInertia, brakeInertia, motorAcceleration, torqueConstantFriction) =>
+    ((reflectedInertia + motorInertia + gearboxInertia + brakeInertia) * motorAcceleration) + torqueConstantFriction, // reflectedInertia: kg·m², motorAcceleration: rad/s², torqueConstantFriction: Nm → Nm
+  torqueRequiredDeceleration: (reflectedInertia, motorInertia, gearboxInertia, brakeInertia, motorDeceleration, torqueConstantFriction) =>
+    ((reflectedInertia + motorInertia + gearboxInertia + brakeInertia) * motorDeceleration) + torqueConstantFriction, // reflectedInertia: kg·m², motorDeceleration: rad/s², torqueConstantFriction: Nm → Nm
+  torqueRequiredConstantSpeed: (torqueConstantFriction) =>
     torqueConstantFriction, // torqueConstantFriction: Nm → Nm
   
   constantRunTime: (moveTime, accelTime, decelTime) =>

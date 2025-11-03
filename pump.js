@@ -75,7 +75,7 @@ function findClosestPumpMotor() {
     // "Motor Speed Required": pumpResults.motorSpeed,
     [`(4) Motor Required Torque (${torqueUnit})`]: parseFloat(motorTorqueDisplay.toFixed(3)),
     "Motor Required Speed": parseFloat(pumpResults.motorSpeedWithSafety.toFixed(0)) + ' RPM',
-    [`Required Motor Power (${powerUnit})`]: parseFloat(motorPowerDisplay.toFixed(3))
+    [`(5) Required Motor Power (${powerUnit})`]: parseFloat(motorPowerDisplay.toFixed(3))
   };
   displayStandardResults(outputs);
 }
@@ -114,7 +114,7 @@ function sizePumpMotor(params) {
   const motorSpeedWithSafety = motorSpeed * safetyFactor;
   
   // Calculate motor power
-  const motorPowerWatts = motorTorqueWithSafety * motorSpeedWithSafety; // motorSpeedWithSafety already in rad/s
+  const motorPowerWatts = motorTorque * motorSpeed * safetyFactor; // motorSpeedWithSafety already in rad/s
 
 
   return {

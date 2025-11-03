@@ -39,9 +39,9 @@ function findClosestBlowerMotor() {
 
   // Use standardized results display with converted values and units
   const outputs = {
-    [`Fan Power (${powerUnit})`]: parseFloat(fanPowerDisplay.toFixed(3)),
-    [`Motor Power (${powerUnit})`]: parseFloat(motorPowerDisplay.toFixed(3)),
-    [`Torque Required (${torqueUnit})`]: torqueDisplay ? parseFloat(torqueDisplay.toFixed(3)) : "N/A (Speed required)"
+    [`(1) Fan Power (${powerUnit})`]: parseFloat(fanPowerDisplay.toFixed(3)),
+    [`(2) Motor Power (${powerUnit})`]: parseFloat(motorPowerDisplay.toFixed(3)),
+    [`(3) Torque Required (${torqueUnit})`]: torqueDisplay ? parseFloat(torqueDisplay.toFixed(3)) : "N/A (Speed required)"
   };
   displayStandardResults(outputs);
 }

@@ -32,15 +32,15 @@ function findClosestRotaryTableMotor() {
 
   const rotaryTableInertia = rotarytableformulas.rotaryTableInertia(
     massIndexTable, radiusIndexTable);
-  const totalSystemInertia = rotarytableformulas.totalSystemInertia(
-    rotaryTableInertia, loadInertia, gearboxRatioRotary, motorInertia, gearboxInertia, brakeInertia);
+  const reflectedInertia = rotarytableformulas.reflectedInertia(
+    rotaryTableInertia, loadInertia, gearboxRatioRotary);
 
   const torqueConstantFriction = rotarytableformulas.torqueConstantFriction(
     frictionTorque, gearboxRatioRotary);
   const torqueRequiredAcceleration = rotarytableformulas.torqueRequiredAcceleration(
-    totalSystemInertia, motorAcceleration, torqueConstantFriction);
+    reflectedInertia, motorInertia, gearboxInertia, brakeInertia, motorAcceleration, torqueConstantFriction);
   const torqueRequiredDeceleration = rotarytableformulas.torqueRequiredDeceleration(
-    totalSystemInertia, motorDeceleration, torqueConstantFriction);
+    reflectedInertia, motorInertia, gearboxInertia, brakeInertia, motorDeceleration, torqueConstantFriction);
   const torqueRequiredConstantSpeed = rotarytableformulas.torqueRequiredConstantSpeed(
     torqueConstantFriction);
   const constantRunTime = rotarytableformulas.constantRunTime(
@@ -58,14 +58,15 @@ function findClosestRotaryTableMotor() {
 
   // Use standardized results display
   const outputs = {
-    "Maximum Angular Speed": `${maxAngularSpeed.toFixed(2)} rad/s`,
-    "Maximum Motor Rotational Speed": `${maxRotationalSpeed.toFixed(2)} RPM`,
-    [`Total System Inertia (${inertiaUnit})`]: parseFloat(convertResultValue(totalSystemInertia, 'inertia', inertiaUnit).toFixed(2)),
-    [`Calculated RMS Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRmsMotor, 'torque', torqueUnit).toFixed(2)),
-    [`Acceleration Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRequiredAcceleration, 'torque', torqueUnit).toFixed(2)),
+    "(1) Maximum Angular Speed": `${maxAngularSpeed.toFixed(2)} rad/s`,
+    "(2) Maximum Motor Rotational Speed": `${maxRotationalSpeed.toFixed(2)} RPM`,
+    [`(3) Rotary Table Inertia (${inertiaUnit})`]: parseFloat(convertResultValue(rotaryTableInertia, 'inertia', inertiaUnit).toFixed(2)),
+    [`(4) Inertia Reflected to Motor (${inertiaUnit})`]: parseFloat(convertResultValue(reflectedInertia, 'inertia', inertiaUnit).toFixed(2)),
+    [`(5) Constant Speed Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRequiredConstantSpeed, 'torque', torqueUnit).toFixed(2)),
+    [`(6) Acceleration Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRequiredAcceleration, 'torque', torqueUnit).toFixed(2)),
     [`Deceleration Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRequiredDeceleration, 'torque', torqueUnit).toFixed(2)),
-    [`Constant Speed Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRequiredConstantSpeed, 'torque', torqueUnit).toFixed(2)),
-    [`Rotary Table Inertia (${inertiaUnit})`]: parseFloat(convertResultValue(rotaryTableInertia, 'inertia', inertiaUnit).toFixed(2)),
+    [`(7) Calculated RMS Torque (${torqueUnit})`]: parseFloat(convertResultValue(torqueRmsMotor, 'torque', torqueUnit).toFixed(2)),
+    
   };
   displayStandardResults(outputs);
 }

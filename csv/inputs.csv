@@ -46,7 +46,6 @@ Genericrotary,genericDecelTime,Deceleration Time,number,any,s,,Time taken to dec
 Genericrotary,genericRestTime,Rest Time,number,any,s,,Time the rotary axis is at rest between cycles
 Genericrotary,genericMomentOfInertia,Moment of Inertia,number,any,"kg·m²,lb·ft²,g·cm²,kg·cm²",inertia,Rotational inertia of the load and mechanism
 Genericrotary,genericFrictionTorque,Friction Torque,number,any,"Nm,lb·ft,lb·in,oz·in,kg·cm",torque,Constant torque due to friction in the system
-Genericrotary,genericThermalMarginPercent,Thermal Margin,number,any,%,,Extra margin to account for thermal effects
 
 Blower,blowerAirflow,Blower Airflow,number,any,"CFM,m³/s,L/s,m³/h",airflow,Blower airflow in CFM
 Blower,blowerPressure,Blower Pressure,number,any,"inH2O,Pa,kPa,bar,psi",blowerpressure,Blower pressure in inches of water
