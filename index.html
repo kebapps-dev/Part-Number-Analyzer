@@ -917,16 +917,14 @@
             
 
             <div class="container-right" id="call-logger" style="display: none;">
-                <h2>Call Logger - Select Excel workbook (.xls or .xlsx) to append log</h2>
+                <h2>Call Logger</h2>
+                <label>Either create a new workbook template, or overwrite and append an existing workbook.</label><br>
                 <div>
                     <div style="margin-bottom:8px; display:flex; gap:8px; align-items:center;">
                         <label style="display:block;"></label>
-                        <label >Option 1:</label>
                         <button id="cl_open_native" type="button" style="margin-left:6px;">Overwrite Existing Workbook</button>
-                        <label for="cl_file" style="margin-right:6px;">Option 2:</label>
-                        <input type="file" id="cl_file" accept=".xls,.xlsx" />
-                        <label>Option 3:</label>
-                        <button id="cl_create_template" type="button" style="margin-left:6px;">Create new workbook</button>
+
+                        <button id="cl_create_template" type="button" style="margin-left:6px;">Create new template workbook</button>
                         <span id="cl_selected_filename" style="font-size:0.9em;color:#444;margin-left:6px;"></span>
                     </div>
                     
