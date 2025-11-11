@@ -674,11 +674,29 @@ function renderInputsForApp(appName) {
     const container = document.getElementById("dynamicInputs");
     container.innerHTML = ""; // Clear previous
 
-    // If no application selected or placeholder is chosen, clear and hide dynamic inputs quietly
-    if (!appName || appName === "ChooseApplication") {
+    // If no application selected, hide dynamic inputs
+    if (!appName) {
         container.innerHTML = "";
-        // keep container hidden; calling code (handleAppChange) will show when appropriate
         container.style.display = "none";
+        return;
+    }
+
+    // If the placeholder is selected, show brief instructions under the selector
+    if (appName === "ChooseApplication") {
+        const instructions = `
+            <div id="appInstructions" class="container">
+                <ul class="select" style="font-size:1.2rem;">
+                    <li>Select an application from the dropdown above.</li>
+                    <li>Fill in the inputs that appear for that application.</li>
+                    <li>Click <b>Calculate</b> to see results and inline unit controls.</li>
+                    <li>Click <b>Lock Starting Values</b> to be able to see how the inputs affect the results.</li>
+                    <li>Use the suggestion button (bottom-right) to send feedback.</li>
+                </ul>
+            </div>
+        `;
+
+        container.innerHTML = instructions;
+        container.style.display = "block";
         return;
     }
 

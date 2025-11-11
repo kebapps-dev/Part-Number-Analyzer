@@ -71,6 +71,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="container selectable-container" id="container-left-call-logger">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Call Logger</h1>
+                        </div>
+                        <div class="h1-right-section">
+                            <h3>A tool to log and track support calls and issues.</h3>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="container-right" id="drive-pn-analyzer" style="display: none;">
@@ -898,8 +908,96 @@
 
                 <h2>Serial Adapter Pinouts/Requirements</h2>
                 coming soon!
+
+            
+            
+            
+            
             </div>
             
+
+            <div class="container-right" id="call-logger" style="display: none;">
+                <h2>Call Logger</h2>
+                <div>
+                    <div style="margin-bottom:8px; display:flex; gap:8px; align-items:center;">
+                        <label for="cl_file" style="margin-right:6px;">Option 1: Select Excel workbook (.xls or .xlsx) to append log:</label>
+                        <input type="file" id="cl_file" accept=".xls,.xlsx" />
+                        <label>Option 2:</label>
+                        <button id="cl_open_native" type="button" style="margin-left:6px;">Overwrite Existing Workbook</button>
+                        <span id="cl_selected_filename" style="font-size:0.9em;color:#444;margin-left:6px;"></span>
+                    </div>
+                    
+                    <div class="divider-thin"></div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; column-gap:40px; row-gap: 20px;">
+                        <div>
+                            <label>Name</label>
+                            <input type="text" id="cl_name" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>Company</label>
+                            <input type="text" id="cl_company" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>Phone Number</label>
+                            <input type="text" id="cl_phone" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="text" id="cl_email" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>Location</label>
+                            <input type="text" id="cl_location" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>Machine Type</label>
+                            <input type="text" id="cl_machine" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>OEM</label>
+                            <input type="text" id="cl_oem" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>New Install?</label>
+                            <select id="cl_newinstall" style="width:100%;">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Mat. Number</label>
+                            <input type="text" id="cl_matno" style="width:100%;" />
+                        </div>
+                        <div>
+                            <label>Serial Number</label>
+                            <input type="text" id="cl_serial" style="width:100%;" />
+                        </div>
+                        <div style="grid-column:1 / -1;">
+                            <label>Where did they find us from?</label>
+                            <input type="text" id="cl_found" style="width:50%;" />
+                        </div>
+                        <div style="grid-column:1 / -1;">
+                            <label>Notes</label>
+                            <textarea type="text" id="cl_notes" rows="10" style="width:100%;"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div style="margin-top:12px; display:flex; gap:12px;">
+                        <button id="cl_submit" class="btn-action" type="button">Submit Log</button>
+                        <button id="cl_clear" class="btn-action" type="button">Clear Inputs</button>
+                        <span id="cl_status" style="margin-left:8px;color:green;align-self:center;"></span>
+                    </div>
+                </div>
+
+                <!-- SheetJS (XLSX) library to read/write Excel files client-side -->
+                <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+                <script src="call-logger.js"></script>
+            </div>
+
+
+
             <script src="part-number-generator.js"></script>
             <script src="container-selection.js"></script>
             <script src="brusatori-to-dl4.js"></script>
