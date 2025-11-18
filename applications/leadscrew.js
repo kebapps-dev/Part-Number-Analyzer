@@ -56,3 +56,14 @@ function getLeadscrewResultUnitMappings() {
   };
 }
 
+// Expose to window
+if (typeof window !== 'undefined') {
+  Object.assign(window, {
+    leadscrewformulas,
+    findClosestLeadscrewMotor,
+    getLeadscrewSizingSuggestions,
+    getLeadscrewFormulas,
+    getLeadscrewResultUnitMappings
+  });
+}
+

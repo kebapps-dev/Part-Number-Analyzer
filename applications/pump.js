@@ -1,134 +1,98 @@
-// Pump calculation engine - follows Generic Rotary standard pattern
-// No CSV loading, pure calculations using formulas.js
+// Pump formulas (SI base units: m, Pa, s → m², m³, m³/s, N, Nm, rad/s, W)
+const pumpformulas = {
+  clamparea: (boreDiameter, rodDiameter) => (Math.PI * (boreDiameter / 2) ** 2) - (Math.PI * (rodDiameter / 2) ** 2),
+  clampvolume: (clampArea, strokeLength) => clampArea * strokeLength,
+  pumpflowrate: (timeOfStroke, clampVolume) => timeOfStroke > 0 ? clampVolume / timeOfStroke : 0,
+  pumpdisplacement: (flowRate, angularVelocity) => {
+    if (!angularVelocity || angularVelocity === 0) return 0;
+    return (flowRate * 2 * Math.PI) / angularVelocity;
+  },
+  pumpclampingforce: (clampPressure, clampArea) => clampPressure * clampArea,
+  motortorque: (pumpDisplacement, clampPressure, efficiency) => {
+    if (!pumpDisplacement || pumpDisplacement === 0) return 0;
+    return (clampPressure * pumpDisplacement) / (2 * Math.PI * (efficiency || 1));
+  },
+  motorspeed: (flowRate, pumpDisplacement, efficiency) => {
+    if (!pumpDisplacement || pumpDisplacement === 0) return 0;
+    const revPerSec = flowRate / (pumpDisplacement * (efficiency || 1));
+    return revPerSec * 2 * Math.PI;
+  }
+};
 
 function findClosestPumpMotor() {
-  const resultsDiv = document.getElementById("results");
-  
-  console.log("findClosestPumpMotor called");
-  
-  // Check if all required input elements exist
-  const requiredInputs = ["boreDiameter", "rodDiameter", "strokeLength", "clampPressure", "timeOfStroke", "rpm", "safetyFactor"];
-  for (const inputId of requiredInputs) {
-    const element = document.getElementById(inputId);
-    if (!element) {
-      console.error(`Missing input element: ${inputId}`);
-      resultsDiv.innerHTML = `<p>Error: Missing input field ${inputId}. Please check the application setup.</p>`;
-      return;
-    }
-  }
-  
-  // Get values with unit conversion where applicable
-  const boreDiameter = getValueWithUnit ? (getValueWithUnit("boreDiameter") || parseFloat(document.getElementById("boreDiameter").value)) : parseFloat(document.getElementById("boreDiameter").value);
-  const rodDiameter = getValueWithUnit ? (getValueWithUnit("rodDiameter") || parseFloat(document.getElementById("rodDiameter").value)) : parseFloat(document.getElementById("rodDiameter").value);
-  const strokeLength = getValueWithUnit ? (getValueWithUnit("strokeLength") || parseFloat(document.getElementById("strokeLength").value)) : parseFloat(document.getElementById("strokeLength").value);
-  const clampPressure = getValueWithUnit ? (getValueWithUnit("clampPressure") || parseFloat(document.getElementById("clampPressure").value)) : parseFloat(document.getElementById("clampPressure").value);
-  const timeOfStroke = parseFloat(document.getElementById("timeOfStroke").value);
-  const rpm = getValueWithUnit ? (getValueWithUnit("rpm") || parseFloat(document.getElementById("rpm").value)) : parseFloat(document.getElementById("rpm").value);
-  const motorEfficiencyPercent = parseFloat(document.getElementById("motorEfficiency").value) / 100.0;
-  const safetyFactor = parseFloat(document.getElementById("safetyFactor").value);
-  
-  console.log("Input values:", { boreDiameter, rodDiameter, strokeLength, clampPressure, rpm, timeOfStroke, safetyFactor });
-  
-  // Check if formulas object exists
-  if (typeof formulas === 'undefined') {
-    console.error("Formulas object not found");
-    resultsDiv.innerHTML = "<p>Error: Formulas not loaded. Please check if formulas.js is loaded.</p>";
-    return;
-  }
-  
-  const pumpResults = sizePumpMotor({
-    boreDiameter,
-    rodDiameter,
-    strokeLength,
-    clampPressure,
-    timeOfStroke,
-    rpm,
-    safetyFactor,
-    motorEfficiencyPercent
+  const boreDiameter = getValueWithUnit('boreDiameter');
+  const rodDiameter = getValueWithUnit('rodDiameter');
+  const strokeLength = getValueWithUnit('strokeLength');
+  const clampPressure = getValueWithUnit('clampPressure');
+  const timeOfStroke = parseFloat(document.getElementById('timeOfStroke').value);
+  const rpm = getValueWithUnit('rpm');
+  const motorEfficiency = parseFloat(document.getElementById('motorEfficiency').value) / 100;
+  const safetyFactor = parseFloat(document.getElementById('safetyFactor').value);
+
+  const clampArea = pumpformulas.clamparea(boreDiameter, rodDiameter);
+  const clampVolume = pumpformulas.clampvolume(clampArea, strokeLength);
+  const flowRate = pumpformulas.pumpflowrate(timeOfStroke, clampVolume);
+  const pumpDisplacement = pumpformulas.pumpdisplacement(flowRate, rpm);
+  const clampingForce = pumpformulas.pumpclampingforce(clampPressure, clampArea);
+  const motorTorque = pumpformulas.motortorque(pumpDisplacement, clampPressure, motorEfficiency);
+  const motorSpeed = pumpformulas.motorspeed(flowRate, pumpDisplacement, motorEfficiency);
+  const motorTorqueWithSafety = motorTorque * safetyFactor;
+  const motorSpeedWithSafety = motorSpeed * safetyFactor;
+  const motorPower = motorTorqueWithSafety * motorSpeed;
+
+  displayStandardResults({
+    [`Flow Rate Required (${window.selectedResultUnits?.flow || 'L/min'})`]: 
+      convertResultValue(flowRate, 'flow', window.selectedResultUnits?.flow || 'L/min').toFixed(3),
+    'Pump Displacement Required': `${(pumpDisplacement * 1e6).toFixed(2)} cc/rev`,
+    [`Clamping Force (${window.selectedResultUnits?.force || 'kN'})`]: 
+      convertResultValue(clampingForce, 'force', window.selectedResultUnits?.force || 'kN').toFixed(3),
+    [`Motor Required Torque (${window.selectedResultUnits?.torque || 'Nm'})`]: 
+      convertResultValue(motorTorqueWithSafety, 'torque', window.selectedResultUnits?.torque || 'Nm').toFixed(3),
+    'Motor Required Speed': `${(motorSpeedWithSafety * 60 / (2 * Math.PI)).toFixed(0)} RPM`,
+    [`Required Motor Power (${window.selectedResultUnits?.power || 'kW'})`]: 
+      convertResultValue(motorPower, 'power', window.selectedResultUnits?.power || 'kW').toFixed(3)
   });
-
-  // Validate results
-  if (isNaN(parseFloat(pumpResults.pumpDisplacement))) {
-    resultsDiv.innerHTML = "<p>Please enter valid numbers for all pump inputs.</p>";
-    return;
-  }
-
-  // Get selected result units from stored preferences (with fallbacks)
-  const powerUnit = window.selectedResultUnits?.power || "kW";
-  const torqueUnit = window.selectedResultUnits?.torque || "Nm";
-  const flowUnit = window.selectedResultUnits?.flow || "L/min";
-  const forceUnit = window.selectedResultUnits?.force || "kN";
-  // Convert power and torque results to selected units
-  const motorPowerDisplay = convertResultValue(pumpResults.motorPower, 'power', powerUnit);
-  const motorTorqueDisplay = convertResultValue(pumpResults.motorTorqueWithSafety, 'torque', torqueUnit);
-  const flowRateDisplay = convertResultValue(pumpResults.flowRate, 'flow', flowUnit);
-  const clampingForceDisplay = convertResultValue(pumpResults.clampingForce, 'force', forceUnit);
-
-  // Use standardized results display with converted values and units
-  const outputs = {
-    // "Clamp Area": pumpResults.clampArea,
-    // "Clamp Volume": pumpResults.clampVolume,
-    [`(1) Flow Rate Required (${flowUnit})`]: parseFloat(flowRateDisplay.toFixed(3)),
-    // pumpDisplacement is returned in m³/rev (base) — convert to cc/rev for display
-    "(2) Pump Displacement Required": parseFloat((pumpResults.pumpDisplacement * 1e6).toFixed(2)) + ' cc/rev',
-    [`(3) Clamping Force (${forceUnit})`]: parseFloat(clampingForceDisplay.toFixed(3)),
-    // "Motor Torque Required": pumpResults.motorTorque,
-    // "Motor Speed Required": pumpResults.motorSpeed,
-    [`(4) Motor Required Torque (${torqueUnit})`]: parseFloat(motorTorqueDisplay.toFixed(3)),
-    // motorSpeed is returned in rad/s (base). Convert safety-adjusted angular speed to RPM for display
-    "Motor Required Speed": parseFloat((pumpResults.motorSpeedWithSafety * 60 / (2 * Math.PI)).toFixed(0)) + ' RPM',
-    [`(5) Required Motor Power (${powerUnit})`]: parseFloat(motorPowerDisplay.toFixed(3))
-  };
-  displayStandardResults(outputs);
 }
 
-function sizePumpMotor(params) {
-  const {
-    boreDiameter,        // converted to base units
-    rodDiameter,         // converted to base units  
-    strokeLength,        // converted to base units
-    clampPressure,       // converted to base units
-    timeOfStroke,        // seconds
-    rpm,                 // RPM
-    safetyFactor,         // multiplier (e.g., 1.5 for 50% margin)
-    motorEfficiencyPercent //%
-  } = params;
+// Pump sizing suggestions
+function getPumpSizingSuggestions() {
+  return `<b>Pump Sizing Tips:</b><ul>
+    <li>Calculate clamp area considering bore and rod diameters.</li>
+    <li>Flow rate determines pump displacement needed at given RPM.</li>
+    <li>Motor torque accounts for pressure, displacement, and efficiency.</li>
+    <li>Apply safety factor for system variations and peak loads.</li>
+  </ul>`;
+}
 
-  // Calculate using formulas from formulas.js
-  const clampArea = formulas.clamparea(boreDiameter, rodDiameter);
-  const clampVolume = formulas.clampvolume(clampArea, strokeLength); // Fixed: correct parameter order
-  const flowRate = formulas.pumpflowrate(timeOfStroke, clampVolume);
-  const pumpDisplacement = formulas.pumpdisplacement(flowRate, rpm); // now m³/rev (base)
-  const clampingForce = formulas.pumpclampingforce(clampPressure, clampArea);
-  
-  // Add debugging to see what values we're getting
-  console.log("Pump calculation debug:", {
-    boreDiameter, rodDiameter, strokeLength, clampPressure, timeOfStroke, rpm,
-    clampArea, clampVolume, flowRate, pumpDisplacement, clampingForce
-  });
-  
-  // Motor calculations
-  const motorTorque = formulas.motortorque(pumpDisplacement, clampPressure, motorEfficiencyPercent); // Nm
-  const motorSpeed = formulas.motorspeed(flowRate, pumpDisplacement, motorEfficiencyPercent); // rad/s
-  
-  // Apply safety factor
-  const motorTorqueWithSafety = motorTorque * safetyFactor;
-  const motorSpeedWithSafety = motorSpeed * safetyFactor; // if you want to display a safety-adjusted speed
+// Pump formulas display
+function getPumpFormulas() {
+  return `
+    <span class="formula"><b>(1)</b> \\( A_{clamp} = \\pi \\left(\\frac{D_{bore}}{2}\\right)^2 - \\pi \\left(\\frac{D_{rod}}{2}\\right)^2 \\)</span>
+    <span class="formula"><b>(2)</b> \\( V_{clamp} = A_{clamp} \\cdot L_{stroke} \\)</span>
+    <span class="formula"><b>(3)</b> \\( Q = \\frac{V_{clamp}}{t_{stroke}} \\)</span>
+    <span class="formula"><b>(4)</b> \\( D_{pump} = \\frac{Q \\cdot 2\\pi}{\\omega} \\)</span>
+    <span class="formula"><b>(5)</b> \\( F_{clamp} = P_{clamp} \\cdot A_{clamp} \\)</span>
+    <span class="formula"><b>(6)</b> \\( T_{motor} = \\frac{P \\cdot D_{pump}}{2\\pi \\cdot \\eta} \\)</span>
+  `;
+}
 
-  // Calculate motor power (apply safety to torque only to mirror previous behavior of torque*speed*safety)
-  const motorPowerWatts = motorTorqueWithSafety * motorSpeed; // W (Nm * rad/s)
-
-
+// Pump result unit mappings
+function getPumpResultUnitMappings() {
   return {
-    clampArea: clampArea,
-    clampVolume: clampVolume,
-    flowRate: flowRate,
-    pumpDisplacement: pumpDisplacement,
-    clampingForce: clampingForce,
-    motorTorque: motorTorque,
-    motorSpeed: motorSpeed,
-    motorTorqueWithSafety: motorTorqueWithSafety,
-    motorSpeedWithSafety: motorSpeedWithSafety,
-    motorPower: motorPowerWatts
+    'Required Motor Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
+    'Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+    'Flow Rate Required': { type: 'flow', component: 'system', defaultUnit: 'L/min' },
+    'Clamping Force': { type: 'force', component: 'system', defaultUnit: 'kN' }
   };
+}
+
+// Expose to window
+if (typeof window !== 'undefined') {
+  Object.assign(window, {
+    pumpformulas,
+    findClosestPumpMotor,
+    getPumpSizingSuggestions,
+    getPumpFormulas,
+    getPumpResultUnitMappings
+  });
 }

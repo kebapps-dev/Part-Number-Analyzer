@@ -1,109 +1,75 @@
-// Generic Rotary Motor Sizing Application
-// Now uses standardized results display from main.js
+// Generic Rotary formulas (SI base units: kg·m², rad/s, s → Nm, W)
+const genericrotaryformulas = {
+  torqueRequiredAcceleration: (inertia, speed, accelTime) => speed * inertia / accelTime,
+  torqueRequiredDeceleration: (inertia, speed, decelTime) => speed * inertia / decelTime,
+  requiredMotorPowerKw: (torque, speed) => (torque * speed) / 1000,
+  requiredMotorPowerHp: (torque, speed) => (torque * speed) / 745.7,
+  rmsTorque: (accelTorque, fricTorque, accelTime, runTime, decelTime, restTime) => {
+    const total = accelTime + runTime + decelTime + restTime;
+    return Math.sqrt(((accelTorque ** 2 * accelTime) + (fricTorque ** 2 * runTime) + (accelTorque ** 2 * decelTime)) / total);
+  }
+};
 
 function findClosestGenericRotaryMotor() {
-    // Check for empty input boxes and reset state if needed
-    const inputIds = [
-        "genericMomentOfInertia",
-        "genericRequiredSpeed", 
-        "genericAccelTime",
-        "genericRunTime",
-        "genericDecelTime",
-        "genericRestTime",
-        "genericFrictionTorque"
-    ];
-    let hasEmpty = false;
-    for (const id of inputIds) {
-        const el = document.getElementById(id);
-        if (!el || el.value === "" || el.value === null) {
-            hasEmpty = true;
-            break;
-        }
-    }
-    if (hasEmpty) {
-        // Reset standardized display state
-        startingValues = [];
-        showSegments = false;
-    }
+  const inertia = getValueWithUnit('genericMomentOfInertia');
+  const speed = getValueWithUnit('genericRequiredSpeed');
+  const accelTime = parseFloat(document.getElementById('genericAccelTime').value);
+  const runTime = parseFloat(document.getElementById('genericRunTime').value);
+  const decelTime = parseFloat(document.getElementById('genericDecelTime').value);
+  const restTime = parseFloat(document.getElementById('genericRestTime').value);
+  const fricTorque = getValueWithUnit('genericFrictionTorque');
 
-    const resultsDiv = document.getElementById("results");
-    
-    // Check if all required elements exist before proceeding
-    const requiredElements = [
-        "genericMomentOfInertia", 
-        "genericRequiredSpeed", 
-        "genericAccelTime", "genericRunTime", "genericDecelTime", "genericRestTime",
-        "genericFrictionTorque"
-    ];
-    
-    for (const id of requiredElements) {
-        const el = document.getElementById(id);
-        if (!el) {
-            console.warn(`Required element ${id} not found in DOM`);
-            return;
-        }
-    }
-    
-    const rmsresults = sizeGenericRotaryMotor(
-        {
-            inertia : getValueWithUnit("genericMomentOfInertia"), // kg·m²
-            targetSpeed : getValueWithUnit("genericRequiredSpeed"), // rad/s
-            accelTime : parseFloat(document.getElementById("genericAccelTime").value), // s
-            runTime : parseFloat(document.getElementById("genericRunTime").value), // s
-            decelTime : parseFloat(document.getElementById("genericDecelTime").value), // s
-            restTime : parseFloat(document.getElementById("genericRestTime").value), // s
-            frictionTorque : getValueWithUnit("genericFrictionTorque") // Nm
-        }
-    );
+  const accelTorque = genericrotaryformulas.torqueRequiredAcceleration(inertia, speed, accelTime) + fricTorque;
+  const rmsTorque = genericrotaryformulas.rmsTorque(accelTorque, fricTorque, accelTime, runTime, decelTime, restTime);
+  const power = rmsTorque * speed;
 
-    const powerUnit = window.selectedResultUnits?.power || "kW";
-    const torqueUnit = window.selectedResultUnits?.torque || "Nm";
-
-    const outputs = {
-
-       [`(1) Accel Torque (${torqueUnit})`]: parseFloat(convertResultValue(rmsresults.accelTorque, 'torque', torqueUnit).toFixed(3)),
-       [`(2) RMS Torque (${torqueUnit})`]: parseFloat(convertResultValue(rmsresults.rmsTorque, 'torque', torqueUnit).toFixed(3)),
-       [`(3) Required Motor Power (${powerUnit})`]: parseFloat(convertResultValue(rmsresults.contPower, 'power', powerUnit).toFixed(3))
-    };
-    displayStandardResults(outputs);
+  displayStandardResults({
+    [`Accel Torque (${window.selectedResultUnits?.torque || 'Nm'})`]: 
+      convertResultValue(accelTorque, 'torque', window.selectedResultUnits?.torque || 'Nm').toFixed(3),
+    [`RMS Torque (${window.selectedResultUnits?.torque || 'Nm'})`]: 
+      convertResultValue(rmsTorque, 'torque', window.selectedResultUnits?.torque || 'Nm').toFixed(3),
+    [`Required Motor Power (${window.selectedResultUnits?.power || 'kW'})`]: 
+      convertResultValue(power, 'power', window.selectedResultUnits?.power || 'kW').toFixed(3)
+  });
 }
 
-function sizeGenericRotaryMotor(params) {
-    const {
-      inertia,              // kg·m²
-      targetSpeed,          // rad/s
-      accelTime,            // s
-      runTime,              // s
-      decelTime,            // s
-      restTime,             // s
-      frictionTorque,       // Nm
-    } = params;
+// Generic Rotary sizing suggestions
+function getGenericRotarySizingSuggestions() {
+  return `<b>Generic Rotary Sizing Tips:</b><ul>
+    <li>Ensure moment of inertia includes all rotating components.</li>
+    <li>RMS torque accounts for acceleration, run, deceleration, and rest phases.</li>
+    <li>Consider friction torque for continuous operation.</li>
+  </ul>`;
+}
 
-    const totalCycleTime = accelTime + runTime + decelTime + restTime;
-    const g = 9.81;
+// Generic Rotary formulas display
+function getGenericRotaryFormulas() {
+  return `
+        <span class="formula">\\( \\omega = 2\\pi \\cdot \\frac{\\text{RPM}}{60} \\)</span>
+        <span class="formula">\\( \\alpha = J \\cdot \\frac{\\omega}{t} \\)</span>
+        <span class="formula"><b>(1)</b> \\( T_{accel} = (J \\cdot \\alpha) + T_{friction} \\)</span>
+        <span class="formula"><b>(2)</b> \\( T_{rms} = \\sqrt{\\frac{T_{accel}^2 t_{accel} + T_{friction}^2 t_{run} + T_{decel}^2 t_{decel} + T_{rest}^2 t_{rest}}{t_{cycle}}} \\)</span>
+        <span class="formula"><b>(3)</b> \\( P = T_{rms} \\cdot \\omega \\)</span>
+    `;
+}
 
-    // Acceleration torque = J * α = J * ω / t
-    const accelTorque = (inertia * (targetSpeed / accelTime)) + frictionTorque; // Nm
+// Generic Rotary result unit mappings
+function getGenericRotaryResultUnitMappings() {
+  return {
+    'Required Motor Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
+    'Accel Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
+    'RMS Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' }
+  };
+}
 
-    // RMS Torque Calculation
-    const rmsTorque = Math.sqrt(
-      (
-        (accelTorque ** 2 * accelTime) +
-        (frictionTorque ** 2 * runTime) +
-        (accelTorque ** 2 * decelTime) +
-        (0 ** 2 * restTime)
-      ) / totalCycleTime
-    );
-   
-    // Continuous power (W)
-    const contPower = rmsTorque * targetSpeed;
-   
-    return {
-      targetSpeed: targetSpeed,
-      accelTorque: accelTorque,
-      rmsTorque: rmsTorque,
-      contPower: contPower,
-      contPowerHP: contPower / 745.7
-    };
+// Expose to window
+if (typeof window !== 'undefined') {
+  Object.assign(window, {
+    genericrotaryformulas,
+    findClosestGenericRotaryMotor,
+    getGenericRotarySizingSuggestions,
+    getGenericRotaryFormulas,
+    getGenericRotaryResultUnitMappings
+  });
 }
 

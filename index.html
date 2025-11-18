@@ -1,16 +1,13 @@
-<!-- Example usage: Place this where you want the square image -->
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>KEB Resources</title>
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>KEB Resources</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div class="crt-overlay"></div>
         <div class="keb-header-bar">
             <div class="keb-header-left"></div>
             <div class="keb-header-logo">
@@ -751,7 +748,7 @@
                  <div class="product-fields-row">
                     <div class="product-fields-col-2">
                         <div id="dynamicInputs" style="display: block;"></div>
-                        <button onclick="loadGenericData(getElementById('application').value)" style="display:none">Load Generic Data</button><br/><br/>
+                        <button onclick="loadGenericData(getElementById('application').value)" style="display:none">Load Generic Data</button><br><br/>
                         <button id="calculateButton" onclick="calculateForApplication()" style="display:none">Calculate</button>
                         <span id="doneMessage" style="margin-left:10px; display:none;">Done</span>
                     </div>
@@ -774,7 +771,6 @@
                 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
                 <script src="main.js"></script>
-                <script src="formulas.js"></script>
                 <script src="suggestions.js"></script>
             </div>
 
@@ -920,13 +916,24 @@
                 <script src="csv-table-parser.js"></script>
 
                 <h2>Serial Adapter Pinouts/Requirements</h2>
-                coming soon!
 
-            
-            
-            
-            
-            </div>          
+                <h2>Resources</h2>
+                <button onclick="window.open('/resources/F5_ErrorsAndWarnings.pdf', '_blank');"style="display: inline-block;">Open F5 Errors and Warnings Printout</button>
+                <button onclick="window.open('/resources/F5_InputAndOutputTransistorTest.pdf', '_blank');"style="display: inline-block;">Open F5 Input and Output Transistor Test</button>
+                <button onclick="window.open('/resources/KEB_Motor_Wiring.pdf', '_blank');"style="display: inline-block;">Open KEB Motor Wiring</button>
+                <button onclick="window.open('/resources/InstallationTutorial_Combivis.docx', '_blank');"style="display: inline-block;">Download Combivis Installation Tutorial</button>
+                <button onclick="window.open('/resources/KEB_Mounting_Positions.pdf', '_blank');"style="display: inline-block;">Open KEB Mounting Positions</button>
+                <button onclick="window.open('/resources/KEB_HSP5_Specification.pdf', '_blank');"style="display: inline-block;">Open KEB HSP5 Specification</button>
+                <button onclick="window.open('/resources/Homing_Methods.xlsx', '_blank');"style="display: inline-block;">Download KEB Homing Methods</button>
+
+                <h2>X6 Fieldbus Files</h2>
+                <button onclick="window.open('/resources/1C460004.nxf', '_blank');"style="display: inline-block;">Download EtherCAT File</button>
+                <button onclick="window.open('/resources/1M310000.nxf', '_blank');"style="display: inline-block;">Download ModbusTCP File</button>
+                <button onclick="window.open('/resources/1L340002.nxf', '_blank');"style="display: inline-block;">Download Powerlink File</button>
+                <button onclick="window.open('/resources/1N2D0014.nxf', '_blank');"style="display: inline-block;">Download EthernetIP File</button>
+                <button onclick="window.open('/resources/1P3E000E.nxf', '_blank');"style="display: inline-block;">Download Profinet File</button>
+
+            </div>
 
             <div class="container-right" id="call-logger" style="display: none;">
                 <div>
@@ -1012,7 +1019,7 @@
                 <div class="product-fields-row">
                     <div class="product-fields-col-2">
                         <div style="display:grid; grid-template-columns:1fr 5fr; gap:12px;">
-                            <div style="margin-bottom: 10px;">
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
                                 <label style="display:inline-block" for="fs-side">Side of VFD</label>
                             </div>
                             <div>
@@ -1051,11 +1058,8 @@
                 </div>
             </div>
             
-            <script>
-            window.USE_CSV_FORMULAS = true;  // Toggle here!
-            </script>
+            <script> window.USE_CSV_FORMULAS = true;</script>
             <script src="formulas-csv-loader.js"></script>
-            <script src="formulas.js"></script>
             <script src="part-number-generator.js"></script>
             <script src="container-selection.js"></script>
             <script src="filter-selector.js"></script>

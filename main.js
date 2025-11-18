@@ -274,8 +274,7 @@ function handleAppChange() {
 
     renderInputsForApp(app);
     attachDynamicInputListeners(app);
-    loadSelectedScript();
-    showFormulasForApplication(app);
+    loadSelectedScript(); // This now handles calling showFormulasForApplication after script loads
     //if (app === "Genericrotary") findClosestGenericRotaryMotor();
 }
 
@@ -320,24 +319,30 @@ function calculateForApplication() {
 
 function loadSelectedScript() {
       const select = document.getElementById("application");
-      const selectedFile = "/applications/" + select.value.toLowerCase() + ".js"; // Assuming the script files are named like "fan.js", "pump.js", etc.
+      const selectedFile = "applications/" + select.value.toLowerCase() + ".js"; // Load from applications folder
 
       if (!selectedFile) return;
 
       const existingScript = document.querySelector(`script[src="${selectedFile}"]`);
       if (existingScript) {
         console.log("Script already loaded:", selectedFile);
+        // Script already loaded, update formulas display immediately
+        showFormulasForApplication(select.value);
         return;
       }
 
       const script = document.createElement("script");
       script.src = selectedFile;
       script.type = "text/javascript";
-      script.onload = () => console.log(`Loaded: ${selectedFile}`);
+      script.onload = () => {
+        console.log(`Loaded: ${selectedFile}`);
+        // Update formulas display after script loads
+        showFormulasForApplication(select.value);
+      };
       script.onerror = () => console.error(`Failed to load: ${selectedFile}`);
 
       document.body.appendChild(script);
-    }
+}
 
 
 function addMathTooltip(equationLatex) {
@@ -433,14 +438,35 @@ const unitConversions = {
   }
 };
 
+// Helper function to find unit in unitConversions (case-insensitive)
+function findUnitInConversions(unitType, targetUnit) {
+  if (!unitConversions[unitType]) return null;
+  
+  // First try exact match
+  if (unitConversions[unitType][targetUnit]) {
+    return targetUnit;
+  }
+  
+  // Try case-insensitive match
+  const lowerTarget = targetUnit.toLowerCase();
+  for (const key in unitConversions[unitType]) {
+    if (key.toLowerCase() === lowerTarget) {
+      return key; // Return the correctly-cased key from unitConversions
+    }
+  }
+  
+  return null; // No match found
+}
+
 // Function to convert result values from base units to selected display units
 function convertResultValue(value, unitType, targetUnit) {
-  if (!unitConversions[unitType] || !unitConversions[unitType][targetUnit]) {
+  const actualUnit = findUnitInConversions(unitType, targetUnit);
+  if (!actualUnit) {
     console.warn(`Unknown result unit conversion: ${unitType} - ${targetUnit}`);
     return value; // Return original value if no conversion found
   }
   
-  const conversionFactor = unitConversions[unitType][targetUnit];
+  const conversionFactor = unitConversions[unitType][actualUnit];
   if (typeof conversionFactor === 'function') {
     // This shouldn't happen for result conversions, but handle it just in case
     return value;
@@ -472,12 +498,13 @@ function updateResultUnit(selectElement) {
 }
 
 function getConvertedValue(value, type, unit) {
-  if (!unitConversions[type] || !unitConversions[type][unit]) {
+  const actualUnit = findUnitInConversions(type, unit);
+  if (!actualUnit) {
     console.warn(`Unknown unit conversion: ${type} - ${unit}`);
     return value; // Return original value if no conversion found
   }
   
-  const conv = unitConversions[type][unit];
+  const conv = unitConversions[type][actualUnit];
   return typeof conv === 'function' ? conv(value) : value * conv;
 }
 
@@ -572,11 +599,9 @@ function showSizingSuggestions(application) {
             </ul>`;
             break;
         case "Blower":
-            html = `<b>Blower Sizing Tips:</b><ul>
-                <li>Set airflow and pressure for required blower performance.</li>
-                <li>Include fan and motor efficiency for accurate power sizing.</li>
-                <li>Check required speed for compatibility with selected motor.</li>
-            </ul>`;
+            html = typeof getBlowerSizingSuggestions === 'function' 
+                ? getBlowerSizingSuggestions() 
+                : "";
             break;
         case "Leadscrew":
             html = typeof getLeadscrewSizingSuggestions === 'function' 
@@ -646,20 +671,14 @@ function showFormulasForApplication(application) {
             `;
             break;
         case "Genericrotary":
-            html = `
-                <span class="formula">\\( \\omega = 2\\pi \\cdot \\frac{\\text{RPM}}{60} \\)</span>
-                <span class="formula">\\( \\alpha = J \\cdot \\frac{\\omega}{t} \\)</span>
-                <span class="formula"><b>(1)</b> \\( T_{accel} = (J \\cdot \\alpha) + T_{friction} \\)</span>
-                <span class="formula"><b>(2)</b> \\( T_{rms} = \\sqrt{\\frac{T_{accel}^2 t_{accel} + T_{friction}^2 t_{run} + T_{decel}^2 t_{decel} + T_{rest}^2 t_{rest}}{t_{cycle}}} \\)</span>
-                <span class="formula"><b>(3)</b> \\( P = T_{rms} \\cdot \\omega \\)</span>
-            `;
+            html = typeof getGenericRotaryFormulas === 'function' 
+                ? getGenericRotaryFormulas() 
+                : "";
             break;
         case "Blower":
-            html = `
-                <span class="formula"><b>(1)</b> \\( P_{fan} = \\frac{Q \\cdot \\Delta P}{\\eta_{fan}/100} \\)</span>
-                <span class="formula"><b>(2)</b> \\( P_{motor} = \\frac{P_{fan}}{\\eta_{motor}/100} \\)</span>
-                <span class="formula"><b>(3)</b> \\( T_{motor} = \\frac{P_{motor}}{\\omega} = \\frac{P_{motor}}{\\frac{2\\pi \\cdot RPM}{60}} \\)</span>
-            `;
+            html = typeof getBlowerFormulas === 'function' 
+                ? getBlowerFormulas() 
+                : "";
             break;
         case "Leadscrew":
             html = typeof getLeadscrewFormulas === 'function' 
@@ -747,28 +766,44 @@ function renderInputsForApp(appName) {
         if (def.Title) input.title = def.Title;
         wrapper.appendChild(input);
 
-        // Unit(s)
-        if (def.Unit) {
-            const units = def.Unit.replace(/"/g, "").split(',').map(u => u.trim());
-            
-            if (units.length > 1) {
-                const select = document.createElement("select");
-                select.id = def.InputID + "Unit";
-                select.title = "Select the unit for " + (def.Label || def.InputID);
-                units.forEach(unit => {
-                    const opt = document.createElement("option");
-                    opt.value = unit;
-                    opt.textContent = unit;
-                    select.appendChild(opt);
-                });
-                select.style.marginLeft = "4px";
-                wrapper.appendChild(select);
-            } else if (units[0]) {
-                const unitSpan = document.createElement("span");
-                unitSpan.textContent = " " + units[0];
-                unitSpan.style.marginLeft = "4px";
-                wrapper.appendChild(unitSpan);
-            }
+        // Unit(s) - use UnitType if available, otherwise fall back to Unit column
+        let units = [];
+        let defaultUnit = def.DefaultUnit ? def.DefaultUnit.trim() : null;
+        
+        if (def.UnitType && unitConversions[def.UnitType]) {
+            // Use UnitType to get all available units from unitConversions
+            units = Object.keys(unitConversions[def.UnitType]);
+        } else if (def.Unit) {
+            // Fall back to explicit Unit column
+            units = def.Unit.replace(/"/g, "").split(',').map(u => u.trim());
+        }
+        
+        // If no DefaultUnit specified, use first unit in the list
+        if (!defaultUnit && units.length > 0) {
+            defaultUnit = units[0];
+        }
+        
+        if (units.length > 1) {
+            const select = document.createElement("select");
+            select.id = def.InputID + "Unit";
+            select.title = "Select the unit for " + (def.Label || def.InputID);
+            units.forEach(unit => {
+                const opt = document.createElement("option");
+                opt.value = unit;
+                opt.textContent = unit;
+                // Set as selected if it matches the default unit
+                if (unit === defaultUnit) {
+                    opt.selected = true;
+                }
+                select.appendChild(opt);
+            });
+            select.style.marginLeft = "4px";
+            wrapper.appendChild(select);
+        } else if (units.length === 1) {
+            const unitSpan = document.createElement("span");
+            unitSpan.textContent = " " + units[0];
+            unitSpan.style.marginLeft = "4px";
+            wrapper.appendChild(unitSpan);
         }
 
         container.appendChild(wrapper);
@@ -987,7 +1022,9 @@ function displayStandardResults(currentOutputs) {
     if (hasValidOutputs && !lockButton && !genericLockButton) {
         const buttonHtml = `<button id="lockStartingValuesBtn" onclick="lockStartingValues()" 
         style=
-        "margin-bottom: 10px; 
+        "margin-bottom: 10px;
+        margin-top: 10px; 
+        width: calc(25% - 5px);
         padding: 12px 12px;
         border: 2px solid #222;
         border-radius: 12px;
@@ -995,7 +1032,7 @@ function displayStandardResults(currentOutputs) {
         font-family: Arial, Helvetica, sans-serif;
         font-size: 0.95rem;
         background: #f0f0f0;
-        display: block;">Lock Starting Values</button>`;
+        display: inline-block;">Lock Starting Values</button>`;
        
         resultsDiv.insertAdjacentHTML('beforebegin', buttonHtml);
     }
