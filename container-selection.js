@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var driveErrorHelp = document.getElementById('drive-error-help');
   var driveTroubleshootingFAQ = document.getElementById('drive-troubleshooting-faq');
   var callLogger = document.getElementById('call-logger');
+  var filterSelector = document.getElementById('filter-selector');
   // Add more right containers here if needed
 
   leftContainers.forEach(function(el) {
@@ -36,6 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (callLogger) {
           callLogger.style.display = 'none';
         }
+        if (filterSelector) {
+          filterSelector.style.display = 'none';
+        }
         var selects = drivePnAnalyzer.querySelectorAll('select');
         selects.forEach(function(select) {
           select.style.marginBottom = '18px';
@@ -60,6 +64,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (callLogger) {
           callLogger.style.display = 'none';
         }
+        if (filterSelector) {
+          filterSelector.style.display = 'none';
+        }
       } else if (el.id === 'container-left-brusatori-to-dl4') {
         if (drivePnAnalyzer){
           drivePnAnalyzer.style.display = 'none';
@@ -78,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (callLogger) {
           callLogger.style.display = 'none';
+        }
+        if (filterSelector) {
+          filterSelector.style.display = 'none';
         }
       } else if (el.id === 'container-left-drive-error-help') {
         if (drivePnAnalyzer){
@@ -98,6 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (callLogger) {
           callLogger.style.display = 'none';
         }
+        if (filterSelector) {
+          filterSelector.style.display = 'none';
+        }
       } else if (el.id === 'container-left-drive-troubleshooting-faq') {
         if (drivePnAnalyzer){
           drivePnAnalyzer.style.display = 'none';
@@ -116,6 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (callLogger) {
           callLogger.style.display = 'none';
+        }
+        if (filterSelector) {
+          filterSelector.style.display = 'none';
         }
       } else if (el.id === 'container-left-call-logger') {
         if (drivePnAnalyzer){
@@ -136,6 +152,31 @@ document.addEventListener('DOMContentLoaded', function() {
         if (callLogger) {
           callLogger.style.display = '';
         }
+        if (filterSelector) {
+          filterSelector.style.display = 'none';
+        }
+      }else if (el.id === 'container-left-filter-selector') {
+        if (drivePnAnalyzer){
+          drivePnAnalyzer.style.display = 'none';
+        }
+        if (applicationCalculator) {
+          applicationCalculator.style.display = 'none';
+        }
+        if (brusatoriToDl4) {
+          brusatoriToDl4.style.display = 'none';
+        }
+        if (driveErrorHelp) {
+          driveErrorHelp.style.display = 'none';
+        }
+        if (driveTroubleshootingFAQ) {
+          driveTroubleshootingFAQ.style.display = 'none';
+        }
+        if (callLogger) {
+          callLogger.style.display = 'none';
+        }
+        if (filterSelector) {
+          filterSelector.style.display = '';
+        }
       } else {
         if (drivePnAnalyzer) drivePnAnalyzer.style.display = 'none';
         if (applicationCalculator) applicationCalculator.style.display = 'none';
@@ -143,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (driveErrorHelp) {driveErrorHelp.style.display = 'none';}
         if (driveTroubleshootingFAQ) {driveTroubleshootingFAQ.style.display = 'none';}
         if (callLogger) {callLogger.style.display = 'none';}
+        if (filterSelector) {filterSelector.style.display = 'none';}
     };
   });
 

@@ -298,7 +298,8 @@ function calculateForApplication() {
         "Conveyor": "findClosestConveyorMotor",
         "Genericrotary": "findClosestGenericRotaryMotor",
         "Blower": "findClosestBlowerMotor",
-        "Spindle": "findClosestSpindleMotor"
+        "Spindle": "findClosestSpindleMotor",
+        "Leadscrew": "findClosestLeadscrewMotor"
     };
     
     const functionName = calculationFunctions[app];
@@ -319,7 +320,7 @@ function calculateForApplication() {
 
 function loadSelectedScript() {
       const select = document.getElementById("application");
-      const selectedFile = select.value.toLowerCase() + ".js"; // Assuming the script files are named like "fan.js", "pump.js", etc.
+      const selectedFile = "/applications/" + select.value.toLowerCase() + ".js"; // Assuming the script files are named like "fan.js", "pump.js", etc.
 
       if (!selectedFile) return;
 
@@ -392,10 +393,12 @@ const unitConversions = {
     'inH2O': 249.089       // 1 inH2O = 249.089 Pa
   },
   flow: {
-    'L/min': 1,            // Base unit: Liters per minute (metric)
-    'GPM': 3.78541,        // 1 GPM = 3.78541 L/min
-    'L/s': 60,             // 1 L/s = 60 L/min
-    'CFM': 28.3168         // 1 CFM = 28.3168 L/min
+    // Use m³/s as the base flow unit (SI). Conversion factors convert display units -> m³/s
+    'm³/s': 1,
+    'L/min': 0.001 / 60,            // 1 L = 0.001 m³ ; per minute -> /60
+    'GPM': 3.78541 / 60000,         // 1 GPM = 3.78541 L/min -> m³/s
+    'L/s': 0.001,                   // 1 L/s = 0.001 m³/s
+    'CFM': 0.0283168 / 60           // 1 CFM = 28.3168 L/min -> m³/s
   },
   airflow: {
     'm³/s': 1,             // Base unit: cubic meters per second (metric)
@@ -575,6 +578,11 @@ function showSizingSuggestions(application) {
                 <li>Check required speed for compatibility with selected motor.</li>
             </ul>`;
             break;
+        case "Leadscrew":
+            html = typeof getLeadscrewSizingSuggestions === 'function' 
+                ? getLeadscrewSizingSuggestions() 
+                : "";
+            break;
         default:
             html = "";
     }
@@ -653,11 +661,17 @@ function showFormulasForApplication(application) {
                 <span class="formula"><b>(3)</b> \\( T_{motor} = \\frac{P_{motor}}{\\omega} = \\frac{P_{motor}}{\\frac{2\\pi \\cdot RPM}{60}} \\)</span>
             `;
             break;
+        case "Leadscrew":
+            html = typeof getLeadscrewFormulas === 'function' 
+                ? getLeadscrewFormulas() 
+                : "";
+            break;
         default:
             html = "";
     }
     
     formulasContainer.innerHTML = html;
+
     // Re-render MathJax if it's loaded
     if (window.MathJax && window.MathJax.typesetPromise) {
         window.MathJax.typesetPromise([formulasContainer]).catch((err) => {
@@ -1112,6 +1126,7 @@ function displayStandardResults(currentOutputs) {
                 'Torque Required': { type: 'torque', component: 'motor', defaultUnit: 'Nm' }
             },
             'Lift': {
+                '(1) Motor Speed': { type: 'speed', component: 'motor', defaultUnit: 'RPM' },
                 '(2) Motor Required Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
                 '(3) Motor Required Peak Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' },
                 '(4) Motor Required Power': { type: 'power', component: 'motor', defaultUnit: 'kW' },
@@ -1132,6 +1147,11 @@ function displayStandardResults(currentOutputs) {
                 '(3) RMS Torque': { type: 'torque', component: 'motor', defaultUnit: 'Nm' }
             }
         };
+        
+        // Get Leadscrew mappings from leadscrew.js if available
+        if (currentApp === 'Leadscrew' && typeof getLeadscrewResultUnitMappings === 'function') {
+            resultUnitMappings['Leadscrew'] = getLeadscrewResultUnitMappings();
+        }
         
     // Check if this result key has a unit mapping
     const appMappings = resultUnitMappings[currentApp];

@@ -1,0 +1,53 @@
+# IMPORTANT: All formulas expect and return SI BASE UNITS
+# Length: meters (m) | Time: seconds (s) | Mass: kilograms (kg) | Angle: radians (rad)
+# Linear velocity: m/s | Angular velocity: rad/s | Force: Newtons (N) | Pressure: Pascals (Pa)
+# Power: Watts (W) | Torque: Newton-meters (Nm)
+# Your application code (main.js) must convert user inputs TO base units before calling formulas
+# and convert formula results FROM base units for display (e.g., mm→m, RPM→rad/s, W→HP)
+#
+Application,FormulaName,Description,Parameters,Unit,Expression
+General,areaOfCircle,Calculate area of circle,radius,m²,Math.PI * radius * radius
+General,flowRate,Calculate flow rate,volume|time,m³/s,volume / time
+Pump,clamparea,Calculate clamp area from bore and rod diameter,boreDiameter|rodDiameter,m²,(Math.PI*(boreDiameter/2)**2)-(Math.PI*(rodDiameter/2)**2)
+Pump,clampvolume,Calculate clamp volume,clamparea|strokeLength,m³,clamparea * strokeLength
+Pump,pumpflowrate,Calculate pump flow rate,timeOfStroke|clampvolume,m³/s,timeOfStroke > 0 ? (clampvolume / timeOfStroke) : 0
+Pump,pumpdisplacement,Calculate pump displacement,pumpflowrate|angularVelocity,m³/rev,!angularVelocity || angularVelocity === 0 ? 0 : (pumpflowrate * 2 * Math.PI) / angularVelocity
+Pump,pumpclampingforce,Calculate clamping force,clampPressure|clamparea,N,clampPressure * clamparea
+Pump,motortorque,Calculate motor torque for pump,selectedPumpDisplacement|clampPressure|volefficiency,Nm,!selectedPumpDisplacement || selectedPumpDisplacement === 0 ? 0 : (clampPressure * selectedPumpDisplacement) / (2 * Math.PI * (volefficiency || 1))
+Pump,motorspeed,Calculate motor speed for pump,clampingFlowRate|selectedPumpDisplacement|volefficiency,rad/s,!selectedPumpDisplacement || selectedPumpDisplacement === 0 ? 0 : (clampingFlowRate / (selectedPumpDisplacement * (volefficiency || 1))) * 2 * Math.PI
+Lift,rotationalspeed,Calculate rotational speed from linear speed,maxSpeed|drumDiameter,rad/s,(2 * maxSpeed) / drumDiameter
+Lift,forcegravity,Calculate gravitational force,mass|gravity,N,mass * (gravity || 9.81)
+Lift,drumtorque,Calculate drum torque,forcegravity|drumDiameter,Nm,forcegravity * (drumDiameter/2)
+Lift,peakacceleration,Calculate peak acceleration,maxSpeed|accelDecelTime,m/s²,maxSpeed / accelDecelTime
+Lift,peakdrumtorque,Calculate peak drum torque,drumDiameter|mass|angularAcceleration,Nm,(drumDiameter / 2) * mass * (angularAcceleration + 9.81)
+Lift,motorpower,Calculate motor power for lift,torque|angularspeed,W,torque * angularspeed
+Rotarytable,maxangularspeed,Calculate maximum angular speed,rotationalMoveDistance|totalMoveTime|accelTime|decelTime|gearboxRatio,rad/s,gearboxRatio * (rotationalMoveDistance / (totalMoveTime - 0.5*accelTime - 0.5*decelTime))
+Rotarytable,maxrotationalspeed,Calculate maximum rotational speed,maxAngularSpeed|gearboxRatio,rad/s,maxAngularSpeed * gearboxRatio
+Rotarytable,motoracceleration,Calculate motor acceleration,maxAngularSpeed|accelTime|gearboxRatio,rad/s²,gearboxRatio * maxAngularSpeed / accelTime
+Rotarytable,motordeceleration,Calculate motor deceleration,maxAngularSpeed|decelTime|gearboxRatio,rad/s²,gearboxRatio * maxAngularSpeed / decelTime
+Rotarytable,rotaryTableInertia,Calculate rotary table inertia,massIndexTable|radiusIndexTable,kg·m²,0.5 * massIndexTable * (radiusIndexTable ** 2)
+Rotarytable,reflectedInertia,Calculate reflected inertia,rotaryTableInertia|loadInertia|gearboxRatio,kg·m²,(rotaryTableInertia + loadInertia) / (gearboxRatio ** 2)
+Rotarytable,torqueConstantFriction,Calculate constant friction torque,frictionTorque|gearboxRatio,Nm,frictionTorque / gearboxRatio
+Rotarytable,torqueRequiredAcceleration,Calculate torque required for acceleration,reflectedInertia|motorInertia|gearboxInertia|brakeInertia|motorAcceleration|torqueConstantFriction,Nm,(reflectedInertia + motorInertia + gearboxInertia + brakeInertia) * motorAcceleration + torqueConstantFriction
+Rotarytable,torqueRequiredDeceleration,Calculate torque required for deceleration,reflectedInertia|motorInertia|gearboxInertia|brakeInertia|motorDeceleration|torqueConstantFriction,Nm,(reflectedInertia + motorInertia + gearboxInertia + brakeInertia) * motorDeceleration + torqueConstantFriction
+Rotarytable,torqueRequiredConstantSpeed,Calculate torque required at constant speed,torqueConstantFriction,Nm,torqueConstantFriction
+Rotarytable,constantRunTime,Calculate constant run time,moveTime|accelTime|decelTime,s,moveTime - accelTime - decelTime
+Rotarytable,torqueRmsMotor,Calculate RMS motor torque,torqueRequiredAcceleration|torqueRequiredDeceleration|torqueRequiredConstantSpeed|accelTime|decelTime|constantRunTime|moveTime|dwellTime,Nm,Math.sqrt(((torqueRequiredAcceleration ** 2) * accelTime + (torqueRequiredDeceleration ** 2) * decelTime + (torqueRequiredConstantSpeed ** 2) * constantRunTime) / (dwellTime + moveTime))
+Conveyor,frictionalForce,Calculate frictional force,loadMass|frictionCoefficient,N,loadMass * frictionCoefficient * 9.81
+Conveyor,inclineForce,Calculate incline force,loadMass|inclineAngle,N,loadMass * 9.81 * Math.abs(Math.sin(inclineAngle))
+Conveyor,totalForce,Calculate total force,frictionalForce|inclineForce,N,frictionalForce + inclineForce
+Conveyor,linearToRotationalSpeed,Convert linear to rotational speed,beltSpeed|rollerDiameter,rad/s,(beltSpeed * 2) / rollerDiameter
+Conveyor,requiredMotorPowerKw,Calculate required motor power in kW,totalForce|beltSpeed,W,totalForce * beltSpeed
+Conveyor,requiredMotorPowerHp,Calculate required motor power in HP,totalForce|beltSpeed,hp,(totalForce * beltSpeed) / 745.7
+Conveyor,requiredTorque,Calculate required torque,totalForce|rollerDiameter,Nm,(totalForce * rollerDiameter) / 2
+Genericrotary,torqueRequiredAcceleration,Calculate torque required for acceleration,momentOfInertia|angularSpeed|accelTime,Nm,angularSpeed * momentOfInertia / accelTime
+Genericrotary,torqueRequiredDeceleration,Calculate torque required for deceleration,momentOfInertia|angularSpeed|decelTime,Nm,angularSpeed * momentOfInertia / decelTime
+Genericrotary,requiredMotorPowerKw,Calculate required motor power in kW,torque|angularSpeed,kW,(torque * angularSpeed) / 1000
+Genericrotary,requiredMotorPowerHp,Calculate required motor power in HP,torque|angularSpeed,hp,(torque * angularSpeed) / 745.7
+Blower,fanPower,Calculate fan power,airflow|pressure|fanEfficiency,W,(airflow * pressure) / (fanEfficiency / 100)
+Blower,motorPower,Calculate motor power for blower,fanPower|motorEfficiency,W,fanPower / (motorEfficiency / 100)
+Blower,motorPowerHP,Convert motor power to HP,motorPowerWatts,HP,motorPowerWatts / 745.7
+Blower,blowerTorque,Calculate blower torque,motorPowerWatts|rpmRads,Nm,rpmRads && rpmRads > 0 ? motorPowerWatts / rpmRads : 0
+Leadscrew,screwTorque,Calculate torque at screw,force|lead,Nm,(force * lead) / (2 * Math.PI)
+Leadscrew,motorTorque,Calculate motor torque for leadscrew,screwTorque|gearboxRatio|efficiency,Nm,screwTorque / (gearboxRatio * efficiency)
+Leadscrew,motorPower,Calculate motor power for leadscrew,motorTorque|angularSpeed,W,motorTorque * angularSpeed

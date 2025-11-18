@@ -15,10 +15,11 @@
             <div class="keb-header-left"></div>
             <div class="keb-header-logo">
                 <img src="images/kebblacklogoimage.png" alt="KEB Logo" style="height:52px; width:auto; display:block;">
+
+                <img>
             </div>
             <div class="keb-header-right"></div>
         </div>
-            
         <div class="container-row" style="display: flex; justify-content: center;">
             <div style="display: flex; flex-direction: column; gap: 24px;" id="container-left-column">
                 <div class="container selectable-container" id="container-left" style="margin-top: 40px;">
@@ -85,7 +86,20 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="container selectable-container" id="container-left-filter-selector">
+                    <div class="h1-row" style="display: flex; align-items: center; justify-content:space-between; gap: 10px;">
+                        <div class="h1-left-section">
+                            <h1>Filter Selector</h1>
+                        </div>
+                        <div class="h1-right-section">
+                            <h3>A tool to help select the appropriate EMI filter for your application.</h3>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        
             <div class="container-right" id="drive-pn-analyzer" style="display: none;">
                     <div style="display: flex; align-items: center; gap: 20px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
@@ -726,11 +740,7 @@
                         <option value="Conveyor">Conveyor</option>
                         <option value="Genericrotary">Generic Rotary</option>
                         <option value="Blower">Blower</option>
-                        <!-- <option value="MaterialHandling">Generic Linear</option>
-                        <option value="Testsystems">Generic Linear</option>
-                        <option value="Specialmachinery">Generic Linear</option>
-                        <option value="Woodworking">Generic Linear</option>
-                        <option value="Machining">Generic Linear</option> -->
+                        <option value="Leadscrew">Leadscrew</option>
                     </select>
                 </div>
                 
@@ -771,7 +781,7 @@
             <div class="container-right" id="brusatori-to-dl4" style="display: none;">        
                 <div class="product-fields-row">
                     <div class="product-fields-col-2">
-                        <button onclick="window.open('brusatoricatalog.pdf', '_blank');"style="display: inline-block;">Open Brusatori Catalog</button>
+                        <button onclick="window.open('/resources/brusatoricatalog.pdf', '_blank');"style="display: inline-block;">Open Brusatori Catalog</button>
                         <div class="divider-thin"></div>
                         <h2 class="brusatori-title" style="color:#698fff; text-align: center;">Brusatori Input</h2>
                         <label for="brusatori-identifier" style="display: inline-block">Brusatori Identifier:</label>
@@ -816,8 +826,8 @@
                         <span class="result-value" id="brusatori-configurable-options-result"></span>
                     </div>
                     <div class="product-fields-col-2">
-                            <button onclick="window.open('dl4_catalog.pdf', '_blank');" style="display: inline-block;">Open KEB DL4 catalog</button>
-                            <button onclick="window.open('dl4_manual.pdf', '_blank');" style="display: inline-block;">Open KEB DL4 manual</button>
+                            <button onclick="window.open('/resources/dl4_catalog.pdf', '_blank');" style="display: inline-block;">Open KEB DL4 catalog</button>
+                            <button onclick="window.open('/resources/dl4_manual.pdf', '_blank');" style="display: inline-block;">Open KEB DL4 manual</button>
                             <div class="divider-thin"></div>
                             <h2 style="color:#dd0067; text-align: center;">KEB Input</h2>
                             <label for="keb-identifier" class="inline-label">KEB Identifier:</label>
@@ -916,13 +926,11 @@
             
             
             
-            </div>
-            
+            </div>          
 
             <div class="container-right" id="call-logger" style="display: none;">
-                <h2>Call Logger</h2>
-                <label>Either create a new workbook template, or overwrite and append an existing workbook.</label><br>
                 <div>
+                    <label>Either create a new workbook template, or overwrite and append an existing workbook.</label>
                     <div style="margin-bottom:8px; display:flex; gap:8px; align-items:center;">
                         <label style="display:block;"></label>
                         <button id="cl_open_native" type="button" style="margin-left:6px;">Overwrite Existing Workbook</button>
@@ -1000,10 +1008,57 @@
                 <script src="call-logger.js"></script>
             </div>
 
+            <div class="container-right" id="filter-selector" style="display: none;">
+                <div class="product-fields-row">
+                    <div class="product-fields-col-2">
+                        <div style="display:grid; grid-template-columns:1fr 5fr; gap:12px;">
+                            <div style="margin-bottom: 10px;">
+                                <label style="display:inline-block" for="fs-side">Side of VFD</label>
+                            </div>
+                            <div>
+                                <select id="fs-side">
+                                    <option value="">-- select side --</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <label for="fs-product">Product</label>
+                            </div>
+                            <div>
+                                <select id="fs-product">
+                                    <option value="">-- select product --</option>
+                                </select>
+                            <div for="fs-product" id="fs-product-desc" style="display:inline-block; font-size:0.95em; color:#333;"></div>
+ 
+                            </div>
+                           <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <label for="fs-class">Class</label>
+                            </div>
+                            <div>
+                                <select id="fs-class">
+                                    <option value="">-- select class --</option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 10px; margin-bottom: 10px;">
+                                <label for="fs-size">Size</label>
+                            </div>
+                            <div>
+                                <select id="fs-size"><option value="">-- select size --</option></select>
+                            </div>
+                        </div>
 
-
+                        <div id="fs-results" style="margin-top:12px"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <script>
+            window.USE_CSV_FORMULAS = true;  // Toggle here!
+            </script>
+            <script src="formulas-csv-loader.js"></script>
+            <script src="formulas.js"></script>
             <script src="part-number-generator.js"></script>
             <script src="container-selection.js"></script>
+            <script src="filter-selector.js"></script>
             <script src="brusatori-to-dl4.js"></script>
             
             <!-- Optional: enable anonymous remote whiteboard sync by setting the DB URL here -->
@@ -1025,7 +1080,7 @@
                 <tr>
                     <td class="footer-col-1">
                         <!-- © KEB America, <span id="footer-productyear"></span><br>All Rights Reserved -->
-                         © KEB America, 2025 <br>All Rights Reserved
+                        © KEB America, 2025 <br>All Rights Reserved
                     </td>
                     <td class="footer-col-2">
                         Name: Basis<br><b>KEB COMBIVERT <span id="footer-productline"></span></b>
@@ -1045,5 +1100,6 @@
                 </tr>
             </table>
         </div>
+        
     </body>
 </html>

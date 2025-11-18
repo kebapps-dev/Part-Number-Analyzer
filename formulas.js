@@ -9,28 +9,49 @@ const formulas = {
   clampvolume: (clamparea, strokeLength) => 
     clamparea * strokeLength, // clamparea: m², strokeLength: m → m³
   pumpflowrate: (timeOfStroke, clampvolume) => 
-    timeOfStroke > 0 ? (clampvolume / timeOfStroke) * 60000 : 0, // timeOfStroke: s, clampvolume: m³ → L/min
-  pumpdisplacement: (pumpflowrate, angularVelocity) => 
-    angularVelocity > 0 ? (pumpflowrate * 1000) / ((angularVelocity * 60) / (2 * Math.PI)) : 0, // pumpflowrate: L/min, angularVelocity: rad/s → cc/rev
+    timeOfStroke > 0 ? (clampvolume / timeOfStroke) : 0, // timeOfStroke: s, clampvolume: m³ → m³/s (base flow unit)
+  // Returns pump displacement in m³ per revolution (base unit). Callers that want cc/rev should multiply by 1e6.
+  pumpdisplacement: (pumpflowrate, angularVelocity) => {
+    if (!angularVelocity || angularVelocity === 0) return 0;
+    // pumpflowrate: m³/s, angularVelocity: rad/s
+    // rev/s = angularVelocity / (2π)
+    // displacement (m³/rev) = flow (m³/s) / rev/s = flow * (2π) / angularVelocity
+    return (pumpflowrate * 2 * Math.PI) / angularVelocity; // m³/rev
+  },
   pumpclampingforce: (clampPressure, clamparea) => 
     clampPressure * clamparea, // clampPressure: Pa, clamparea: m² → N
-  motortorque: (selectedPumpDisplacement, clampPressure, volefficiency) => 
-    (selectedPumpDisplacement * (clampPressure/100000) / (20 * Math.PI * volefficiency)), // selectedPumpDisplacement: cc/rev, clampPressure: Pa, volefficiency: decimal → Nm
-  motorspeed: (clampingFlowRate, selectedPumpDisplacement, volefficiency) => 
-    (clampingFlowRate * 1000 * volefficiency) / selectedPumpDisplacement, // clampingFlowRate: L/min, selectedPumpDisplacement: cc/rev, volefficiency: decimal → rpm
-  
-  //lift calculations
+  // selectedPumpDisplacement: m³/rev (base), clampPressure: Pa, volefficiency: decimal (0..1)
+  // Torque (Nm) = (Pressure * Volume per rev) / (2π * efficiency)
+  motortorque: (selectedPumpDisplacement, clampPressure, volefficiency) => {
+    if (!selectedPumpDisplacement || selectedPumpDisplacement === 0) return 0;
+    return (clampPressure * selectedPumpDisplacement) / (2 * Math.PI * (volefficiency || 1)); // Nm
+  },
+  // Returns motor angular speed in rad/s (base). Clamping flow in m³/s, displacement in m³/rev.
+  motorspeed: (clampingFlowRate, selectedPumpDisplacement, volefficiency) => {
+    if (!selectedPumpDisplacement || selectedPumpDisplacement === 0) return 0;
+    // rev/s = flow / (displacement * efficiency)
+    const revPerSec = clampingFlowRate / (selectedPumpDisplacement * (volefficiency || 1));
+    return revPerSec * 2 * Math.PI; // rad/s
+  },
+};
+const liftformulas = {
+// //lift calculations
   rotationalspeed: (maxSpeed, drumDiameter) => 
-    (maxSpeed * 60) / (Math.PI * (drumDiameter)), // maxSpeed: m/s, drumDiameter: m → rpm
+      (2 * maxSpeed) / drumDiameter, // maxSpeed: m/s, drumDiameter: m → rad/s
   forcegravity: (mass, gravity = 9.81) => mass * gravity, // mass: kg, gravity: m/s² → N
   drumtorque: (forcegravity, drumDiameter) => 
     forcegravity * (drumDiameter/2), // forcegravity: N, drumDiameter: m → Nm
   peakacceleration: (maxSpeed, accelDecelTime) => 
     maxSpeed / accelDecelTime, // maxSpeed: m/s, accelDecelTime: s → m/s²
-  peakdrumtorque: (forcegravity, drumDiameter, mass, peakacceleration) => 
-    (drumDiameter/2)*(forcegravity + (mass*(peakacceleration))), // forcegravity: N, drumDiameter: m, mass: kg, peakacceleration: m/s² → Nm
-  motorpowerkw: (torque, angularspeed) => 
-    (torque * angularspeed) / 1000, // torque: Nm, angularspeed: rad/s → kW
+  peakdrumtorque: (drumDiameter, mass, angularAcceleration) =>
+    (drumDiameter / 2) * mass * ((angularAcceleration) + 9.81),
+    // forcegravity: N
+    // drumDiameter: m
+    // mass: kg
+    // angularAcceleration: rad/s² → Nm
+ // Returns power in kW (matching the function name). Inputs: torque (Nm), angularspeed (rad/s)
+  motorpower: (torque, angularspeed) => 
+    (torque * angularspeed), // torque: Nm, angularspeed: rad/s → kW
 };
 
 const rotarytableformulas = {
@@ -38,7 +59,8 @@ const rotarytableformulas = {
   maxangularspeed: (rotationalMoveDistance, totalMoveTime, accelTime, decelTime, gearboxRatio) => 
     gearboxRatio * (rotationalMoveDistance / (totalMoveTime - 0.5*accelTime - 0.5*decelTime)), // rotationalMoveDistance: rad, totalMoveTime: s, accelTime: s, decelTime: s, gearboxRatio: dimensionless → rad/s
   maxrotationalspeed: (maxAngularSpeed, gearboxRatio) =>
-    maxAngularSpeed * 60 * gearboxRatio / (2 * Math.PI), // maxAngularSpeed: rad/s, gearboxRatio: dimensionless → RPM
+    // Return angular speed in rad/s (base). Callers should convert to RPM for display.
+    maxAngularSpeed * gearboxRatio, // maxAngularSpeed: rad/s, gearboxRatio: dimensionless → rad/s
   
   motoracceleration: (maxAngularSpeed, accelTime, gearboxRatio) => 
     gearboxRatio * maxAngularSpeed / accelTime, // maxAngularSpeed: rad/s, accelTime: s, gearboxRatio: dimensionless → rad/s²
@@ -70,7 +92,10 @@ const rotarytableformulas = {
     frictionalForce: (loadMass, frictionCoefficient) => loadMass * frictionCoefficient * 9.81, // loadMass: kg, frictionCoefficient: dimensionless → N
     inclineForce: (loadMass, inclineAngle) => loadMass * 9.81 * Math.abs(Math.sin(inclineAngle)), // loadMass: kg, inclineAngle: rad → N
     totalForce: (frictionalForce, inclineForce) => frictionalForce + inclineForce, // frictionalForce: N, inclineForce: N → N
-    linearToRotationalSpeed: (beltSpeed, rollerDiameter) => (beltSpeed * 60) / (Math.PI * rollerDiameter), // beltSpeed: m/s, rollerDiameter: m → RPM
+  // Convert linear belt speed (m/s) to angular speed (rad/s) at roller
+  // rev/s = beltSpeed / (π * rollerDiameter)
+  // rad/s = rev/s * 2π = beltSpeed * 2 / rollerDiameter
+  linearToRotationalSpeed: (beltSpeed, rollerDiameter) => (beltSpeed * 2) / rollerDiameter, // beltSpeed: m/s, rollerDiameter: m → rad/s
   
     requiredMotorPowerKw: (totalForce, beltSpeed) => (totalForce * beltSpeed), // totalForce: N, beltSpeed: m/s → W
     requiredMotorPowerHp: (totalForce, beltSpeed) => (totalForce * beltSpeed) / 745.7, // totalForce: N, beltSpeed: m/s → hp
@@ -104,6 +129,17 @@ const rotarytableformulas = {
     }
   };
 
+// Export formulas for Node-based tests (no effect in browser)
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    formulas,
+    rotarytableformulas,
+    conveyorformulas,
+    genericrotaryformulas,
+    blowerformulas
+  };
+}
   
+
 
 

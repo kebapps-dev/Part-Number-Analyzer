@@ -10,12 +10,12 @@ Pump,motorEfficiency,Motor Efficiency,number,any,%,,Motor efficiency as a percen
 Pump,safetyFactor,Safety Factor,number,any,,,Safety factor for sizing
 
 Lift,loadWeight,Load Weight,number,any,"kg,g,lb,oz",mass,Weight to be lifted
-Lift,liftHeight,Lift Height,number,any,"m,mm,cm,in,ft",length,Height to lift the load
 Lift,maxSpeed,Max Speed,number,any,"m/s,mm/s,in/s,ft/s",velocity,Maximum lifting speed
 Lift,gearboxRatioLift,Gearbox Ratio,number,any,,,Gearbox ratio for lift
 Lift,accelDecelTime,Accel/Decel Time,number,any,s,,Acceleration/Deceleration time
 Lift,drumDiameter,Drum Diameter,number,any,"mm,m,cm,in,ft",length,Drum diameter for lift
 Lift,motorEfficiencyPercent,Motor Efficiency,number,any,%,,Motor efficiency as a percent
+Lift,gearboxEfficiencyPercent,Gearbox Efficiency,number,any,%,,Gearbox efficiency as a percent
 Lift,safetyFactor,Safety Factor,number,any,,,Safety factor for sizing
 
 Rotarytable,rotationalMoveDistance,Rotational Move Distance,number,any,"rad,deg",angle,Distance to rotate
@@ -53,3 +53,8 @@ Blower,blowerFanEff,Blower Fan Efficiency,number,any,%,,Blower fan efficiency as
 Blower,blowerMotorEff,Blower Motor Efficiency,number,any,%,,Blower motor efficiency as a percent
 Blower,blowerRequiredSpeed,Required Speed,number,any,"RPM,rad/s,Hz",speed,Required blower speed (optional)
 
+Leadscrew,leadscrewForce,Load Force,number,any,"N,lbf",force,Axial load force on the leadscrew
+Leadscrew,leadscrewLead,Lead,number,any,"mm,cm,in",length,Lead of the leadscrew
+Leadscrew,leadscrewRotSpeed,Required Speed,number,any,"RPM,rad/s,Hz",speed,Required speed of the leadscrew
+Leadscrew,leadscrewRatio,Gearbox Ratio,number,any,,,Gearbox ratio for the leadscrew
+Leadscrew,leadscrewEff,Efficiency,number,any,%,,Efficiency of the leadscrew mechanism    

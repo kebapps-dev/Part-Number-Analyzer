@@ -3,7 +3,7 @@
 (function(){
   const STORAGE_KEY = 'sharedWhiteboardContentV1';
   const CHANNEL_NAME = 'shared-whiteboard-channel';
-  const AUTO_SAVE_INTERVAL = 5000; // periodic autosave (ms)
+  const AUTO_SAVE_INTERVAL = 60000; // periodic autosave (ms)
   let saveTimer = null;
   let lastSaved = null;
   let bc = null;
